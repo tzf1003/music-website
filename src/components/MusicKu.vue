@@ -107,7 +107,7 @@
           --el-button-hover-bg-color: #393939;
           --el-button-active-bg-color: #232323;
         ">
-        <!-- 图片 -->
+          <!-- 图片 -->
           <el-avatar style="width: 48px; height: 48px;" shape="square" :size="48" :fit="cover" :src="require('@/assets/love-songs.jpg')" />
           <!-- 内容 -->
           <span style="padding-left: 10px;">
@@ -222,11 +222,7 @@ const libraryUrl = ref([
 </script>
 
 <style>
-.grid-content {
-  /* border: 1px solid #666; */
-  border-radius: 4px;
 
-}
 
 .el-row.head .grid-content {
   min-height: 40px;
@@ -284,10 +280,10 @@ const libraryUrl = ref([
   font-weight: bold;
 }
 
-.tag .el-button {
+/* .tag .el-button {
   --el-button-hover-bg-color: #2a2a2a;
   --el-button-active-bg-color: #000;
-}
+} */
 
 
 </style>

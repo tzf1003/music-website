@@ -3,12 +3,12 @@
     <div class="common-layout">
     <el-container>
       <el-container direction='horizontal'>
-        <el-container direction='vertical' style="min-width:390px; max-width:390px; height: calc(100vh - 72px - 9px); min-height: 447px;" >
+        <el-container direction='vertical' style="min-width:390px; max-width:390px; height: calc(100vh - 72px - 9px - 16px); min-height: 447px;" >
           <el-aside class="kuai"  style="
             width: 100%;
-            height:94px;
-            min-height:94px;
-
+            height:112px;
+            min-height:112px;
+            max-height:112px;
             border-radius: 10px;
           ">
             <NavbarTop></NavbarTop>
@@ -17,7 +17,7 @@
           <el-aside class="line" style="width: 100%; height:9px; "></el-aside>
           <el-aside class="kuai" style="
             width: 100%;
-            height: calc(100% - 94px - 9px );
+            height: calc(100% - 112px - 9px);
             min-height: 344px;
 
             border-radius: 10px;
@@ -27,12 +27,11 @@
         </el-container>
         <!-- 竖着的分割线 -->
         <el-container class="line" direction='vertical' style="min-width:9px; max-width:9px;"></el-container>
-
-        <el-container class="kuai" direction='vertical' style="min-width:384px; height: calc(100vh - 72px - 9px); min-height: 447px;">
-          <el-main style="
+        <el-container direction='vertical' style="min-width:390px; height: calc(100vh - 72px - 9px - 16px); min-height: 465px;">
+          <el-main class="kuai" style="
               max-width:100%;
               height: 100%;
-              min-height: 438px;
+              min-height: 465px;
 
               border-radius: 10px;
             ">
@@ -47,6 +46,7 @@
               width: 100%;
               height: 72px;
               border-radius: 10px;
+              min-width:836px
             ">
             <BottonBar></BottonBar>
       </el-footer>
@@ -70,11 +70,13 @@ import BottonBar from './components/BottonBar.vue'
   margin: 0;
   padding: 0;
 }
-body,html{
+body{
     margin: 0;
     padding: 0;
 }
 
-
+html.dark{
+  padding: 8px 8px 8px 8px;
+}
 </style>
 

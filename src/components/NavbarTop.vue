@@ -1,7 +1,7 @@
 <!-- 这里是左上角 -->
 <template>
 
-    <el-row class="tac">
+    <el-row class="menu-bar">
       <el-col :span="24" style="width: 100%;">
         <el-menu 
           default-active="1" 
@@ -37,14 +37,26 @@ import { ref } from "vue";
 </script>
 
 <style>
-.el-menu-item {
-  width: 100%;
-  height: 38PX;
+.menu-bar{
+  padding-right: 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
-.el-menu .words {
+
+
+.menu-bar .el-menu-item {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  width: 100%;
+  height: 40PX;
+}
+
+.menu-bar .el-menu .words {
   margin-top: 0px;
+  margin-left: 10px;
   font-family: "微软雅黑";
   font-size: 16px;
   font-weight: bold;
 }
+
 </style>
