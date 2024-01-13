@@ -5,7 +5,6 @@ import App from './App.vue'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import './styles/dark/css-vars.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-
 const app = createApp(App)
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
