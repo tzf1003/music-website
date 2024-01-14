@@ -6,8 +6,8 @@
     <el-col :span="2">
       <div class="grid-content">
         <el-icon color="#fff" :size="20" style="
-        margin-top: 10px;
-        margin-left: 10px;
+          margin-top: 10px;
+          margin-left: 10px;
         ">
           <Files />
         </el-icon>

@@ -27,12 +27,12 @@
         </el-container>
         <!-- 竖着的分割线 -->
         <el-container class="line" direction='vertical' style="min-width:9px; max-width:9px;"></el-container>
-        <el-container direction='vertical' style="min-width:390px; height: calc(100vh - 72px - 9px - 16px); min-height: 465px;">
+        <el-container direction='vertical' style="min-width:460px; height: calc(100vh - 72px - 9px - 16px); min-height: 465px;">
           <el-main class="kuai" style="
               max-width:100%;
               height: 100%;
               min-height: 465px;
-
+              padding: 0px;
               border-radius: 10px;
             ">
             <MainWindow></MainWindow>
@@ -46,7 +46,7 @@
               width: 100%;
               height: 72px;
               border-radius: 10px;
-              min-width:836px
+              min-width:859px
             ">
             <BottonBar></BottonBar>
       </el-footer>

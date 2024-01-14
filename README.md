@@ -1,5 +1,7 @@
 # music-website
 基于vue仿spotify音乐网站
+目前正在开发中。
+
 ## Project setup
 ```
 npm install
