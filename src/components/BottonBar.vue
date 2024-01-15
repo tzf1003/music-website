@@ -18,14 +18,12 @@
             <span style="padding-left: 10px; ">
               <span style="
               color: #fff;
-              font-family: '微软雅黑';
               font-size: 14px;
     
             ">句号</span>
               <span style="
               display: flex;
               color: #a7a7a7;
-              font-family: '微软雅黑';
               font-size: 13px;
               
             ">邓紫棋</span>
@@ -86,7 +84,7 @@
           </el-button>
           <el-button color="#000" circle dark>
             <!-- <i class="bi bi-card-text" style="font-size: 17px;"></i> -->
-            <i style="font-size: 17px; font-style:normal;font-family: 微软雅黑;">词</i>
+            <i style="font-size: 17px; font-style:normal;font-family: 'AlibabaPuHuiTi-Bold';">词</i>
           </el-button>
           <el-button color="#000" circle dark>
             <i class="bi bi-ui-radios" style="font-size: 17px;"></i>

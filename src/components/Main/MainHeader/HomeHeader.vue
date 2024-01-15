@@ -16,7 +16,6 @@
         <div class="explore-user">
             <div class="button explore">
                 <el-button color="#FFF" size="default" round style="
-              font-family: 微软雅黑;
               font-size: 14px;
               font-weight: bold;
             ">开通VIP会员</el-button>
@@ -24,7 +23,6 @@
             <div class="button app">
                 <el-button color="#121212" size="default" round style="
             margin-left: 10px;
-            font-family: 微软雅黑;
             font-size: 14px;
             font-weight: bold;
             ">安装应用</el-button>

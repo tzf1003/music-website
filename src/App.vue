@@ -69,6 +69,7 @@ import BottonBar from './components/BottonBar.vue'
 *{
   margin: 0;
   padding: 0;
+  font-family: 'AlibabaPuHuiTi-Medium';
 }
 body{
     margin: 0;

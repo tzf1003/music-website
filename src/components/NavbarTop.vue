@@ -54,7 +54,7 @@ import { ref } from "vue";
 .menu-bar .el-menu .words {
   margin-top: 0px;
   margin-left: 10px;
-  font-family: "微软雅黑";
+
   font-size: 16px;
   font-weight: bold;
 }

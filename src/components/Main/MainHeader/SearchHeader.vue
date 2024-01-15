@@ -22,7 +22,6 @@
         <div class="explore-user">
             <div class="button explore">
                 <el-button color="#FFF" size="default" round style="
-              font-family: 微软雅黑;
               font-size: 14px;
               font-weight: bold;
             ">开通VIP会员</el-button>

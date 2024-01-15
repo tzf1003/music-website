@@ -44,7 +44,6 @@
     <el-col :span="4">
       <div class="grid-content tag">
         <el-button round color="#232323">歌单</el-button>
-
       </div>
     </el-col>
     <el-col :span="4">
@@ -71,8 +70,7 @@
     <el-col :span="14">
       <div class="grid-content search">
         <el-input v-model="librarySearch" placeholder="在歌单中搜索" :prefix-icon="Search" style="
-          --el-input-focus-border:#979797;
-          --el-input-focus-border-color:#979797;
+
         " />
       </div>
     </el-col>
@@ -115,13 +113,11 @@
               display: block;
               margin-bottom: 8px;
               color: #fff;
-              font-family: '微软雅黑';
               font-size: 18px;
             ">已点赞歌曲</span>
             <span style="
               display: block;
               color: #a7a7a7;
-              font-family: '微软雅黑';
               font-size: 14px;
               
             ">歌单 • 8首歌曲</span>
@@ -150,13 +146,11 @@
               display: block;
               margin-bottom: 8px;
               color: #fff;
-              font-family: '微软雅黑';
               font-size: 18px;
             ">华语民谣</span>
             <span style="
               display: block;
               color: #a7a7a7;
-              font-family: '微软雅黑';
               font-size: 14px;
               
             ">歌单 • 小松创建</span>
@@ -185,13 +179,11 @@
               display: block;
               margin-bottom: 8px;
               color: #fff;
-              font-family: '微软雅黑';
               font-size: 18px;
             ">邓紫棋</span>
             <span style="
               display: block;
               color: #a7a7a7;
-              font-family: '微软雅黑';
               font-size: 14px;
               
             ">艺人</span>
@@ -228,9 +220,9 @@ const libraryUrl = ref([
   min-height: 40px;
 }
 
-.el-row.tags .grid-content {
+/* .el-row.tags .grid-content {
   min-height: 48px;
-}
+} */
 
 .el-row.search .grid-content {
   min-height: 32px;
@@ -275,7 +267,6 @@ const libraryUrl = ref([
 .head .words {
   color: #fff;
   margin-left: 10px;
-  font-family: "微软雅黑";
   font-size: 16px;
   font-weight: bold;
 }
