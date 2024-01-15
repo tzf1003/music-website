@@ -1,5 +1,5 @@
 <template>
-    <div class="home-header">
+    <div class="search-header">
         <!-- 前进后退按钮 -->
         <div class="forward-back">
             <div class="button back">
@@ -7,11 +7,17 @@
                     <i class="bi bi-chevron-left"></i>
                 </el-button>
             </div>
-            <div class="button forward">
-                <el-button size="default" color="#121212" circle dark style="margin-left: 20px;">
-                    <i class="bi bi-chevron-right"></i>
-                </el-button>
-            </div>
+        </div>
+        <div class="search-input">
+            <el-input v-model="SearchInput"  size="large" placeholder="想听什么？" :prefix-icon="Search" 
+                style="
+                    height:48px;
+                    --el-input-border-radius:500px;
+                    --el-input-focus-border-color:#fff;
+                    border-style: none;
+                    /* --el-border-color:none; */
+                "
+            />
         </div>
         <div class="explore-user">
             <div class="button explore">
@@ -20,14 +26,6 @@
               font-size: 14px;
               font-weight: bold;
             ">开通VIP会员</el-button>
-            </div>
-            <div class="button app">
-                <el-button color="#121212" size="default" round style="
-            margin-left: 10px;
-            font-family: 微软雅黑;
-            font-size: 14px;
-            font-weight: bold;
-            ">安装应用</el-button>
             </div>
             <!-- 通知 -->
             <div class="button notice">
@@ -47,25 +45,36 @@
 
 <script setup>
 import { ref } from "vue";
+import {
+    Search
+} from '@element-plus/icons-vue'
 </script>
 
 <style  lang="less">
-.home-header {
+
+
+.search-header {
     display: flex;
     width: 100%;
 }
 
-.home-header .forward-back {
-
-    width: 25%;
+.search-header .forward-back {
+    width: 15%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
 
 }
 
-.home-header .explore-user {
-    width: 75%;
+.search-header .search-input{
+    
+    width: 35%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.search-header .explore-user {
+    width: 50%;
     display: flex;
     justify-content: flex-end;
     align-items: center;
