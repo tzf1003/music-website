@@ -11,7 +11,7 @@
             max-height:112px;
             border-radius: 10px;
           ">
-            <NavbarTop></NavbarTop>
+            <NavbarTop/>
           </el-aside>
           <!-- 左上角的分割线 -->
           <el-aside class="line" style="width: 100%; height:9px; "></el-aside>
@@ -22,7 +22,7 @@
 
             border-radius: 10px;
           ">
-            <MusicKu></MusicKu>
+            <MusicKu/>
           </el-aside>
         </el-container>
         <!-- 竖着的分割线 -->
@@ -35,7 +35,7 @@
               padding: 0px;
               border-radius: 10px;
             ">
-            <MainWindow></MainWindow>
+            <MainWindow/>
           </el-main>
         </el-container>
       </el-container>
