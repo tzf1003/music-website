@@ -3,12 +3,13 @@
   <div>
     <el-container class="main-layout">
         <el-header class="main-header">
-        <!-- <HomeHeader/> -->
-        <SearchHeader/>
+        <HomeHeader/>
+        <!-- <SearchHeader/> -->
       </el-header>
       <el-main style="color: aliceblue;font-size: 20px;">
         <!-- <HomePage/> -->
-        <SearchPage/>
+        <!-- <SearchPage/> -->
+        <ListPage/>
       </el-main>
     </el-container>
   </div>
@@ -20,6 +21,7 @@ import HomePage from "./Main/HomePage.vue";
 import SearchPage from "./Main/SearchPage.vue"
 import HomeHeader from "./Main/MainHeader/HomeHeader.vue"
 import SearchHeader from "./Main/MainHeader/SearchHeader.vue"
+import ListPage from "./Main/ListPage.vue";
 </script>
 
 <style>
