@@ -1,9 +1,8 @@
 # music-website 🎵
+![logo](./src/assets/logo.png "logo")
 基于vue仿spotify音乐网站 🌐  
 目前，该项目正在开发中...🚧
 
-## logo
-![logo](./src/assets/logo.png "logo") 
 ## 已开发界面预览 👀
 ### 主页 🏠
 
