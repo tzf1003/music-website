@@ -1,149 +1,84 @@
 <template>
   <div class="sheet-container">
     <!-- Top 大块 -->
-    <div id="colorfulDiv" class="top-background" :style="gradientStyle">
+    <div id="colorfulDiv" class="top-background" ref="container" :style="gradientStyle">
       <!-- 图片 -->
       <div class="sheet-img">
-        <el-image id="background"
-          :fit="cover" :src="imageUrl" @load="imgColor" ref="imageElement" />
+        <el-image id="background" :fit="cover" :src="imageUrl" @load="imgColor" ref="imageElement" />
+      </div>
+      <div class="sheet-info">
+
         <!-- 歌单名 -->
-        <span>已点赞歌曲</span>
-        <span>歌单简介：This playlist was created by X1aoS0ng</span>
+        <div class="name">
+          <span ref="textSpan">已点赞歌曲</span>
+        </div>
+        <div class="brief">
+          <span>歌单简介：This playlist was created by X1aoS0ng.....This playlist was created by X1aoS0ng</span>
+        </div>
+        <div class="user">
+          <span>小松 • 197首歌曲</span>
+        </div>
         <!-- 创建者和歌曲数量 -->
-        <span>小松</span>
-        <span> • </span>
-        <span>197首歌曲</span>
+
       </div>
 
     </div>
 
     <!-- 下大块背景 -->
     <div id="darkGradientDiv" class="middle-background" :style="darkGradientStyle">
-      <!-- 播放按钮区域 -->
 
-      <!-- 播放按钮 -->
-      <div class="sheet-play-button">
-        <el-button size="large" color="#1FDF64" circle dark style="margin-left: 20px;">
-          <i class="bi bi-play-fill" style="font-size: 25px; margin-left: 3px;"></i>
-        </el-button>
-      </div>
-      <!-- 其他选项按钮 -->
-      <div class="sheet-other-button">
-        <el-button color="#282828" circle dark>
-          <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
-          <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
-        </el-button>
-      </div>
-      <!-- 排序方法调整 -->
-      <div class="sheet-sort-select">
-        <el-select v-model="demonstrations" placeholder="选择排序方式" style="
+      <div class="sheet-button">
+        <!-- 播放按钮区域 -->
+        <div class="sheet-button-left">
+          <!-- 播放按钮 -->
+
+          <el-button class="sheet-play-button" size="large" color="#1FDF64" circle dark style="margin-left: 20px;">
+            <i class="bi bi-play-fill" style="margin-left: 3px;"></i>
+          </el-button>
+
+          <!-- 其他选项按钮 -->
+
+          <el-button class="sheet-other-button" circle dark style="
+          --el-button-hover-text-color:none;
+          --el-button-active-border-color:none;
+          --el-button-active-bg-color:none;
+          --el-button-hover-bg-color:none;
+          --el-button-border-color:none;
+          border-style: none;
+          ">
+            <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
+            <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
+          </el-button>
+        </div>
+
+        <div class="sheet-button-right">
+          <!-- 排序方法调整 -->
+
+          <el-select class="sheet-sort-select" v-model="demonstrations" placeholder="排序方式" style="
         --el-select-input-focus-border-color:#979797;
         --el-color-primary:#979797;
+        width: 100px;
         ">
-          <el-option label="最近添加" value="0" />
-          <el-option label="按字母排序" value="1" />
-        </el-select>
+            <el-option label="最近添加" value="0" />
+            <el-option label="按字母排序" value="1" />
+          </el-select>
+        </div>
+
       </div>
+
       <!-- 歌曲列表 表格 -->
       <div class="sheet-table">
         <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="date" label="Date" width="180" />
-          <el-table-column prop="name" label="Name" width="180" />
-          <el-table-column prop="address" label="Address" />
+          <el-table-column prop="num" label="#" />
+          <el-table-column prop="name" label="标题"  />
+          <el-table-column prop="album" label="专辑" />
+          <el-table-column prop="date" label="添加日期" />
+          <el-table-column prop="time" label="时长" />
         </el-table>
       </div>
     </div>
   </div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
-  <div>123456</div>
+
 </template>
   
 <script>
@@ -151,7 +86,31 @@ import { ref, computed } from 'vue';
 import ColorThief from 'colorthief';
 
 export default {
+  mounted() {
+    this.resizeText();
+    window.addEventListener("resize", this.resizeText);
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.resizeText);
+  },
+  methods: {
+    resizeText() {
+      const container = this.$refs.container;
+      const text = this.$refs.textSpan;
+
+      const containerWidth = container.offsetWidth;
+      const textWidth = text.offsetWidth;
+      console.log(containerWidth, textWidth);
+      // 计算缩放比例
+      const scale = containerWidth * 0.13;
+
+      // 根据缩放比例来设置文字大小
+      text.style.fontSize = `${scale}px`;
+    },
+  },
+
   setup() {
+
     const imageUrl = ref('https://i.scdn.co/image/ab67706c0000da84e4403704aa57a2e156a6d719'); // 图片URL
     const zcolor = ref('#121212'); // 默认颜色
 
@@ -214,23 +173,132 @@ export default {
   width: 100%;
 
   .top-background {
-    padding-top: 64px;
+    --fluid-height: clamp(250px, calc(250px + calc(100vw - 283px - 0px - 600px)/424*150), 400px);
+    --min-fluid-height: clamp(250px, calc(250px + calc(100vw - 283px - 0px - 600px)/424*90), 340px);
+
     width: 100%;
-    height: 250px;
-  }
-  .sheet-img{
-    --left-sidebar-width:390px;
-    --panel-width:0px;
-    width: clamp(128px, calc(128px + (100vw - var(--left-sidebar-width,0px) - var(--panel-width,0px) - 600px)/424*104), 232px);
-    height: clamp(128px, calc(128px + (100vw - var(--left-sidebar-width,0px) - var(--panel-width,0px) - 600px)/424*104), 232px);
-    .el-image{
-      width: 100%;
-      height: 100%;
+    // height: 250px;
+    height: min(calc(30vh), calc(var(--fluid-height)));
+    max-height: 400px;
+    min-height: calc(var(--min-fluid-height));
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+
+    /* 将元素在交叉轴（垂直轴）上底部对齐 */
+    .sheet-img {
+
+      display: flex;
+      --left-sidebar-width: 390px;
+      --panel-width: 0px;
+      min-width: clamp(128px, calc(128px + (100vw - var(--left-sidebar-width, 0px) - var(--panel-width, 0px) - 600px)/424*104), 232px);
+      min-height: clamp(128px, calc(128px + (100vw - var(--left-sidebar-width, 0px) - var(--panel-width, 0px) - 600px)/424*104), 232px);
+      width: clamp(128px, calc(128px + (100vw - var(--left-sidebar-width, 0px) - var(--panel-width, 0px) - 600px)/424*104), 232px);
+      height: clamp(128px, calc(128px + (100vw - var(--left-sidebar-width, 0px) - var(--panel-width, 0px) - 600px)/424*104), 232px);
+      margin-left: 10px;
+      margin-right: 20px;
+      margin-bottom: 20px;
+
+      .el-image {
+        display: flex;
+        width: 100%;
+        box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.582);
+        border-radius: 10px;
+        border-radius: 10px;
+      }
+    }
+
+    .sheet-info {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+
+      .name {
+
+        // display: flex;
+
+      }
+
+      .brief {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        /* 控制行数 */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 14px;
+        // max-width: 330px;
+      }
+
+      .user {
+        font-size: 14px;
+        max-width: 330px;
+      }
+    }
+
+    .middle-background {
+      height: 250px;
     }
   }
+
   .middle-background {
-    height: 250px;
+
+    .sheet-button {
+      height: 100px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      /* 左右对齐 */
+      align-items: center;
+
+      .sheet-button-left {
+        justify-content: flex-end;
+
+        .sheet-play-button {
+
+          width: 56px;
+          height: 56px;
+
+          i {
+            font-size: 32px;
+          }
+        }
+
+        .sheet-other-button {
+          width: 56px;
+          height: 56px;
+          color: #A7A7A7;
+          i {
+            font-size: 32px;
+          }
+
+
+        }
+        .sheet-other-button:active  {
+            i {
+              color: #fff;
+            }
+          }
+      }
+
+      .sheet-button-right {
+        justify-content: flex-end;
+
+        .sheet-sort-select {
+
+          /* 左右居左 */
+          width: 32px;
+        }
+      }
+
+
+
+    }
+
   }
+
 }
 
 //  可以放表头position: fixed;
