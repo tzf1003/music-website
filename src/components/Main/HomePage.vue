@@ -54,7 +54,7 @@ import ScrollableRow from "./ScrollableRow.vue"
 
 <style>
 .top-histerys {
-  padding-top: 10px;
+  padding-top: 74px;
   padding-bottom: 10px;
 }
 

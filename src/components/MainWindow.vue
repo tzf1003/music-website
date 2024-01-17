@@ -4,7 +4,7 @@
     <el-container class="main-layout" >
       <el-header class="main-header">
 
-        <SongSheetHeader :isVisible="showDiv" />
+        <SongSheetHeader :scroll-amplitude="scrollAmplitude"/>
 
         <!-- <HomeHeader/> -->
         <!-- <SearchHeader/> -->
@@ -21,7 +21,7 @@
 </template>
 
 <script  setup>
-import { onMounted, onUnmounted, ref } from "vue";
+import { ref } from "vue";
 import HomePage from "./Main/HomePage.vue";
 import SearchPage from "./Main/SearchPage.vue"
 import HomeHeader from "./Main/MainHeader/HomeHeader.vue"
@@ -30,22 +30,27 @@ import ListPage from "./Main/ListPage.vue";
 import SongSheetHeader from "./Main/MainHeader/SongSheetHeader.vue";
 import SongSheetPage from "./Main/SongSheetPage.vue";
 
-const showDiv = ref(false);
+const scrollAmplitude = ref(0);
+
 const handleScroll = ({ scrollTop }) => {
-  showDiv.value = scrollTop> 200
+  scrollAmplitude.value = scrollTop
+
 }
+
 </script>
 
 <style>
 
 .main-header {
+  width: 100%;
   z-index: 999;
-  border-bottom: 1px solid var(#121212);
   padding: 0;
-  position: sticky;
+  position: absolute;
   top: 0;
   height: 64px;
   display: flex;
+
+  border-bottom: 1px solid var(#121212);
   background-image: radial-gradient(transparent 1px, #121212 1px);
   background-size: 1px 1px;
   backdrop-filter: saturate(50%) blur(3px);

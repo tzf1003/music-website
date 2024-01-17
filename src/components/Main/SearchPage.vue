@@ -319,6 +319,7 @@ import ScrollableRow from "./ScrollableRow.vue";
 
 <style  lang="less">
 .search-page {
+    margin-top: 64px;
     padding-left: 3%;
     padding-right: 3%;
 

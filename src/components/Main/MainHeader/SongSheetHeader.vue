@@ -1,5 +1,5 @@
 <template>
-    <div class="home-header">
+    <div class="songsheet-header">
         <!-- 前进后退按钮 -->
         <div class="forward-back">
             <div class="button back">
@@ -7,7 +7,7 @@
                     <i class="bi bi-chevron-left"></i>
                 </el-button>
             </div>
-            <div class="button forward" >
+            <div class="button forward">
                 <el-button size="default" color="#121212" circle dark style="margin-left: 20px;">
                     <i class="bi bi-chevron-right"></i>
                 </el-button>
@@ -18,7 +18,7 @@
                     <i class="bi bi-play-fill" style="font-size: 25px; margin-left: 3px;"></i>
                 </el-button>
             </div>
-            
+
             <div class="song-sheet-name" v-if="isVisible">
                 <span>已点赞歌曲</span>
             </div>
@@ -48,20 +48,29 @@
     </div>
 </template>
 
-<script>
-import { ref } from "vue";
+<script setup>
+import { watch, toRefs ,ref,defineProps } from "vue";
+
+const isVisible = ref(false)
+
+const props = defineProps({
+    scrollAmplitude: Number
+});
+const { scrollAmplitude } = toRefs(props);
+watch(() => props.scrollAmplitude, (newVal, oldVal) => {
+    if(newVal >  200){
+        isVisible.value = true;
+        
+    }
+    
+})
 
 
-export default {
-  props: {
-    isVisible: Boolean
-  }
-  // ... 其他代码保持不变
-};
 </script>
 
 <style  lang="less">
-.home-header {
+
+.songsheet-header {
     display: flex;
     width: 100%;
 
@@ -74,7 +83,7 @@ export default {
         .play {
             margin-right: 10px;
         }
-        
+
         .song-sheet-name {
             color: #fff;
             font-size: 23px;
@@ -88,4 +97,5 @@ export default {
         justify-content: flex-end;
         align-items: center;
     }
-}</style>
+}
+</style>

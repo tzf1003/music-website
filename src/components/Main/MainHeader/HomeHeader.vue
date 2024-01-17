@@ -48,10 +48,7 @@ import { ref } from "vue";
 </script>
 
 <style  lang="less">
-.home-header {
-    display: flex;
-    width: 100%;
-}
+
 
 .home-header .forward-back {
 

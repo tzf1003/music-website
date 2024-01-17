@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "bootstrap-icons": "^1.11.3",
+    "colorthief": "^2.4.0",
     "core-js": "^3.8.3",
     "element-plus": "^2.5.1",
     "vue": "^3.2.13"

@@ -197,7 +197,8 @@ import { ref } from "vue";
 
 <style  lang="less">
 .list-page {
-    margin-top: 40px;
+
+    margin-top: 40px+64px;
     padding-left: 16px;
     padding-right: 16px;
 
