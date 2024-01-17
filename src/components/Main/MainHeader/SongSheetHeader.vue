@@ -58,9 +58,10 @@ const props = defineProps({
 });
 const { scrollAmplitude } = toRefs(props);
 watch(() => props.scrollAmplitude, (newVal, oldVal) => {
-    if(newVal >  200){
+    if(newVal > 300){
         isVisible.value = true;
-        
+    }else{
+        isVisible.value = false;
     }
     
 })
@@ -79,7 +80,7 @@ watch(() => props.scrollAmplitude, (newVal, oldVal) => {
         display: flex;
         justify-content: flex-start;
         align-items: center;
-
+        
         .play {
             margin-right: 10px;
         }
