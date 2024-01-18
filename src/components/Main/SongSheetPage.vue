@@ -1,7 +1,7 @@
 <template>
   <div class="sheet-container">
     <!-- Top 大块 -->
-    <div id="colorfulDiv" class="top-background" ref="container" :style="gradientStyle">
+    <div class="top-background" ref="container" :style="gradientStyle">
       <!-- 图片 -->
       <div class="sheet-img">
         <el-image id="background" :fit="cover" :src="imageUrl" @load="imgColor" ref="imageElement" />
@@ -25,7 +25,7 @@
     </div>
 
     <!-- 下大块背景 -->
-    <div id="darkGradientDiv" class="middle-background" :style="darkGradientStyle">
+    <div class="middle-background" :style="darkGradientStyle">
 
       <div class="sheet-button">
         <!-- 播放按钮区域 -->
@@ -54,35 +54,1024 @@
         <div class="sheet-button-right">
           <!-- 排序方法调整 -->
 
-          <el-select class="sheet-sort-select" v-model="demonstrations" placeholder="排序方式" style="
+          <el-select class="sheet-sort-select" v-model="selectValue" placeholder="排序方式" style="
         --el-select-input-focus-border-color:#979797;
         --el-color-primary:#979797;
         width: 100px;
         ">
-            <el-option label="最近添加" value="0" />
-            <el-option label="按字母排序" value="1" />
+            <el-option v-for="item in selectOptions" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </div>
 
       </div>
-
-      <!-- 歌曲列表 表格 -->
+      
+      
       <div class="sheet-table">
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="num" label="#" />
-          <el-table-column prop="name" label="标题"  />
-          <el-table-column prop="album" label="专辑" />
-          <el-table-column prop="date" label="添加日期" />
-          <el-table-column prop="time" label="时长" />
-        </el-table>
+        <!-- 表头 -->
+        <div class="sheet-table-header">
+          <el-row style="
+              display: flex;
+              justify-content: flex-end;
+            ">
+            <el-col :span="2" style="justify-content: center;">
+              <!-- id -->
+              <span>#</span>
+            </el-col>
+            <el-col :span="7" style="
+              display: flex;
+              justify-content: flex-start;
+            ">
+            <!-- 图片+歌曲名+歌手 -->
+            <span style="padding-left: 10px;">标题</span>
+              
+            </el-col>
+            <el-col :span="5">
+              <!-- 专辑 -->
+              <span>专辑</span>
+            </el-col>
+            <el-col :span="5">
+              <!-- 添加时间 -->
+              <span>添加时间</span>
+            </el-col>
+            <el-col :span="5" style="justify-content: center;">
+              <!-- 时长 -->
+              <span>
+                <i class="bi bi-clock"></i>
+              </span>
+            </el-col>
+          </el-row>
+        </div>
+        <!-- 歌曲列表内容 -->
+        <!-- 歌曲列表 -->
+        <div class="song">
+          <el-row>
+            <el-col :span="2" style="
+            justify-content: center;
+            ">
+              <!-- id -->
+              <div class="song-id">
+                <span class="num">1</span>
+                <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
+              </div>
+            </el-col>
+            <el-col :span="7" style="
+              display: flex;
+              justify-content: flex-start;
+            ">
+              <!-- 图片+歌曲名+歌手 -->
+              <div class="song-img">
+                <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
+              </div>
+              <div class="song-info">
+                <!-- name -->
+                <div class="song-name">
+                  <a>句号</a>
+                </div>
+                <!-- info -->
+                <div class="song-introduce">
+                  <span>歌曲 • 邓紫棋</span>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-album">
+                <span>句号</span>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-addtine">
+                <span>2023年10月2日</span>
+              </div>
+            </el-col>
+            <el-col :span="5" style="
+            justify-content: center;
+            ">
+              <div class="song-option">
+                <!-- 点赞歌曲 -->
+                <div class="song-like">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-heart" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-heart-fill" style="margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+                <!-- 歌曲时长 -->
+                <div class="song-time">
+                  <span>3:58</span>
+                </div>
+                <!-- 其他选项 -->
+                <div class="song-other">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <!-- 测试数据 -->
+        <div class="song">
+          <el-row>
+            <el-col :span="2" style="
+            justify-content: center;
+            ">
+              <!-- id -->
+              <div class="song-id">
+                <span class="num">1</span>
+                <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
+              </div>
+            </el-col>
+            <el-col :span="7" style="
+              display: flex;
+              justify-content: flex-start;
+            ">
+              <!-- 图片+歌曲名+歌手 -->
+              <div class="song-img">
+                <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
+              </div>
+              <div class="song-info">
+                <!-- name -->
+                <div class="song-name">
+                  <a>句号</a>
+                </div>
+                <!-- info -->
+                <div class="song-introduce">
+                  <span>歌曲 • 邓紫棋</span>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-album">
+                <span>句号</span>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-addtine">
+                <span>2023年10月2日</span>
+              </div>
+            </el-col>
+            <el-col :span="5" style="
+            justify-content: center;
+            ">
+              <div class="song-option">
+                <!-- 点赞歌曲 -->
+                <div class="song-like">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-heart" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-heart-fill" style="margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+                <!-- 歌曲时长 -->
+                <div class="song-time">
+                  <span>3:58</span>
+                </div>
+                <!-- 其他选项 -->
+                <div class="song-other">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="song">
+          <el-row>
+            <el-col :span="2" style="
+            justify-content: center;
+            ">
+              <!-- id -->
+              <div class="song-id">
+                <span class="num">1</span>
+                <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
+              </div>
+            </el-col>
+            <el-col :span="7" style="
+              display: flex;
+              justify-content: flex-start;
+            ">
+              <!-- 图片+歌曲名+歌手 -->
+              <div class="song-img">
+                <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
+              </div>
+              <div class="song-info">
+                <!-- name -->
+                <div class="song-name">
+                  <a>句号</a>
+                </div>
+                <!-- info -->
+                <div class="song-introduce">
+                  <span>歌曲 • 邓紫棋</span>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-album">
+                <span>句号</span>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-addtine">
+                <span>2023年10月2日</span>
+              </div>
+            </el-col>
+            <el-col :span="5" style="
+            justify-content: center;
+            ">
+              <div class="song-option">
+                <!-- 点赞歌曲 -->
+                <div class="song-like">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-heart" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-heart-fill" style="margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+                <!-- 歌曲时长 -->
+                <div class="song-time">
+                  <span>3:58</span>
+                </div>
+                <!-- 其他选项 -->
+                <div class="song-other">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="song">
+          <el-row>
+            <el-col :span="2" style="
+            justify-content: center;
+            ">
+              <!-- id -->
+              <div class="song-id">
+                <span class="num">1</span>
+                <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
+              </div>
+            </el-col>
+            <el-col :span="7" style="
+              display: flex;
+              justify-content: flex-start;
+            ">
+              <!-- 图片+歌曲名+歌手 -->
+              <div class="song-img">
+                <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
+              </div>
+              <div class="song-info">
+                <!-- name -->
+                <div class="song-name">
+                  <a>句号</a>
+                </div>
+                <!-- info -->
+                <div class="song-introduce">
+                  <span>歌曲 • 邓紫棋</span>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-album">
+                <span>句号</span>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-addtine">
+                <span>2023年10月2日</span>
+              </div>
+            </el-col>
+            <el-col :span="5" style="
+            justify-content: center;
+            ">
+              <div class="song-option">
+                <!-- 点赞歌曲 -->
+                <div class="song-like">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-heart" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-heart-fill" style="margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+                <!-- 歌曲时长 -->
+                <div class="song-time">
+                  <span>3:58</span>
+                </div>
+                <!-- 其他选项 -->
+                <div class="song-other">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="song">
+          <el-row>
+            <el-col :span="2" style="
+            justify-content: center;
+            ">
+              <!-- id -->
+              <div class="song-id">
+                <span class="num">1</span>
+                <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
+              </div>
+            </el-col>
+            <el-col :span="7" style="
+              display: flex;
+              justify-content: flex-start;
+            ">
+              <!-- 图片+歌曲名+歌手 -->
+              <div class="song-img">
+                <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
+              </div>
+              <div class="song-info">
+                <!-- name -->
+                <div class="song-name">
+                  <a>句号</a>
+                </div>
+                <!-- info -->
+                <div class="song-introduce">
+                  <span>歌曲 • 邓紫棋</span>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-album">
+                <span>句号</span>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-addtine">
+                <span>2023年10月2日</span>
+              </div>
+            </el-col>
+            <el-col :span="5" style="
+            justify-content: center;
+            ">
+              <div class="song-option">
+                <!-- 点赞歌曲 -->
+                <div class="song-like">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-heart" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-heart-fill" style="margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+                <!-- 歌曲时长 -->
+                <div class="song-time">
+                  <span>3:58</span>
+                </div>
+                <!-- 其他选项 -->
+                <div class="song-other">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="song">
+          <el-row>
+            <el-col :span="2" style="
+            justify-content: center;
+            ">
+              <!-- id -->
+              <div class="song-id">
+                <span class="num">1</span>
+                <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
+              </div>
+            </el-col>
+            <el-col :span="7" style="
+              display: flex;
+              justify-content: flex-start;
+            ">
+              <!-- 图片+歌曲名+歌手 -->
+              <div class="song-img">
+                <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
+              </div>
+              <div class="song-info">
+                <!-- name -->
+                <div class="song-name">
+                  <a>句号</a>
+                </div>
+                <!-- info -->
+                <div class="song-introduce">
+                  <span>歌曲 • 邓紫棋</span>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-album">
+                <span>句号</span>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-addtine">
+                <span>2023年10月2日</span>
+              </div>
+            </el-col>
+            <el-col :span="5" style="
+            justify-content: center;
+            ">
+              <div class="song-option">
+                <!-- 点赞歌曲 -->
+                <div class="song-like">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-heart" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-heart-fill" style="margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+                <!-- 歌曲时长 -->
+                <div class="song-time">
+                  <span>3:58</span>
+                </div>
+                <!-- 其他选项 -->
+                <div class="song-other">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="song">
+          <el-row>
+            <el-col :span="2" style="
+            justify-content: center;
+            ">
+              <!-- id -->
+              <div class="song-id">
+                <span class="num">1</span>
+                <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
+              </div>
+            </el-col>
+            <el-col :span="7" style="
+              display: flex;
+              justify-content: flex-start;
+            ">
+              <!-- 图片+歌曲名+歌手 -->
+              <div class="song-img">
+                <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
+              </div>
+              <div class="song-info">
+                <!-- name -->
+                <div class="song-name">
+                  <a>句号</a>
+                </div>
+                <!-- info -->
+                <div class="song-introduce">
+                  <span>歌曲 • 邓紫棋</span>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-album">
+                <span>句号</span>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-addtine">
+                <span>2023年10月2日</span>
+              </div>
+            </el-col>
+            <el-col :span="5" style="
+            justify-content: center;
+            ">
+              <div class="song-option">
+                <!-- 点赞歌曲 -->
+                <div class="song-like">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-heart" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-heart-fill" style="margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+                <!-- 歌曲时长 -->
+                <div class="song-time">
+                  <span>3:58</span>
+                </div>
+                <!-- 其他选项 -->
+                <div class="song-other">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="song">
+          <el-row>
+            <el-col :span="2" style="
+            justify-content: center;
+            ">
+              <!-- id -->
+              <div class="song-id">
+                <span class="num">1</span>
+                <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
+              </div>
+            </el-col>
+            <el-col :span="7" style="
+              display: flex;
+              justify-content: flex-start;
+            ">
+              <!-- 图片+歌曲名+歌手 -->
+              <div class="song-img">
+                <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
+              </div>
+              <div class="song-info">
+                <!-- name -->
+                <div class="song-name">
+                  <a>句号</a>
+                </div>
+                <!-- info -->
+                <div class="song-introduce">
+                  <span>歌曲 • 邓紫棋</span>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-album">
+                <span>句号</span>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-addtine">
+                <span>2023年10月2日</span>
+              </div>
+            </el-col>
+            <el-col :span="5" style="
+            justify-content: center;
+            ">
+              <div class="song-option">
+                <!-- 点赞歌曲 -->
+                <div class="song-like">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-heart" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-heart-fill" style="margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+                <!-- 歌曲时长 -->
+                <div class="song-time">
+                  <span>3:58</span>
+                </div>
+                <!-- 其他选项 -->
+                <div class="song-other">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="song">
+          <el-row>
+            <el-col :span="2" style="
+            justify-content: center;
+            ">
+              <!-- id -->
+              <div class="song-id">
+                <span class="num">1</span>
+                <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
+              </div>
+            </el-col>
+            <el-col :span="7" style="
+              display: flex;
+              justify-content: flex-start;
+            ">
+              <!-- 图片+歌曲名+歌手 -->
+              <div class="song-img">
+                <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
+              </div>
+              <div class="song-info">
+                <!-- name -->
+                <div class="song-name">
+                  <a>句号</a>
+                </div>
+                <!-- info -->
+                <div class="song-introduce">
+                  <span>歌曲 • 邓紫棋</span>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-album">
+                <span>句号</span>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-addtine">
+                <span>2023年10月2日</span>
+              </div>
+            </el-col>
+            <el-col :span="5" style="
+            justify-content: center;
+            ">
+              <div class="song-option">
+                <!-- 点赞歌曲 -->
+                <div class="song-like">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-heart" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-heart-fill" style="margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+                <!-- 歌曲时长 -->
+                <div class="song-time">
+                  <span>3:58</span>
+                </div>
+                <!-- 其他选项 -->
+                <div class="song-other">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="song">
+          <el-row>
+            <el-col :span="2" style="
+            justify-content: center;
+            ">
+              <!-- id -->
+              <div class="song-id">
+                <span class="num">1</span>
+                <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
+              </div>
+            </el-col>
+            <el-col :span="7" style="
+              display: flex;
+              justify-content: flex-start;
+            ">
+              <!-- 图片+歌曲名+歌手 -->
+              <div class="song-img">
+                <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
+              </div>
+              <div class="song-info">
+                <!-- name -->
+                <div class="song-name">
+                  <a>句号</a>
+                </div>
+                <!-- info -->
+                <div class="song-introduce">
+                  <span>歌曲 • 邓紫棋</span>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-album">
+                <span>句号</span>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-addtine">
+                <span>2023年10月2日</span>
+              </div>
+            </el-col>
+            <el-col :span="5" style="
+            justify-content: center;
+            ">
+              <div class="song-option">
+                <!-- 点赞歌曲 -->
+                <div class="song-like">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-heart" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-heart-fill" style="margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+                <!-- 歌曲时长 -->
+                <div class="song-time">
+                  <span>3:58</span>
+                </div>
+                <!-- 其他选项 -->
+                <div class="song-other">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="song">
+          <el-row>
+            <el-col :span="2" style="
+            justify-content: center;
+            ">
+              <!-- id -->
+              <div class="song-id">
+                <span class="num">1</span>
+                <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
+              </div>
+            </el-col>
+            <el-col :span="7" style="
+              display: flex;
+              justify-content: flex-start;
+            ">
+              <!-- 图片+歌曲名+歌手 -->
+              <div class="song-img">
+                <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
+              </div>
+              <div class="song-info">
+                <!-- name -->
+                <div class="song-name">
+                  <a>句号</a>
+                </div>
+                <!-- info -->
+                <div class="song-introduce">
+                  <span>歌曲 • 邓紫棋</span>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-album">
+                <span>句号</span>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-addtine">
+                <span>2023年10月2日</span>
+              </div>
+            </el-col>
+            <el-col :span="5" style="
+            justify-content: center;
+            ">
+              <div class="song-option">
+                <!-- 点赞歌曲 -->
+                <div class="song-like">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-heart" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-heart-fill" style="margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+                <!-- 歌曲时长 -->
+                <div class="song-time">
+                  <span>3:58</span>
+                </div>
+                <!-- 其他选项 -->
+                <div class="song-other">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="song">
+          <el-row>
+            <el-col :span="2" style="
+            justify-content: center;
+            ">
+              <!-- id -->
+              <div class="song-id">
+                <span class="num">1</span>
+                <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
+              </div>
+            </el-col>
+            <el-col :span="7" style="
+              display: flex;
+              justify-content: flex-start;
+            ">
+              <!-- 图片+歌曲名+歌手 -->
+              <div class="song-img">
+                <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
+              </div>
+              <div class="song-info">
+                <!-- name -->
+                <div class="song-name">
+                  <a>句号</a>
+                </div>
+                <!-- info -->
+                <div class="song-introduce">
+                  <span>歌曲 • 邓紫棋</span>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-album">
+                <span>句号</span>
+              </div>
+            </el-col>
+            <el-col :span="5">
+              <div class="song-addtine">
+                <span>2023年10月2日</span>
+              </div>
+            </el-col>
+            <el-col :span="5" style="
+            justify-content: center;
+            ">
+              <div class="song-option">
+                <!-- 点赞歌曲 -->
+                <div class="song-like">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-heart" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-heart-fill" style="margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+                <!-- 歌曲时长 -->
+                <div class="song-time">
+                  <span>3:58</span>
+                </div>
+                <!-- 其他选项 -->
+                <div class="song-other">
+                  <el-button circle dark style="
+                    --el-button-hover-text-color:none;
+                    --el-button-active-border-color:none;
+                    --el-button-active-bg-color:none;
+                    --el-button-hover-bg-color:none;
+                    --el-button-border-color:none;
+                    border-style: none;
+                  ">
+                    <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
+                    <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
+                  </el-button>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+
       </div>
     </div>
   </div>
-
 </template>
   
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, reactive } from 'vue';
 import ColorThief from 'colorthief';
 
 export default {
@@ -101,8 +1090,9 @@ export default {
       const containerWidth = container.offsetWidth;
       const textWidth = text.offsetWidth;
       console.log(containerWidth, textWidth);
-      // 计算缩放比例
-      const scale = containerWidth * 0.13;
+      // 计算缩放比例，设置最大文字大小为150px。
+      const scale = (containerWidth * 0.13) > 150 ? 150 : (containerWidth * 0.13);
+
 
       // 根据缩放比例来设置文字大小
       text.style.fontSize = `${scale}px`;
@@ -111,8 +1101,19 @@ export default {
 
   setup() {
 
-    const imageUrl = ref('https://i.scdn.co/image/ab67706c0000da84e4403704aa57a2e156a6d719'); // 图片URL
+    const imageUrl = ref(require('@/assets/love-songs.jpg')); // 图片URL
     const zcolor = ref('#121212'); // 默认颜色
+    const selectValue = ref('1');
+    const selectOptions = [
+      {
+        value: '1',
+        label: '最近添加',
+      },
+      {
+        value: '2',
+        label: '字母排序',
+      },
+    ];
 
     const gradientStyle = computed(() => {
       return {
@@ -139,7 +1140,7 @@ export default {
 
     function extractColors(domImg, colorthief) {
       zcolor.value = rgbaToHex(colorthief.getColor(domImg)); // 图片主色调
-      console.log('主色调', zcolor.value);
+      // console.log('主色调', zcolor.value);
     }
 
     function rgbaToHex(rgba) {
@@ -148,6 +1149,20 @@ export default {
         hex += i.toString(16).padStart(2, '0');
       }
       return hex;
+    }
+
+    // 判断颜色是否为深色
+    function isDarkColor(hexColor) {
+      let r = parseInt(hexColor.slice(1, 3), 16);
+      let g = parseInt(hexColor.slice(3, 5), 16);
+      let b = parseInt(hexColor.slice(5, 7), 16);
+      if (r + g + b >= 450) {
+        //浅色
+        return false;
+      } else {
+        //暗色
+        return true;
+      }
     }
 
     // 生成更暗的颜色
@@ -163,9 +1178,19 @@ export default {
       return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
     }
 
-    return { imageUrl, zcolor, imgColor, gradientStyle, darkGradientStyle };
+    return {
+      imageUrl,
+      zcolor,
+      imgColor,
+      gradientStyle,
+      darkGradientStyle,
+      selectValue,
+      selectOptions,
+
+    };
   }
 };
+
 </script>
   
 <style  lang="less">
@@ -191,20 +1216,19 @@ export default {
       display: flex;
       --left-sidebar-width: 390px;
       --panel-width: 0px;
-      min-width: clamp(128px, calc(128px + (100vw - var(--left-sidebar-width, 0px) - var(--panel-width, 0px) - 600px)/424*104), 232px);
+      min-width: clamp(118px, calc(128px + (100vw - var(--left-sidebar-width, 0px) - var(--panel-width, 0px) - 600px)/424*104), 232px);
       min-height: clamp(128px, calc(128px + (100vw - var(--left-sidebar-width, 0px) - var(--panel-width, 0px) - 600px)/424*104), 232px);
-      width: clamp(128px, calc(128px + (100vw - var(--left-sidebar-width, 0px) - var(--panel-width, 0px) - 600px)/424*104), 232px);
+      width: clamp(118px, calc(128px + (100vw - var(--left-sidebar-width, 0px) - var(--panel-width, 0px) - 600px)/424*104), 232px);
       height: clamp(128px, calc(128px + (100vw - var(--left-sidebar-width, 0px) - var(--panel-width, 0px) - 600px)/424*104), 232px);
-      margin-left: 10px;
+      margin-left: 20px;
       margin-right: 20px;
       margin-bottom: 20px;
 
       .el-image {
         display: flex;
         width: 100%;
-        box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.582);
-        border-radius: 10px;
-        border-radius: 10px;
+        box-shadow: 0px 0px 50px #505050;
+        border-radius: 5px;
       }
     }
 
@@ -217,8 +1241,10 @@ export default {
 
       .name {
 
-        // display: flex;
-
+        // min-width: 300px;
+        span {
+          text-shadow: 0px 0px 100px #505050;
+        }
       }
 
       .brief {
@@ -270,31 +1296,222 @@ export default {
           width: 56px;
           height: 56px;
           color: #A7A7A7;
+
           i {
             font-size: 32px;
           }
 
 
         }
-        .sheet-other-button:active  {
-            i {
-              color: #fff;
-            }
+
+        .sheet-other-button:active {
+          i {
+            color: #fff;
           }
+        }
       }
 
       .sheet-button-right {
         justify-content: flex-end;
 
         .sheet-sort-select {
-
+          margin-right: 20px;
           /* 左右居左 */
           width: 32px;
         }
       }
+    }
+  }
 
 
 
+  .sheet-table {
+    max-height: 218px;
+    min-height: 218px;
+    height: 218px;
+    margin-top: 10px;
+    border-radius: 10px;
+    .sheet-table-header{
+      margin-left: 10px;
+      margin-right: 10px;
+      width: calc(100% - 20px);
+      height: 30px;
+      font-size: 15px;
+      color: #a7a7a7;
+      border-bottom:1px solid rgba(255, 255, 255, 0.1);;
+      .el-row{
+        .el-col{
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+        }
+      }
+    }
+    .song {
+      margin-left: 10px;
+      margin-right: 10px;
+      width: calc(100% - 20px);
+      height: 54.4px;
+
+      .el-row {
+        width: 100%;
+        height: 100%;
+
+        .el-col {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+
+          .song-id {
+            display: flex;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .num {
+              color: #a7a7a7;
+              display: block;
+            }
+
+            .play {
+              color: #fff;
+              font-size: 20px;
+              display: none;
+            }
+          }
+
+          .song-img {
+            border-radius: 5px;
+            display: flex;
+            margin-left: 10px;
+            margin-right: 10px;
+            position: relative;
+
+            img {
+              height: 40px;
+              width: 40px;
+            }
+
+            .song-img-transparent {
+              position: absolute;
+              // top: 0.5px;
+              left: 0;
+              height: 40px;
+              width: 100%;
+              background-color: rgba(0, 0, 0, 0.4); // 半透明黑色背景
+              display: flex;
+              visibility: hidden;
+
+              .el-button {
+                margin-top: 3px;
+                margin-left: 3px;
+                font-size: 30px;
+                transition: 0s;
+              }
+
+
+            }
+          }
+
+          .song-info {
+            display: grid;
+            vertical-align: baseline;
+            font-size: 1rem;
+
+            .song-name {
+              color: #fff;
+            }
+
+            .song-name:hover {
+              text-decoration: underline;
+            }
+
+            .song-introduce {
+              color: #a7a7a7;
+            }
+          }
+
+          .song-album {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            color: #a7a7a7;
+          }
+
+          .song-addtine {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            color: #a7a7a7;
+          }
+
+          .song-option {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+
+            .song-like {
+              display: flex;
+              visibility: hidden;
+              .el-button {
+                display: flex;
+                margin-left: 0px;
+                margin-right: 20px;
+                transition: 0s;
+              }
+            }
+            .song-time {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              font-size: 14px;
+              color: #a7a7a7;
+            }
+
+            .song-other {
+              visibility: hidden;
+
+              .el-button {
+                margin-left: 5px;
+                margin-right: 15px;
+                transition: 0s;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .song:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+
+      .el-row .el-col {
+        .song-id {
+          .num {
+            display: none;
+          }
+
+          .play {
+            display: block;
+          }
+
+        }
+        .song-option {
+          .song-other {
+            visibility: visible;
+          }
+          .song-like {
+            visibility: visible;
+          }
+        }
+      }
     }
 
   }

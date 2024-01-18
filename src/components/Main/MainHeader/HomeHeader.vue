@@ -48,7 +48,15 @@ import { ref } from "vue";
 </script>
 
 <style  lang="less">
-
+.home-header {
+    border-bottom: 1px solid var(#121212);
+    background-image: radial-gradient(transparent 1px, #121212 1px);
+    background-size: 1px 1px;
+    backdrop-filter: saturate(50%) blur(3px);
+    
+    display: flex;
+    width: 100%;
+}
 
 .home-header .forward-back {
 

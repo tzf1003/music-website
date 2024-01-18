@@ -14,8 +14,10 @@
 ### 播放列表 🎶
 ![播放列表](./README_IMG/ListPage.png "播放列表") 
 
+### 歌单 📝
+![歌单](./README_IMG/SongSheetPage.png "歌单") 
 ## 待开发 (Todo list) 📋
-- 歌单 📝
+- ~~歌单 📝(已完成)~~
 - 艺人歌曲列表 🎤
 - 歌词 📖
 - 歌曲详情 🎧

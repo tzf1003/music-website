@@ -9,15 +9,13 @@
             </div>
         </div>
         <div class="search-input">
-            <el-input v-model="SearchInput"  size="large" placeholder="想听什么？" :prefix-icon="Search" 
-                style="
+            <el-input v-model="SearchInput" size="large" placeholder="想听什么？" :prefix-icon="Search" style="
                     height:48px;
                     --el-input-border-radius:500px;
                     --el-input-focus-border-color:#fff;
                     border-style: none;
                     /* --el-border-color:none; */
-                "
-            />
+                " />
         </div>
         <div class="explore-user">
             <div class="button explore">
@@ -50,9 +48,12 @@ import {
 </script>
 
 <style  lang="less">
-
-
 .search-header {
+    border-bottom: 1px solid var(#121212);
+    background-image: radial-gradient(transparent 1px, #121212 1px);
+    background-size: 1px 1px;
+    backdrop-filter: saturate(50%) blur(3px);
+
     display: flex;
     width: 100%;
 }
@@ -65,13 +66,14 @@ import {
 
 }
 
-.search-header .search-input{
-    
+.search-header .search-input {
+
     width: 35%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
 }
+
 .search-header .explore-user {
     width: 50%;
     display: flex;

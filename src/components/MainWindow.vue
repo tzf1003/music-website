@@ -42,6 +42,7 @@ const handleScroll = ({ scrollTop }) => {
 <style>
 
 .main-header {
+  
   width: 100%;
   z-index: 999;
   padding: 0;
@@ -50,13 +51,14 @@ const handleScroll = ({ scrollTop }) => {
   height: 64px;
   display: flex;
 
-  border-bottom: 1px solid var(#121212);
+  /* border-bottom: 1px solid var(#121212);
   background-image: radial-gradient(transparent 1px, #121212 1px);
   background-size: 1px 1px;
-  backdrop-filter: saturate(50%) blur(3px);
+  backdrop-filter: saturate(50%) blur(3px); */
 }
 
 .main-layout .el-main {
+  overflow: visible;
   padding: 0;
 }
 </style>

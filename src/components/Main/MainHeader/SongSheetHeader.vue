@@ -1,5 +1,5 @@
 <template>
-    <div class="songsheet-header">
+    <div class="songsheet-header" :style="headerTransparent">
         <!-- 前进后退按钮 -->
         <div class="forward-back">
             <div class="button back">
@@ -49,9 +49,10 @@
 </template>
 
 <script setup>
-import { watch, toRefs ,ref,defineProps } from "vue";
+import { watch, toRefs ,ref,defineProps,computed } from "vue";
 
 const isVisible = ref(false)
+const headerTransparent = ref("backdrop-filter: none;");
 
 const props = defineProps({
     scrollAmplitude: Number
@@ -60,8 +61,10 @@ const { scrollAmplitude } = toRefs(props);
 watch(() => props.scrollAmplitude, (newVal, oldVal) => {
     if(newVal > 300){
         isVisible.value = true;
+        headerTransparent.value="backdrop-filter: saturate(50%) blur(3px);"
     }else{
         isVisible.value = false;
+        headerTransparent.value="none"
     }
     
 })
@@ -72,6 +75,11 @@ watch(() => props.scrollAmplitude, (newVal, oldVal) => {
 <style  lang="less">
 
 .songsheet-header {
+    border-bottom: 1px solid var(#121212);
+    background-image: radial-gradient(transparent 1px, #121212 1px);
+    background-size: 1px 1px;
+    // backdrop-filter: saturate(50%) blur(3px);
+    
     display: flex;
     width: 100%;
 
