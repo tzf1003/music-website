@@ -14,7 +14,7 @@
         <!-- <HomePage/> -->
         <!-- <SearchPage/> -->
         <!-- <ListPage/> -->
-        <SongSheetPage />
+        <ArtistPage />
       </el-main>
     </el-container>
   </el-scrollbar>
@@ -29,6 +29,7 @@ import SearchHeader from "./Main/MainHeader/SearchHeader.vue"
 import ListPage from "./Main/ListPage.vue";
 import SongSheetHeader from "./Main/MainHeader/SongSheetHeader.vue";
 import SongSheetPage from "./Main/SongSheetPage.vue";
+import ArtistPage from "./Main/ArtistPage.vue";
 
 const scrollAmplitude = ref(0);
 
