@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { watch, toRefs ,ref,defineProps,computed } from "vue";
+import { watch, toRefs ,ref,computed } from "vue";
 
 const isVisible = ref(false)
 const headerTransparent = ref("backdrop-filter: none;");
