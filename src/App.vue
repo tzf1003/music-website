@@ -35,7 +35,7 @@
               padding: 0px;
               border-radius: 10px;
             ">
-            <MainWindow/>
+            <MainWindow :currentTime="currentTime"/>
           </el-main>
         </el-container>
       </el-container>
@@ -48,7 +48,7 @@
               border-radius: 10px;
               min-width:859px
             ">
-            <BottonBar></BottonBar>
+            <BottonBar :duration="duration" @progress-change="updateCurrentTime"/>
       </el-footer>
     </el-container>
 
@@ -58,11 +58,19 @@
 </template>
 
 <script setup>
+import { ref  } from 'vue';
 import NavbarTop from './components/NavbarTop.vue'
 import MusicKu from './components/MusicKu.vue';
 import MainWindow from './components/MainWindow.vue'
 import BottonBar from './components/BottonBar.vue'
 
+//处理歌曲时间
+const duration = ref(236); // 假设歌曲总时长为300秒
+const currentTime = ref(0);
+
+const updateCurrentTime = (newProgress) => {
+  currentTime.value = duration.value * newProgress / 100;
+};
 </script>
 
 <style>

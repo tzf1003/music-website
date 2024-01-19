@@ -67,7 +67,7 @@
             <div class="time progress">
               <p>0:00</p>
             </div>
-            <el-slider v-model="musicPercent"  :show-tooltip="false"/>
+            <el-slider v-model="localProgress" @change="onProgressChange" :show-tooltip="false"/>
             <!-- <el-progress :percentage="10" type="line" text-inside="" color="#fff" /> -->
             <div class="time final">
               <p>3:55</p>
@@ -108,10 +108,27 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import {ref,watch  } from "vue";
 import "bootstrap-icons/font/bootstrap-icons.css";
-const musicPercent = ref(0)
 const musicVolume = ref(0)
+
+const props = defineProps({
+  duration: Number
+});
+
+const emit = defineEmits(['progress-change']);
+
+const localProgress = ref(0);
+
+const onProgressChange = (newValue) => {
+  emit('progress-change', newValue);
+};
+
+// 如果需要根据外部currentTime更新进度条
+// watch(() => props.duration, (newDuration) => {
+  // ... 更新进度条逻辑 ...
+// });
+
 </script>
 
 <style>
