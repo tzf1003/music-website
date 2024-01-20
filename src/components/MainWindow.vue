@@ -4,7 +4,7 @@
     <el-container class="main-layout">
       <el-header class="main-header">
 
-        <!-- <SongSheetHeader :scroll-amplitude="scrollAmplitude"/> -->
+        <SongSheetHeader :scroll-amplitude="scrollAmplitude"/>
 
         <!-- <HomeHeader/> -->
         <!-- <SearchHeader/> -->
@@ -15,7 +15,8 @@
         <!-- <SearchPage/> -->
         <!-- <ListPage/> -->
         <!-- <ArtistPage /> -->
-        <LyricsPage :currentTime="currentTime" :lyrics="lyrics" @scroll-to="handleScrollTo" />
+        <!-- <LyricsPage :currentTime="currentTime" :lyrics="lyrics" @scroll-to="handleScrollTo" /> -->
+        <SongInfoPage />
       </el-main>
     </el-container>
   </el-scrollbar>
@@ -32,6 +33,8 @@ import SongSheetHeader from "./Main/MainHeader/SongSheetHeader.vue";
 import SongSheetPage from "./Main/SongSheetPage.vue";
 import ArtistPage from "./Main/ArtistPage.vue";
 import LyricsPage from "./Main/LyricsPage.vue";
+import SongInfoPage from "./Main/SongInfoPage.vue"
+
 //滚动幅度
 const scrollAmplitude = ref(0);
 const handleScroll = ({ scrollTop }) => {
@@ -159,7 +162,7 @@ const handleScrollTo = (offsetTop) => {
       const scrollPosition = offsetTop - containerHeight / 2;
       // 如果原焦点位置和当前位置在150以内，才滚动
       //使用原焦点位置来判断，因为还没有滚动到目的焦点位置。
-      console.log("焦点位置和当前位置", lyricsFocalPosition - scrollAmplitude.value);
+      // console.log("焦点位置和当前位置", lyricsFocalPosition - scrollAmplitude.value);
       if (lyricsFocalPosition - scrollAmplitude.value < 150 && lyricsFocalPosition - scrollAmplitude.value > -150) {
         scrollbar.scrollTo(0, scrollPosition);
       }

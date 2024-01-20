@@ -8,8 +8,8 @@
             ref="lyricLines"
         >
             {{ line.text }}
-        </div>
-    </div>
+      </div>
+  </div>
 </template>
   
 <script setup>
@@ -54,7 +54,7 @@ watch(() => props.currentTime, (newTime) => {
   for (let i = 0; i < parsedLyrics.value.length; i++) {
     if (parsedLyrics.value[i].time > newTime) {
       currentLine.value = i - 1;
-      console.log(currentLine.value);
+      // console.log(currentLine.value);
       break;
     }
   }
