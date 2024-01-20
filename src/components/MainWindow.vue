@@ -152,20 +152,22 @@ const lyrics = ref(`
 const lyricsContainer = ref(null);
 let lyricsFocalPosition = 0;
 const handleScrollTo = (offsetTop) => {
-  // 如果原焦点位置和当前位置在300以内，才滚动
-  if (lyricsFocalPosition - scrollAmplitude.value < 200 && lyricsFocalPosition - scrollAmplitude.value > -200) {
-    if (lyricsContainer.value) {
-      const scrollbar = lyricsContainer.value.$el.querySelector('.el-scrollbar__wrap'); // 假设这是内部的滚动容器
-      if (scrollbar) {
-        const containerHeight = scrollbar.clientHeight;
-        const scrollPosition = offsetTop - containerHeight / 2;
+  if (lyricsContainer.value) {
+    const scrollbar = lyricsContainer.value.$el.querySelector('.el-scrollbar__wrap'); // 假设这是内部的滚动容器
+    if (scrollbar) {
+      const containerHeight = scrollbar.clientHeight;
+      const scrollPosition = offsetTop - containerHeight / 2;
+      // 如果原焦点位置和当前位置在150以内，才滚动
+      //使用原焦点位置来判断，因为还没有滚动到目的焦点位置。
+      console.log("焦点位置和当前位置", lyricsFocalPosition - scrollAmplitude.value);
+      if (lyricsFocalPosition - scrollAmplitude.value < 150 && lyricsFocalPosition - scrollAmplitude.value > -150) {
         scrollbar.scrollTo(0, scrollPosition);
-        //记录新的焦点位置
-        lyricsFocalPosition = scrollPosition
-        console.log("焦点位置和当前位置", scrollPosition - scrollAmplitude.value);
       }
+      //记录新的焦点位置
+      lyricsFocalPosition = scrollPosition
     }
   }
+
 };
 </script>
 
