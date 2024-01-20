@@ -1,7 +1,7 @@
 <!-- 这里是主要窗口 -->
 <template>
   <el-scrollbar height="100%" @scroll="handleScroll" ref="lyricsContainer">
-    <el-container class="main-layout" >
+    <el-container class="main-layout">
       <el-header class="main-header">
 
         <!-- <SongSheetHeader :scroll-amplitude="scrollAmplitude"/> -->
@@ -15,7 +15,7 @@
         <!-- <SearchPage/> -->
         <!-- <ListPage/> -->
         <!-- <ArtistPage /> -->
-        <LyricsPage :currentTime="currentTime" :lyrics="lyrics"  @scroll-to="handleScrollTo"/>
+        <LyricsPage :currentTime="currentTime" :lyrics="lyrics" @scroll-to="handleScrollTo" />
       </el-main>
     </el-container>
   </el-scrollbar>
@@ -150,24 +150,28 @@ const lyrics = ref(`
 `); // Your lyrics here
 //监听滚动条消息
 const lyricsContainer = ref(null);
-
+let lyricsFocalPosition = 0;
 const handleScrollTo = (offsetTop) => {
-  if (lyricsContainer.value) {
-    const scrollbar = lyricsContainer.value.$el.querySelector('.el-scrollbar__wrap'); // 假设这是内部的滚动容器
-    if (scrollbar) {
-      const containerHeight = scrollbar.clientHeight;
-      const scrollPosition = offsetTop - containerHeight / 2;
-      scrollbar.scrollTo(0, scrollPosition);
-      console.log(scrollPosition);
+  // 如果原焦点位置和当前位置在300以内，才滚动
+  if (lyricsFocalPosition - scrollAmplitude.value < 200 && lyricsFocalPosition - scrollAmplitude.value > -200) {
+    if (lyricsContainer.value) {
+      const scrollbar = lyricsContainer.value.$el.querySelector('.el-scrollbar__wrap'); // 假设这是内部的滚动容器
+      if (scrollbar) {
+        const containerHeight = scrollbar.clientHeight;
+        const scrollPosition = offsetTop - containerHeight / 2;
+        scrollbar.scrollTo(0, scrollPosition);
+        //记录新的焦点位置
+        lyricsFocalPosition = scrollPosition
+        console.log("焦点位置和当前位置", scrollPosition - scrollAmplitude.value);
+      }
     }
   }
 };
 </script>
 
 <style>
-
 .main-header {
-  
+
   width: 100%;
   z-index: 999;
   padding: 0;
