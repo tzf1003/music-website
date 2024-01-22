@@ -6,7 +6,7 @@
 
         <!-- <SongSheetHeader :scroll-amplitude="scrollAmplitude"/> -->
 
-        <HomeHeader/>
+        <!-- <HomeHeader/> -->
         <!-- <SearchHeader/> -->
 
       </el-header>
@@ -17,7 +17,8 @@
         <!-- <ArtistPage /> -->
         <!-- <LyricsPage :currentTime="currentTime" :lyrics="lyrics" @scroll-to="handleScrollTo" /> -->
         <!-- <SongInfoPage /> -->
-        <SystemInfoVue/>
+        <!-- <SystemInfoVue/> -->
+        <UserRegist/>
       </el-main>
     </el-container>
   </el-scrollbar>
@@ -36,6 +37,7 @@ import ArtistPage from "./Main/ArtistPage.vue";
 import LyricsPage from "./Main/LyricsPage.vue";
 import SongInfoPage from "./Main/SongInfoPage.vue"
 import SystemInfoVue from "./Main/SystemInfo.vue";
+import UserRegist from "./Main/UserRegist.vue";
 
 //滚动幅度
 const scrollAmplitude = ref(0);
