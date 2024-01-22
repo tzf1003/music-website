@@ -4,9 +4,9 @@
     <el-container class="main-layout">
       <el-header class="main-header">
 
-        <SongSheetHeader :scroll-amplitude="scrollAmplitude"/>
+        <!-- <SongSheetHeader :scroll-amplitude="scrollAmplitude"/> -->
 
-        <!-- <HomeHeader/> -->
+        <HomeHeader/>
         <!-- <SearchHeader/> -->
 
       </el-header>
@@ -16,7 +16,8 @@
         <!-- <ListPage/> -->
         <!-- <ArtistPage /> -->
         <!-- <LyricsPage :currentTime="currentTime" :lyrics="lyrics" @scroll-to="handleScrollTo" /> -->
-        <SongInfoPage />
+        <!-- <SongInfoPage /> -->
+        <SystemInfoVue/>
       </el-main>
     </el-container>
   </el-scrollbar>
@@ -34,6 +35,7 @@ import SongSheetPage from "./Main/SongSheetPage.vue";
 import ArtistPage from "./Main/ArtistPage.vue";
 import LyricsPage from "./Main/LyricsPage.vue";
 import SongInfoPage from "./Main/SongInfoPage.vue"
+import SystemInfoVue from "./Main/SystemInfo.vue";
 
 //滚动幅度
 const scrollAmplitude = ref(0);
