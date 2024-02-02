@@ -5,3 +5,10 @@ html{
 .kuai{
     background-color: #121212;
 }
+/* 删掉router-link */
+.router-link-active {
+    text-decoration: none;
+}
+a{
+    text-decoration: none;
+}

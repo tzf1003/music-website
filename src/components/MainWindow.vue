@@ -3,7 +3,9 @@
   <el-scrollbar height="100%" @scroll="handleScroll" ref="lyricsContainer">
     <el-container class="main-layout">
       <el-header class="main-header">
-
+        <router-view v-slot="{ Component }" name="header">
+          <component :is="Component" :scroll-amplitude="scrollAmplitude" />
+        </router-view>
         <!-- <SongSheetHeader :scroll-amplitude="scrollAmplitude"/> -->
 
         <!-- <HomeHeader/> -->
@@ -11,6 +13,10 @@
 
       </el-header>
       <el-main style="color: aliceblue;font-size: 20px;">
+        <router-view v-slot="{ Component }" >
+          <component :is="Component"  @scroll-to="handleScrollTo"/>
+        </router-view>
+        <router-view></router-view> <!-- 渲染主内容组件 -->
         <!-- <HomePage/> -->
         <!-- <SearchPage/> -->
         <!-- <ListPage/> -->
@@ -18,7 +24,7 @@
         <!-- <LyricsPage :currentTime="currentTime" :lyrics="lyrics" @scroll-to="handleScrollTo" /> -->
         <!-- <SongInfoPage /> -->
         <!-- <SystemInfoVue/> -->
-        <UserRegist/>
+        <!-- <UserRegist/> -->
       </el-main>
     </el-container>
   </el-scrollbar>
@@ -176,6 +182,7 @@ const handleScrollTo = (offsetTop) => {
   }
 
 };
+
 </script>
 
 <style>
