@@ -1,22 +1,18 @@
 <!-- 这里是主要窗口 -->
 <template>
-  <el-scrollbar height="100%" @scroll="handleScroll" ref="lyricsContainer">
+  <el-scrollbar height="100%" @scroll="handleScroll" ref="scrollbarContainer">
     <el-container class="main-layout">
       <el-header class="main-header">
         <router-view v-slot="{ Component }" name="header">
           <component :is="Component" :scroll-amplitude="scrollAmplitude" />
         </router-view>
-        <!-- <SongSheetHeader :scroll-amplitude="scrollAmplitude"/> -->
 
-        <!-- <HomeHeader/> -->
-        <!-- <SearchHeader/> -->
 
       </el-header>
       <el-main style="color: aliceblue;font-size: 20px;">
-        <router-view v-slot="{ Component }" >
-          <component :is="Component"  @scroll-to="handleScrollTo"/>
+        <router-view v-slot="{ Component }">
+          <component :is="Component" :lyrics="lyrics" :currentTime="currentTime" @scroll-to="handleScrollTo" />
         </router-view>
-        <router-view></router-view> <!-- 渲染主内容组件 -->
         <!-- <HomePage/> -->
         <!-- <SearchPage/> -->
         <!-- <ListPage/> -->
@@ -31,7 +27,9 @@
 </template>
 
 <script  setup>
-import { ref } from "vue";
+import { ref, nextTick, onMounted } from "vue";
+import { useRouter,useRoute } from 'vue-router';
+// import router from '@/router/Index'
 import HomePage from "./Main/HomePage.vue";
 import SearchPage from "./Main/SearchPage.vue"
 import HomeHeader from "./Main/MainHeader/HomeHeader.vue"
@@ -162,11 +160,11 @@ const lyrics = ref(`
 
 `); // Your lyrics here
 //监听滚动条消息
-const lyricsContainer = ref(null);
+const scrollbarContainer = ref(null);
 let lyricsFocalPosition = 0;
 const handleScrollTo = (offsetTop) => {
-  if (lyricsContainer.value) {
-    const scrollbar = lyricsContainer.value.$el.querySelector('.el-scrollbar__wrap'); // 假设这是内部的滚动容器
+  if (scrollbarContainer.value) {
+    const scrollbar = scrollbarContainer.value.$el.querySelector('.el-scrollbar__wrap'); // 假设这是内部的滚动容器
     if (scrollbar) {
       const containerHeight = scrollbar.clientHeight;
       const scrollPosition = offsetTop - containerHeight / 2;
@@ -175,13 +173,46 @@ const handleScrollTo = (offsetTop) => {
       // console.log("焦点位置和当前位置", lyricsFocalPosition - scrollAmplitude.value);
       if (lyricsFocalPosition - scrollAmplitude.value < 150 && lyricsFocalPosition - scrollAmplitude.value > -150) {
         scrollbar.scrollTo(0, scrollPosition);
+      }else{
+        //这里判断是不是第一次加载组件。
+        if(firstLoad == true){
+          scrollbar.scrollTo(0, scrollPosition);
+          firstLoad =false
+        }
       }
       //记录新的焦点位置
       lyricsFocalPosition = scrollPosition
     }
   }
-
 };
+let firstLoad = false;
+onMounted(() => {
+  //获得实例
+  const router = useRouter();
+  //获得信息
+  const route = useRoute()
+  //切换组件默认滚动到顶部
+  router.afterEach(() => {
+    nextTick(() => {
+      if (scrollbarContainer.value) {
+        //如果是歌词则跳转到焦点位置
+        if(route.name == 'Lyrics'){
+          //设置为第一次加载歌词组件
+          firstLoad = true
+          //增加获取当前位置
+          lyricsFocalPosition=0;
+          scrollbarContainer.value.setScrollTop(lyricsFocalPosition);
+          handleScrollTo();
+        }else{
+          //不是则跳转到顶部
+          scrollbarContainer.value.setScrollTop(0);
+        }
+        
+      }
+    });
+  });
+});
+
 
 </script>
 

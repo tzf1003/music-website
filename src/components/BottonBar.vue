@@ -7,7 +7,7 @@
         <div class="grid-content song-info">
           <!-- 图片 -->
           <div class="image" style="display: flex;float: left;">
-            <el-avatar shape="square" :size="56" :fit="cover"
+            <el-avatar shape="square" :size="56"
               src="http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130" />
           </div>
           <!-- 内容 -->
@@ -79,16 +79,22 @@
       <!-- 右边工具区 -->
       <el-col :span="7">
         <div class="grid-content tools">
-          <el-button color="#000" circle dark>
-            <i class="bi bi-file-play" style="font-size: 17px;"></i>
-          </el-button>
-          <el-button color="#000" circle dark>
-            <!-- <i class="bi bi-card-text" style="font-size: 17px;"></i> -->
-            <i style="font-size: 17px; font-style:normal;font-family: 'AlibabaPuHuiTi-Bold';">词</i>
-          </el-button>
-          <el-button color="#000" circle dark>
-            <i class="bi bi-ui-radios" style="font-size: 17px;"></i>
-          </el-button>
+          <router-link class="router-link" to="/song/123">
+            <el-button color="#000" circle dark>
+              <i class="bi bi-file-play" style="font-size: 17px;"></i>
+            </el-button>
+          </router-link>
+          <router-link class="router-link" to="/lyrics">
+            <el-button color="#000" circle dark>
+              <i style="font-size: 17px; font-style:normal;font-family: 'AlibabaPuHuiTi-Bold';">词</i>
+            </el-button>
+          </router-link>
+          <router-link class="router-link" to="/list">
+            <el-button color="#000" circle dark>
+              <i class="bi bi-ui-radios" style="font-size: 17px;"></i>
+            </el-button>
+          </router-link>
+
           <el-button color="#000" circle dark>
             <i class="bi bi-speaker" style="font-size: 17px;"></i>
           </el-button>
@@ -267,5 +273,9 @@ const onProgressChange = (newValue) => {
 }
 .playBar .tools .el-slider:hover .el-slider__bar{
   background-color: #1ed760;
+}
+
+.playBar .grid-content .router-link-active span{
+  color: #1ed760;
 }
 </style>

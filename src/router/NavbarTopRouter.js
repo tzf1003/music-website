@@ -20,6 +20,14 @@ export default [
       default: SearchPage,
       header: SearchHeader
     }
+  },
+  {
+    path: '/search?s=:str',
+    name: 'ToSearch',
+    components: {
+      default: SearchPage,
+      header: SearchHeader
+    }
   }
 ];
 

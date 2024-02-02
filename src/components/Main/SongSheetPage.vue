@@ -4,7 +4,7 @@
     <div class="top-background" ref="container" :style="gradientStyle">
       <!-- 图片 -->
       <div class="sheet-img">
-        <el-image id="background" :fit="cover" :src="imageUrl" @load="imgColor" ref="imageElement" />
+        <el-image id="background"  :src="imageUrl" @load="imgColor" ref="imageElement" />
       </div>
       <div class="sheet-info">
 
@@ -1089,7 +1089,6 @@ export default {
 
       const containerWidth = container.offsetWidth;
       const textWidth = text.offsetWidth;
-      console.log(containerWidth, textWidth);
       // 计算缩放比例，设置最大文字大小为150px。
       const scale = (containerWidth * 0.13) > 150 ? 150 : (containerWidth * 0.13);
 

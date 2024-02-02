@@ -92,10 +92,12 @@
   </el-row>
   <!-- 具体的库信息 -->
   <el-row class="library">
-    
-    <el-col :span="24">
-      <div class="grid-content">
-        <el-button text color="#232323" style="
+
+
+    <router-link class="router-link" to="/sheet/123">
+      <el-col :span="24">
+        <div class="grid-content">
+          <el-button text color="#232323" style="
           width: 100%;
           height: 64px; 
           text-align:left; 
@@ -105,30 +107,33 @@
           --el-button-hover-bg-color: #393939;
           --el-button-active-bg-color: #232323;
         ">
-          <!-- 图片 -->
-          <el-avatar style="width: 48px; height: 48px;" shape="square" :size="48" :fit="cover" :src="require('@/assets/love-songs.jpg')" />
-          <!-- 内容 -->
-          <span style="padding-left: 10px;">
-            <span style="
+            <!-- 图片 -->
+            <el-avatar style="width: 48px; height: 48px;" shape="square" :size="48"
+              :src="require('@/assets/love-songs.jpg')" />
+            <!-- 内容 -->
+            <span style="padding-left: 10px;">
+              <span style="
               display: block;
               margin-bottom: 8px;
               color: #fff;
               font-size: 18px;
             ">已点赞歌曲</span>
-            <span style="
+              <span style="
               display: block;
               color: #a7a7a7;
               font-size: 14px;
               
             ">歌单 • 8首歌曲</span>
-          </span>
-        </el-button>
-      </div>
-    </el-col>
+            </span>
+          </el-button>
+        </div>
+      </el-col>
+    </router-link>
     <!-- 库2 -->
-    <el-col :span="24">
-      <div class="grid-content">
-        <el-button text color="#232323" style="
+    <router-link class="router-link" to="/artist/123">
+      <el-col :span="24">
+        <div class="grid-content">
+          <el-button text color="#232323" style="
           width: 100%;
           height: 64px; 
           text-align:left; 
@@ -138,59 +143,27 @@
           --el-button-hover-bg-color: #393939;
           --el-button-active-bg-color: #232323;
         ">
-        <!-- 图片 -->
-          <el-avatar style="width: 48px; height: 48px;" shape="square" :size="48" :fit="cover" :src="libraryUrl[0]" />
-          <!-- 内容 -->
-          <span style="padding-left: 10px;">
-            <span style="
-              display: block;
-              margin-bottom: 8px;
-              color: #fff;
-              font-size: 18px;
-            ">华语民谣</span>
-            <span style="
-              display: block;
-              color: #a7a7a7;
-              font-size: 14px;
-              
-            ">歌单 • 小松创建</span>
-          </span>
-        </el-button>
-      </div>
-    </el-col>
-    <!-- 库3 -->
-    <el-col :span="24">
-      <div class="grid-content">
-        <el-button text color="#232323" style="
-          width: 100%;
-          height: 64px; 
-          text-align:left; 
-          display: flex;
-          justify-content: flex-start;
-          --el-button-bg-color:#121212;
-          --el-button-hover-bg-color: #393939;
-          --el-button-active-bg-color: #232323;
-        ">
-        <!-- 图片 -->
-          <el-avatar style="width: 48px; height: 48px;" shape="square" :size="48" :fit="cover" :src="libraryUrl[1]" />
-          <!-- 内容 -->
-          <span style="padding-left: 10px;">
-            <span style="
+            <!-- 图片 -->
+            <el-avatar style="width: 48px; height: 48px;" shape="square" :size="48" :src="libraryUrl[1]" />
+            <!-- 内容 -->
+            <span style="padding-left: 10px;">
+              <span style="
               display: block;
               margin-bottom: 8px;
               color: #fff;
               font-size: 18px;
             ">邓紫棋</span>
-            <span style="
+              <span style="
               display: block;
               color: #a7a7a7;
               font-size: 14px;
               
             ">艺人</span>
-          </span>
-        </el-button>
-      </div>
-    </el-col>
+            </span>
+          </el-button>
+        </div>
+      </el-col>
+    </router-link>
   </el-row>
 </template>
 
@@ -214,8 +187,6 @@ const libraryUrl = ref([
 </script>
 
 <style>
-
-
 .el-row.head .grid-content {
   min-height: 40px;
 }
@@ -229,9 +200,12 @@ const libraryUrl = ref([
 }
 
 .el-row.library .grid-content {
+  width: 100%;
   min-height: 64px;
 }
-
+.el-row.library{
+  width: 100%;
+}
 .el-row.head {
   margin-top: 8px;
   margin-bottom: 8px;
@@ -261,6 +235,7 @@ const libraryUrl = ref([
   margin-top: 10px;
   height: 64px;
   padding-left: 10px;
+
 }
 
 
@@ -271,11 +246,17 @@ const libraryUrl = ref([
   font-weight: bold;
 }
 
+
+.library .router-link{
+  width: 100%;
+}
+
+.library a.router-link-active .el-button{
+  width: 100%;
+}
 /* .tag .el-button {
   --el-button-hover-bg-color: #2a2a2a;
   --el-button-active-bg-color: #000;
 } */
-
-
 </style>
 

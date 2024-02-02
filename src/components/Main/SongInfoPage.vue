@@ -4,7 +4,7 @@
         <div class="top-background" ref="container" :style="gradientStyle">
             <!-- 图片 -->
             <div class="song-info-img">
-                <el-image id="background" :fit="cover" :src="imageUrl" @load="imgColor" ref="imageElement" />
+                <el-image id="background" :src="imageUrl" @load="imgColor" ref="imageElement" />
             </div>
             <div class="song-info-info">
                 <!-- 歌单名 -->
@@ -614,7 +614,7 @@ const resizeText = () => {
 
     const containerWidth = container.value.offsetWidth;
     const textWidth = textSpan.value.offsetWidth;
-    console.log(containerWidth, textWidth);
+    // console.log(containerWidth, textWidth);
 
     const scale = (containerWidth * 0.13) > 150 ? 150 : (containerWidth * 0.13);
     textSpan.value.style.fontSize = `${scale}px`;

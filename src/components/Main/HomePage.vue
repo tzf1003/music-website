@@ -9,14 +9,14 @@
         <el-row :gutter="10">
           <el-col :span="6" class="histerys-content">
             <div class="histery">
-              <el-avatar class="histery-img" style="min-width: 48px; height: 48px;" shape="square" :size="48" :fit="cover"
+              <el-avatar class="histery-img" style="min-width: 48px; height: 48px;" shape="square" :size="48" 
                 :src="require('@/assets/love-songs.jpg')" />
               <span class="histery-title">已点赞的歌曲</span>
             </div>
           </el-col>
           <el-col :span="6" class="histerys-content">
             <div class="histery">
-              <el-avatar class="histery-img" style="min-width: 48px; height: 48px;" shape="square" :size="48" :fit="cover"
+              <el-avatar class="histery-img" style="min-width: 48px; height: 48px;" shape="square" :size="48" 
                 :src="require('@/assets/love-songs.jpg')" />
               <span class="histery-title">已点赞的歌曲</span>
             </div>
@@ -24,13 +24,13 @@
           <el-col :span="6" class="histerys-content">
             <div class="histery">
               <el-avatar class="histery-img" style="min-width: 48px;width: 48px; height: 48px;" shape="square" :size="48"
-                :fit="cover" :src="require('@/assets/love-songs.jpg')" />
+                :src="require('@/assets/love-songs.jpg')" />
               <span class="histery-title">已点赞的歌曲</span>
             </div>
           </el-col>
           <el-col :span="6" class="histerys-content">
             <div class="histery">
-              <el-avatar class="histery-img" style="min-width: 48px; height: 48px;" shape="square" :size="48" :fit="cover"
+              <el-avatar class="histery-img" style="min-width: 48px; height: 48px;" shape="square" :size="48" 
                 :src="require('@/assets/love-songs.jpg')" />
               <span class="histery-title">已点赞的歌曲</span>
             </div>
