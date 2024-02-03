@@ -69,15 +69,17 @@ watch(() => props.lyrics, (newLyrics) => {
 // 该函数通过遍历解析后的歌词数组(parsedLyrics)，根据当前时间(newTime)来更新当前行的索引(currentLine)
 // 当遍历到的歌词时间戳大于当前时间时，设置当前行为该歌词行的前一行，然后终止循环
 const updateCurrentLine = (newTime) => {
+  let found = false; // 添加一个标志位，用于标记是否找到了合适的行
   for (let i = 0; i < parsedLyrics.value.length; i++) {
-    // 检查当前遍历到的歌词时间是否大于给定的新时间
     if (parsedLyrics.value[i].time > newTime) {
-      // 更新当前行的值为当前歌词行
-      currentLine.value = i;
-      // 可以在这里添加日志打印当前行，以便调试
-      // console.log(currentLine.value);
-      break; // 找到符合条件的行后终止循环
+      currentLine.value = i - 1;
+      found = true; // 找到合适的行，更新标志位
+      break;
     }
+  }
+  // 循环结束后，如果没有找到合适的行（即newTime大于数组中最后一个元素的时间），则将currentLine更新为数组的最后一行
+  if (!found) {
+    currentLine.value = parsedLyrics.value.length - 1;
   }
 };
 
@@ -97,6 +99,10 @@ const scrollToCurrentLine = () => {
 
 //监听Time改变
 watch(() => props.currentTime, (newTime) => {
+  //规范化数据类型，防止意料之外的问题。
+  if(!newTime){
+    newTime=0;
+  }
   updateCurrentLine(newTime);
 });
 
