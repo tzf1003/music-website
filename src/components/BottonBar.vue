@@ -8,7 +8,7 @@
           <!-- 图片 -->
           <div class="image" style="display: flex;float: left;">
             <el-avatar shape="square" :size="56"
-              src="http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130" />
+              :src="currentMusic.image" />
           </div>
           <!-- 内容 -->
           <div style="
@@ -20,20 +20,19 @@
               color: #fff;
               font-size: 14px;
     
-            ">句号</span>
+            ">{{currentMusic.title}}</span>
               <span style="
               display: flex;
               color: #a7a7a7;
               font-size: 13px;
-              
-            ">邓紫棋</span>
+            ">{{currentMusic.artist}}</span>
             </span>
           </div>
           <!-- 我的喜欢 -->
           <div class="love" style="margin-left: 10px;">
             <el-button color="#000" circle dark>
-              <!-- <i class="bi bi-heart"></i> -->
-              <i class="bi bi-heart-fill" style="color: #1ed760;"></i>
+              <i v-if="currentMusic.islike" class="bi bi-heart-fill" style="color: #1ed760;"></i>
+              <i v-else class="bi bi-heart"></i>
             </el-button>
           </div>
         </div>
@@ -41,20 +40,24 @@
       <!-- 中间播放器 -->
       <el-col :span="10">
         <div class="grid-content player">
+          <!-- 播放器 -->
+          <audio ref="audioPlayer" :src="currentMusic.url" @loadedmetadata="updateDuration" @timeupdate="updateCurrentTime" @play="onPlay" @pause="onPause" ></audio>
           <!-- 播放条上层=按钮 -->
           <div class="top">
             <el-button color="#000" circle dark>
               <i class="bi bi-shuffle" style="font-size: 17px;"></i>
             </el-button>
-            <el-button color="#000" circle dark>
+            <!-- 上一首 -->
+            <el-button @click="playPrev" color="#000" circle dark>
               <i class="bi bi-skip-start-fill" style="font-size: 21px;"></i>
             </el-button>
+            <!-- 播放 -->
             <el-button color="#fff" circle dark style="color:#000">
-              <!-- <i class="bi bi-pause-fill" style="font-size: 22px;"></i> -->
-              <i class="bi bi-play-fill" style="margin-left: 3px;font-size: 24px;"></i>
+              <i v-if="isPlaying" @click="togglePlay" class="bi bi-pause-fill" style="font-size: 22px;"></i>
+              <i v-else @click="togglePlay" class="bi bi-play-fill" style="margin-left: 3px;font-size: 24px;"></i>
             </el-button>
-
-            <el-button color="#000" circle dark>
+            <!-- 下一首 -->
+            <el-button @click="playNext" color="#000" circle dark>
               <i class="bi bi-skip-end-fill" style="font-size: 21px;"></i>
             </el-button>
             <el-button color="#000" circle dark>
@@ -65,12 +68,17 @@
           <!-- 进度条 -->
           <div class="bottom">
             <div class="time progress">
-              <p>0:00</p>
+              <p>{{ currentTime==0 ? '0:00':currentTime }}</p>
             </div>
-            <el-slider v-model="localProgress" @change="onProgressChange" :show-tooltip="false"/>
+            <el-slider 
+            v-model="localProgress" 
+            @change="onProgressChange" 
+            @input="onSliderInput"
+            :show-tooltip="false"
+            />
             <!-- <el-progress :percentage="10" type="line" text-inside="" color="#fff" /> -->
             <div class="time final">
-              <p>3:55</p>
+              <p>{{ duration==0 ? '0:00':duration }}</p>
             </div>
           </div>
 
@@ -114,27 +122,128 @@
 </template>
 
 <script setup>
-import {ref,watch  } from "vue";
+import {ref,watch} from "vue";
 import "bootstrap-icons/font/bootstrap-icons.css";
-const musicVolume = ref(0)
+import {musicQueue} from "@/tools/music"
 
-const props = defineProps({
-  duration: Number
-});
+const musicVolume = ref(70)
 
-const emit = defineEmits(['progress-change']);
+
+const emit = defineEmits([
+  'progress-change',
+  'song-change'
+]);
 
 const localProgress = ref(0);
 
-const onProgressChange = (newValue) => {
-  emit('progress-change', newValue);
+// const onProgressChange = (newValue) => {
+//   emit('progress-change', newValue);
+// };
+
+//歌曲操作
+//播放器实例
+const audioPlayer = ref(null);
+//当前音乐实例
+const currentMusic = ref('');
+//音乐的总时长
+const duration = ref(0);
+const currentTime = ref(0);
+currentMusic.value = musicQueue.getCurrentMusic();
+//音频是否播放
+const isPlaying = ref(false);
+//是否手动拖动进度条
+const isDragging = ref(false); 
+const onPlay = () => {
+  isPlaying.value = true;
 };
 
-// 如果需要根据外部currentTime更新进度条
-// watch(() => props.duration, (newDuration) => {
-  // ... 更新进度条逻辑 ...
-// });
+const onPause = () => {
+  isPlaying.value = false;
+};
+const togglePlay = () => {
+  if (audioPlayer.value) {
+    if (audioPlayer.value.paused) {
+      audioPlayer.value.play();
+    } else {
+      audioPlayer.value.pause();
+    }
+  }
+};
+const updateDuration = () => {
+  duration.value = formatTime(audioPlayer.value.duration);
+};
 
+const updateCurrentTime = () => {
+  currentTime.value = formatTime(audioPlayer.value.currentTime);
+    // 处理进度条
+    if (!isDragging.value && audioPlayer.value) { // 仅当用户未拖动滑块时更新
+    const progress = (audioPlayer.value.currentTime / audioPlayer.value.duration) * 100;
+    localProgress.value = progress || 0;
+    emit('progress-change', audioPlayer.value.duration * localProgress.value / 100);//进度传递出去，让歌词知道
+  }
+};
+
+//计算时间。
+const formatTime = (time) => {
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60);
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+};
+
+//滑块处理
+// 用户停止拖动滑块并释放，选择新的进度
+const onProgressChange = (newValue) => {
+  if (audioPlayer.value && audioPlayer.value.duration) {
+    const newTime = (newValue / 100) * audioPlayer.value.duration;
+    audioPlayer.value.currentTime = newTime;
+  }
+  isDragging.value = false; // 用户停止拖动，更新标志
+
+};
+// 用户拖动滑块时的处理函数
+const onSliderInput = () => {
+  isDragging.value = true;
+};
+
+//下一首
+const playNext = () => {
+  //判断索引是否大于等于长度
+  console.log("索引：",musicQueue.getCurrentMusicIndex(),"总元素数：",musicQueue.getQueueLength());
+  if(musicQueue.getCurrentMusicIndex()+1>=musicQueue.getQueueLength()){
+    //已经是最后一首了
+    console.log("已经是列表最后一首了");
+  }else{
+    musicQueue.nextMusic();
+    currentMusic.value = musicQueue.getCurrentMusic();
+    audioPlayer.value.load(); // 重新加载音频元素以应用新的源
+    // 监听资源加载足够的事件，然后播放
+    audioPlayer.value.onloadeddata = () => {
+      audioPlayer.value.play().catch(e => console.error(e));
+    };
+    //传递歌曲改变信息
+    emit('music-change',true);
+  }
+};
+
+//上一首
+const playPrev = () => {
+  console.log("索引：",musicQueue.getCurrentMusicIndex(),"总元素数：",musicQueue.getQueueLength());
+  //判断索引是否小于等于0
+  if(musicQueue.getCurrentMusicIndex()<=0){
+    //已经是第一首了
+    console.log("已经是列表第一首了");
+  }else{
+    musicQueue.prevMusic();
+    currentMusic.value = musicQueue.getCurrentMusic();
+    audioPlayer.value.load(); // 重新加载音频元素以应用新的源
+    // 监听资源加载足够的事件，然后播放
+    audioPlayer.value.onloadeddata = () => {
+      audioPlayer.value.play().catch(e => console.error(e));
+    };
+    //传递歌曲改变信息
+    emit('music-change',true);
+  }
+};
 </script>
 
 <style>

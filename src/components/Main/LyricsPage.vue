@@ -29,15 +29,17 @@ const lyricLines = ref([]);
 //解析歌词的操作
 const parseLyrics = (lyrics) => {
   return lyrics.split("\n").map((line) => {
-    const parts = line.match(/\[(\d{2}):(\d{2})\.(\d{2})\](.*)/);
+    const parts = line.match(/\[(\d{2}):(\d{2})\.(\d{2,3})\](.*)/);
     if (parts && parts[4].trim() !== '') {
+      // 转换时间为秒，注意毫秒部分需要根据长度动态计算除数
+      const time = parseInt(parts[1]) * 60 + parseInt(parts[2]) + parseInt(parts[3]) / (parts[3].length === 3 ? 1000 : 100);
       return {
-        time: parseInt(parts[1]) * 60 + parseInt(parts[2]) + parseInt(parts[3]) / 100,
+        time: time,
         text: parts[4].trim()
       };
     }
-    return { time: 0, text: '' };
-  }).filter(line => line.text !== ''); // 过滤掉空行
+    return null; // 返回 null 对于不匹配的行
+  }).filter(line => line !== null && line.text !== ''); // 过滤掉空行和未匹配行
 };
 
 
@@ -46,6 +48,7 @@ const parseLyrics = (lyrics) => {
 onMounted(() => {
   // 初始化时解析歌词
   parsedLyrics.value = parseLyrics(props.lyrics);
+  console.log(props.lyrics);
   //等待渲染完成
   nextTick().then(() => {
     //更新行位置
@@ -58,6 +61,7 @@ onMounted(() => {
 //监听歌词内容。
 watch(() => props.lyrics, (newLyrics) => {
   parsedLyrics.value = parseLyrics(newLyrics);
+
 });
 
 
@@ -86,6 +90,7 @@ const scrollToCurrentLine = () => {
     // console.log("进入scrollToCurrentLine");
     const lineElement = lyricLines.value[currentLine.value]; // 获取当前行的元素
     // console.log(lineElement.offsetTop); // 打印当前行元素的offsetTop值，以便调试
+    
     emit('scroll-to', lineElement.offsetTop); // 发出'scroll-to'事件，传递当前行元素的offsetTop值
   }
 };
