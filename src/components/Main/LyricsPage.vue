@@ -72,8 +72,8 @@ const updateCurrentLine = (newTime) => {
   for (let i = 0; i < parsedLyrics.value.length; i++) {
     // 检查当前遍历到的歌词时间是否大于给定的新时间
     if (parsedLyrics.value[i].time > newTime) {
-      // 更新当前行的值为当前歌词行的前一行
-      currentLine.value = i - 1;
+      // 更新当前行的值为当前歌词行
+      currentLine.value = i;
       // 可以在这里添加日志打印当前行，以便调试
       // console.log(currentLine.value);
       break; // 找到符合条件的行后终止循环
@@ -115,6 +115,7 @@ watch(() => currentLine.value, () => {
 <style scoped>
 .lyrics-container {
   padding-top: 25%;
+  padding-bottom: 25%;
   background-color: #51833D;
   display: flex;
   flex-direction: column;
@@ -123,6 +124,7 @@ watch(() => currentLine.value, () => {
   /* Adjust based on your design */
   overflow: hidden;
   font-size: 1.2em;
+  
 }
 
 .lyric-line {
