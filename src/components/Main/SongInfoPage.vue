@@ -648,7 +648,7 @@ const darkGradientStyle = computed(() => {
 function imgColor() {
     const domImg = document.querySelector('#background');
     const colorthief = new ColorThief();
-
+    domImg.crossOrigin = ''
     if (domImg.complete) {
         extractColors(domImg, colorthief);
     } else {

@@ -975,7 +975,7 @@ export default {
         function imgColor() {
             const domImg = document.querySelector('#background');
             const colorthief = new ColorThief();
-
+            domImg.crossOrigin = ''
             if (domImg.complete) {
                 // 如果图片已经加载完成
                 extractColors(domImg, colorthief);
