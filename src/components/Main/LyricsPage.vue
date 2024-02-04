@@ -48,7 +48,6 @@ const parseLyrics = (lyrics) => {
 onMounted(() => {
   // 初始化时解析歌词
   parsedLyrics.value = parseLyrics(props.lyrics);
-  console.log(props.lyrics);
   //等待渲染完成
   nextTick().then(() => {
     //更新行位置

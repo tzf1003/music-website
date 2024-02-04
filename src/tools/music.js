@@ -1,5 +1,66 @@
 export const musicQueue = {
+  isRandomMode: false,
   // 写入音乐队列到LocalStorage
+  // 设置随机播放模式
+  setRandomMode(isRandom) {
+    // 切换之前先存储当前音乐
+    const beforeSwitchingMusic = this.getCurrentMusic();
+    this.isRandomMode = isRandom;
+    if (isRandom) {
+      // 切换到随机模式，生成随机队列
+      this.generateRandomQueue();
+      // 设置当前播放的歌曲索引为0，因为它现在是随机列表中的第一首
+      this.setCurrentMusicIndex(0);
+    } else {
+      // 切换回正向播放模式
+      // const currentMusic = this.getCurrentMusic(); // 获取当前播放的歌曲
+      const originalQueue =JSON.parse(localStorage.getItem('musicPlaylist')) ; // 获取原始队列
+      console.log(originalQueue);
+      if (beforeSwitchingMusic) {
+        // 找到当前歌曲在原始队列中的索引
+        const currentMusicIndex = originalQueue.findIndex(music => music.id === beforeSwitchingMusic.id);
+        console.log("当前歌曲在原始队列中的索引:", currentMusicIndex);
+        if (currentMusicIndex !== -1) {
+          // 更新当前音乐的索引为原始队列中的位置
+          this.setCurrentMusicIndex(currentMusicIndex);
+        }
+      }
+      // 注意：不需要清除随机队列，因为可能会再次切换到随机模式
+    }
+  },
+  // 生成随机播放列表
+  generateRandomQueue() {
+    const currentQueue = this.getQueue();
+    const currentMusicIndex = this.getCurrentMusicIndex();
+    let randomQueue = [];
+
+    if (currentMusicIndex !== null && currentQueue.length > 0) {
+      // 将当前播放的歌曲设置为随机列表的第一个
+      randomQueue.push(currentQueue[currentMusicIndex]);
+
+      // 获取除当前播放歌曲外的其他歌曲
+      let otherSongs = [...currentQueue.slice(0, currentMusicIndex), ...currentQueue.slice(currentMusicIndex + 1)];
+
+      // 随机排序剩余歌曲
+      otherSongs = otherSongs.sort(() => Math.random() - 0.5);
+
+      // 合并当前播放的歌曲和随机排序的其他歌曲
+      randomQueue = randomQueue.concat(otherSongs);
+    }
+
+    // 将随机列表保存到LocalStorage
+    localStorage.setItem('randomMusicPlaylist', JSON.stringify(randomQueue));
+  },
+  // 从LocalStorage获取随机音乐队列
+  getRandomQueue() {
+    const queue = localStorage.getItem('randomMusicPlaylist');
+    return queue ? JSON.parse(queue) : [];
+  },
+  // 获取当前播放列表，根据播放模式决定是随机列表还是正向列表
+  getCurrentQueue() {
+    return this.isRandomMode ? this.getRandomQueue() : this.getQueue();
+  },
+
   setQueue(queue) {
     if (!Array.isArray(queue)) {
       console.error('音乐队列必须是一个数组');
@@ -20,12 +81,18 @@ export const musicQueue = {
     const queue = this.getQueue();
     queue.push(music);
     this.setQueue(queue);
+    if (this.isRandomMode) {
+      this.generateRandomQueue(); // 在随机模式下重新生成随机队列
+    }
   },
 
   // 清空音乐队列
   clearQueue() {
     localStorage.removeItem('musicPlaylist');
     localStorage.removeItem('currentMusicIndex');
+    if (this.isRandomMode) {
+      localStorage.removeItem('randomMusicPlaylist'); // 清除随机队列
+    }
   },
 
   // 设置当前正在播放的歌曲索引
@@ -42,16 +109,13 @@ export const musicQueue = {
   // 获取当前正在播放的歌曲
   getCurrentMusic() {
     const index = this.getCurrentMusicIndex();
-    if (index !== null) {
-      const queue = this.getQueue();
-      return queue[index] || null;
-    }
-    return null;
+    const queue = this.getCurrentQueue(); // 使用当前播放模式对应的队列
+    return index !== null ? queue[index] || null : null;
   },
 
-  // 设置下一首歌曲为当前播放
+  // 重写nextMusic和prevMusic方法以适应随机模式
   nextMusic() {
-    const queue = this.getQueue();
+    let queue = this.getCurrentQueue();
     let index = this.getCurrentMusicIndex();
     if (index !== null && index + 1 < queue.length) {
       this.setCurrentMusicIndex(index + 1);
@@ -62,7 +126,7 @@ export const musicQueue = {
 
   // 设置上一首歌曲为当前播放
   prevMusic() {
-    const queue = this.getQueue();
+    let queue = this.getCurrentQueue();
     let index = this.getCurrentMusicIndex();
     if (index > 0) {
       this.setCurrentMusicIndex(index - 1);
@@ -73,10 +137,15 @@ export const musicQueue = {
 
   // 直接播放指定索引的歌曲
   playMusicAtIndex(index) {
+    if (this.isRandomMode) {
+      // 随机模式下，可能需要特别处理，因为索引可能对应于随机队列
+      console.error('随机模式下不支持按索引播放');
+      return;
+    }
     const queue = this.getQueue();
     if (index >= 0 && index < queue.length) {
       this.setCurrentMusicIndex(index); // 更新当前播放歌曲的索引
-      // 这里可以加入实际播放音乐的逻辑，比如调用音乐播放器的API
+      // 在这里添加播放逻辑
     } else {
       console.error('指定的索引超出音乐队列范围');
     }

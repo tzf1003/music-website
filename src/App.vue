@@ -117,11 +117,22 @@ const musicPlaylist = [
       "url": "https://music-1251788949.cos.ap-chongqing.myqcloud.com/%E8%8B%A6%E8%8C%B6%E5%AD%90.mp3",
       "image": "http://p1.music.126.net/VjXYNoGC3lXajZDs0r35XQ==/109951167852652412.jpg?param=130y130",
       "islike": true
+    },
+    {
+      "id": "4",
+      "title": "Checkmate",
+      "artist": "Rod Wave",
+      "duration": "4:20",
+      "lyrics": "[00:00.000] 作曲 : Rodarius Green\n[00:02.926] Lost in my feelings, running out of love\n[00:05.338] Sometimes I get in my feelings\n[00:12.885]\n[00:31.338] Sometimes I'm in my feelings, yeah\n[00:35.211] Like, this shit really like, War Dogs\n[00:38.704] You know? Just through that lens\n[00:40.022] You know? [?] cut some [?] scar\n[00:41.862] [?] with this shit, you know?\n[00:44.650]\n[00:45.911] Okay, lost in my feelings, running out of love\n[00:49.374] Sometimes I get in my feelings with c*****e in my blood\n[00:52.046] Most times I be trippin' reminiscin' 'bout us\n[00:54.958] Why'd I gotta stand on business? Ten toes no matter what\n[00:57.790] You know life is like a chess game\n[01:00.096] Gotta think it through (Yeah-yeah)\n[01:01.545] Gotta make your next move your best move\n[01:03.378] And what's happenin' Uncle D?\n[01:04.974] I probably never could repay ya\n[01:06.358] Helped me chase my dream\n[01:07.881] Found my dream and went major\n[01:09.745] Any niggas hate us\n[01:10.992] Shot my whole truck up\n[01:12.441] Beef we ain't squashing\n[01:13.887] Never gettin' ****ed up\n[01:15.410] Man, I really **** with bro\n[01:16.880] Hope he got the mentions I sent\n[01:18.654] It's on the floor, stay out the car with them jits\n[01:20.628]\n[01:20.792] So many war rooms\n[01:22.203] So many nights all alone\n[01:24.369] God blessed the child that could hold his own\n[01:26.799] And you can wave your white flag all you want (You want)\n[01:30.364] I want you to know\n[01:32.333] I'ma pay you back for that one\n[01:34.615] I'ma pay you back for that one (Yeah, yeah)\n[01:38.216] I gotta pay you back for that one\n[01:40.753] I'ma pay you back for that one (That one)\n[01:44.404] Pay you back for that one (Yeah)\n[01:46.357] I'ma pay you back for that one\n[01:49.972] I gotta pay you back for that one (Yeah)\n[01:52.414] I'ma get you back for that one, uh\n[01:55.646]\n[01:55.810] Okay, now tell me how this b***h found it in her heart to cross me\n[01:58.935] I had your back since we was little, can't forget ya or forgive ya\n[02:01.716] Since we first got out the ghetto\n[02:03.212] Know we had some stormy weather\n[02:04.622] But you ain't make this shit no better\n[02:05.893] Now it's up and stuck forever (Forever)\n[02:07.543] And I'm on that dope so bad right now that I can't feel a thing\n[02:10.608] C*****e cups to the brain, smilin' through my pain\n[02:13.331] Like dancin' in the rain, yeah\n[02:16.204] When you smiling through your pain it feel like dancing in the rain\n[02:18.799]\n[02:18.967] So many war rooms\n[02:20.442] So many nights all alone (Yeah)\n[02:22.371] God blessed the child that could hold his own\n[02:24.898] And you can wave your white flag all you want (You want)\n[02:28.516] I want you to know\n[02:30.610] I'ma pay you back for that one (I'ma pay you back for that one)\n[02:32.891] I'ma pay you back for that one (I'ma pay you back for that one)\n[02:36.427] I gotta pay you back for that one\n[02:38.844] I'ma pay you back for that one (I'ma get you back for that one, I'ma)\n[02:42.569] Pay you back for that one (Yeah)\n[02:44.782] I'ma pay you back for that one (Yeah, yeah)\n[02:48.129] I gotta pay you back for that one\n[02:50.293] I'm gon' get you back for that one, yeah\n[02:54.284]\n[02:54.469] The [?] **** [?], bet you knew\n[02:56.919] Swear to God, swear to God, ****, you hear me?\n[03:01.434] One—, a year ago, you know what I'm sayin'?\n[03:04.418] They—, ten years ago, **** nigga, you know?\n[03:09.170] I'ma get ya, um\n[03:10.019] I'ma get you the grrah\n",
+      "album": "专辑名称2",
+      "url": "https://music-1251788949.cos.ap-chongqing.myqcloud.com/Rod%20Wave%20-%20Checkmate.mp3",
+      "image": "http://p1.music.126.net/rzOIXFPqrfMivm_cvzLtYQ==/109951168914035596.jpg?param=130y130",
+      "islike": true
     }
     // 更多歌曲...
   ];
 localStorage.setItem('musicPlaylist', JSON.stringify(musicPlaylist));
-localStorage.setItem('currentMusicIndex', 1);
+localStorage.setItem('currentMusicIndex', 0);
 
 </script>
 

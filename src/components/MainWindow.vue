@@ -102,25 +102,32 @@ onMounted(() => {
   //获得信息
   const route = useRoute()
   //切换组件默认滚动到顶部
-  router.afterEach(() => {
-    nextTick(() => {
-      if (scrollbarContainer.value) {
-        //如果是歌词则跳转到焦点位置
-        if(route.name == 'Lyrics'){
-          //设置为第一次加载歌词组件
-          firstLoad = true
-          //增加获取当前位置
-          lyricsFocalPosition=0;
+  router.afterEach((to, from) => {
+  // 确保DOM更新后再滚动
+  nextTick(() => {
+    if (scrollbarContainer.value) {
+      // 当路由跳转到不同路径时滚动到顶部或特定位置
+      if (
+        from.path !== to.path || 
+        JSON.stringify(from.params) !== JSON.stringify(to.params) || 
+        JSON.stringify(from.query) !== JSON.stringify(to.query)
+      ) { // 检查即将离开的路由和即将进入的路由是否不同
+        if (to.name === 'Lyrics') {
+          // 如果进入的是歌词页面，则根据需要处理滚动
+          firstLoad = true;
+          lyricsFocalPosition = 0;
           scrollbarContainer.value.setScrollTop(lyricsFocalPosition);
           handleScrollTo();
-        }else{
-          //不是则跳转到顶部
+        } else {
+          // 对于其他页面，滚动到顶部
           scrollbarContainer.value.setScrollTop(0);
         }
-        
       }
-    });
+      // 相同路由且参数未变化时，可以不做任何处理
+    }
   });
+});
+
 });
 
 
