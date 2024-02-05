@@ -5,7 +5,7 @@
     <el-row class="playBar">
       <!-- 左边歌曲信息区 -->
       <el-col :span="7">
-        <div class="grid-content song-info">
+        <div v-if="currentMusic" class="grid-content song-info">
           <!-- 图片 -->
           <div class="image" style="display: flex;float: left;">
             <el-avatar shape="square" :size="56" :src="currentMusic.image" />
@@ -41,18 +41,16 @@
       <el-col :span="10">
         <div class="grid-content player">
           <!-- 播放器 -->
-          <audio ref="audioPlayer" 
-            :src="currentMusic.url" 
-            @loadedmetadata="updateDuration"
-            @timeupdate="updateCurrentTime" 
-            @play="onPlay" 
-            @pause="onPause"
-            @ended="handleEnded"
-            ></audio>
+          <audio ref="audioPlayer" :src="currentMusic ? currentMusic.url : null" @loadedmetadata="updateDuration"
+            @timeupdate="updateCurrentTime" @play="onPlay" @pause="onPause" @ended="handleEnded"></audio>
           <!-- 播放条上层=按钮 -->
-          <div class="top">
-            <el-button :class="{ highlight: (isRandomPlay) }" @click="randomPlay" color="#000"
-              circle dark>
+          <div class="top loading-svg" 
+          v-loading="musicLoading" 
+          :element-loading-svg="loadingSvg"
+          element-loading-svg-view-box="-10, -10, 50, 50"
+          style="width: 100%"
+          >
+            <el-button :class="{ highlight: (isRandomPlay) }" @click="randomPlay" color="#000" circle dark>
               <i class="bi bi-shuffle" style="font-size: 17px;"></i>
             </el-button>
             <!-- 上一首 -->
@@ -61,8 +59,8 @@
             </el-button>
             <!-- 播放 -->
             <el-button color="#fff" @click="togglePlay" circle dark style="color:#000">
-              <i v-if="isPlaying"  class="bi bi-pause-fill" style="font-size: 22px;"></i>
-              <i v-else  class="bi bi-play-fill" style="margin-left: 3px;font-size: 24px;"></i>
+              <i v-if="isPlaying" class="bi bi-pause-fill" style="font-size: 22px;"></i>
+              <i v-else class="bi bi-play-fill" style="margin-left: 3px;font-size: 24px;"></i>
             </el-button>
             <!-- 下一首 -->
             <el-button @click="playNext" color="#000" circle dark>
@@ -130,9 +128,14 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { h, ref, watch } from "vue";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { musicQueue } from "@/tools/music"
+import { ElMessage } from 'element-plus'
+//消息弹出
+const openMessage = (message) => {
+  ElMessage(message)
+}
 
 const musicVolume = ref(70)
 //设置播放循环方式
@@ -147,17 +150,35 @@ const LoopModes = {
 //默认不循环
 const playLoopMode = ref(LoopModes.NO_LOOP);
 const isRandomPlay = ref(false);
+
 //点击随机播放按钮。
 const randomPlay = () => {
-  if (musicQueue.isRandomMode == false){
+  if (musicQueue.isRandomMode == false) {
     isRandomPlay.value = true
     musicQueue.setRandomMode(true)
-  }else{
+    const message = h('p', null, [
+      h('sapn', null, '已'),
+      h('sapn', { style: 'color: #98FB98' }, '开启'),
+      h('sapn', null, '随机播放模式')
+    ])
+    openMessage({
+      message: message,
+      type: 'success',
+    })
+  } else {
     isRandomPlay.value = false
     musicQueue.setRandomMode(false)
+    const message = h('p', null, [
+      h('sapn', null, '已'),
+      h('sapn', { style: 'color: #FFC0CB' }, '关闭'),
+      h('sapn', null, '随机播放模式')
+    ])
+    openMessage({
+      message: message,
+      type: 'success',
+    })
   }
   console.log(musicQueue.getCurrentQueue());
-
 }
 //点击切换播放
 const switchLoopMode = () => {
@@ -166,9 +187,39 @@ const switchLoopMode = () => {
   if (playLoopMode.value > 2) {
     playLoopMode.value = 0;
   }
-  
+  //message提示
+  if (playLoopMode.value == LoopModes.NO_LOOP) {
+    const message = h('p', null, [
+      h('sapn', null, '已'),
+      h('sapn', { style: 'color: #FFC0CB' }, '关闭'),
+      h('sapn', null, '循环模式')
+    ])
+    openMessage({
+      message: message,
+      type: 'success',
+    })
+  } else if (playLoopMode.value == LoopModes.LIST_LOOP) {
+    const message = h('p', null, [
+      h('sapn', null, '已'),
+      h('sapn', { style: 'color: #98FB98' }, '开启列表循环'),
+      h('sapn', null, '模式')
+    ])
+    openMessage({
+      message: message,
+      type: 'success',
+    })
+  } else if (playLoopMode.value == LoopModes.SINGLE_LOOP) {
+    const message = h('p', null, [
+      h('sapn', null, '已'),
+      h('sapn', { style: 'color: #98FB98' }, '开启单曲循环'),
+      h('sapn', null, '模式')
+    ])
+    openMessage({
+      message: message,
+      type: 'success',
+    })
+  }
 }
-
 
 const emit = defineEmits([
   'progress-change',
@@ -186,6 +237,7 @@ const localProgress = ref(0);
 const audioPlayer = ref(null);
 //当前音乐实例
 const currentMusic = ref('');
+
 //音乐的总时长
 const duration = ref(0);
 const currentTime = ref(0);
@@ -194,6 +246,8 @@ currentMusic.value = musicQueue.getCurrentMusic();
 const isPlaying = ref(false);
 //是否手动拖动进度条
 const isDragging = ref(false);
+//是否正在加载音乐
+const musicLoading = ref(false);
 const onPlay = () => {
   isPlaying.value = true;
 };
@@ -203,13 +257,31 @@ const onPause = () => {
 };
 const togglePlay = () => {
   if (audioPlayer.value) {
-    if (audioPlayer.value.paused) {
-      audioPlayer.value.play();
+    // 检查是否设置了音频源
+    if (audioPlayer.value.src && audioPlayer.value.src.trim() !== "") {
+      if (audioPlayer.value.paused) {
+        audioPlayer.value.play().catch(error => {
+          console.error("播放失败:", error);
+          // 这里可以添加更多的错误处理逻辑，显示一个友好的错误消息给用户
+          openMessage({
+            message: '播放失败,请检查网络',
+            type: 'error',
+          })
+        });
+      } else {
+        audioPlayer.value.pause();
+      }
     } else {
-      audioPlayer.value.pause();
+      // 处理无音频源的情况，提示用户
+      openMessage({
+        message: '当前没有歌曲可以播放',
+        type: 'error',
+      })
+
     }
   }
 };
+
 const updateDuration = () => {
   duration.value = formatTime(audioPlayer.value.duration);
 };
@@ -228,13 +300,11 @@ const handleEnded = () => {
   // 如果启用了单曲循环，则重新播放当前歌曲
   if (playLoopMode.value === LoopModes.SINGLE_LOOP) {
     audioPlayer.value.play();
-    
-  } 
+  }
   // 否则判断是否 是列表循环
-  else if (playLoopMode.value === LoopModes.LIST_LOOP){
+  else if (playLoopMode.value === LoopModes.LIST_LOOP) {
     playNext();
-  }else{
-    
+  } else {
     // 否则什么也不做,就是暂停。
   }
 };
@@ -265,7 +335,14 @@ const onSliderInput = () => {
 const playNext = () => {
   // console.log("索引+1：", musicQueue.getCurrentMusicIndex() + 1, "总元素数：", musicQueue.getQueueLength());
   //顺序列表播放逻辑
-  if (musicQueue.getCurrentMusicIndex() + 1 >= musicQueue.getQueueLength()) {
+  // 先判断列表是否有长度
+  if (musicQueue.getQueueLength() <= 0) {
+    // 没有音乐
+    openMessage({
+      message: '当前没有歌曲可以播放',
+      type: 'error',
+    })
+  } else if (musicQueue.getCurrentMusicIndex() + 1 >= musicQueue.getQueueLength()) {
     //判断索引是否大于等于长度
     //已经是最后一首了
     // 判断是否开启了循环播放
@@ -275,12 +352,17 @@ const playNext = () => {
         //设置第一首为下一首，然后播放。
         musicQueue.playMusicAtIndex(0)
         startPlayMusic();
-
       } else {
-        // 列表没有歌
+        openMessage({
+          message: '列表没有歌曲',
+          type: 'error',
+        })
       }
     } else {
-      console.log("已经是列表最后一首了");
+      openMessage({
+        message: '已经是列表最后一首了',
+        type: 'error',
+      })
     }
 
   } else {
@@ -294,39 +376,79 @@ const playNext = () => {
 //上一首
 const playPrev = () => {
   console.log("索引：", musicQueue.getCurrentMusicIndex(), "总元素数：", musicQueue.getQueueLength());
-  //判断索引是否小于等于0
-  if (musicQueue.getCurrentMusicIndex() <= 0) {
-    //已经是第一首了
+  if (musicQueue.getQueueLength() <= 0) {
+    // 没有音乐
+    openMessage({
+      message: '当前没有歌曲可以播放',
+      type: 'error',
+    })
+  } else
+    //判断索引是否小于等于0
+    if (musicQueue.getCurrentMusicIndex() <= 0) {
+      //已经是第一首了
 
-    // 判断是否开启了循环播放
-    if (playLoopMode.value == LoopModes.LIST_LOOP) {
-      // 判断获取音乐队列的长度是否大于等于1，防止无音乐导致bug
-      if (musicQueue.getQueueLength() >= 1) {
-        //设置最后一首为下一首，然后播放。
-        musicQueue.playMusicAtIndex(musicQueue.getQueueLength()-1)
-        startPlayMusic();
+      // 判断是否开启了循环播放
+      if (playLoopMode.value == LoopModes.LIST_LOOP) {
+        // 判断获取音乐队列的长度是否大于等于1，防止无音乐导致bug
+        if (musicQueue.getQueueLength() >= 1) {
+          //设置最后一首为下一首，然后播放。
+          musicQueue.playMusicAtIndex(musicQueue.getQueueLength() - 1)
+          startPlayMusic();
+        } else {
+          openMessage({
+            message: '列表没有歌曲',
+            type: 'error',
+          })
+        }
       } else {
-        // 列表没有歌
+        openMessage({
+          message: '已经是列表第一首了',
+          type: 'error',
+        })
       }
     } else {
-      console.log("已经是列表第一首了");
+      musicQueue.prevMusic();
+      startPlayMusic();
+      //传递歌曲改变信息
+      emit('music-change', true);
     }
-  } else {
-    musicQueue.prevMusic();
-    startPlayMusic();
-    //传递歌曲改变信息
-    emit('music-change', true);
-  }
 };
 const startPlayMusic = () => {
-  //todo: 可以在这里增加一个加载特效。资源加载完毕后再加载。
+  //增加一个加载特效。资源加载完毕后再可点击。
+  musicLoading.value = true;
   currentMusic.value = musicQueue.getCurrentMusic();
   audioPlayer.value.load(); // 重新加载音频元素以应用新的源
   // 监听资源加载足够的事件，然后播放
   audioPlayer.value.onloadeddata = () => {
+
+
     audioPlayer.value.play().catch(e => console.error(e));
+    musicLoading.value = false;
+
   };
+
 }
+const loadingSvg=`
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+     width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+    <rect x="0" y="10" width="4" height="10" fill="#333" opacity="0.2">
+      <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0s" dur="0.6s" repeatCount="indefinite" />
+      <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
+      <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
+    </rect>
+    <rect x="8" y="10" width="4" height="10" fill="#333"  opacity="0.2">
+      <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+      <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+      <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+    </rect>
+    <rect x="16" y="10" width="4" height="10" fill="#333"  opacity="0.2">
+      <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+      <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+      <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+    </rect>
+  </svg>
+
+`
 </script>
 
 <style>
@@ -487,5 +609,14 @@ const startPlayMusic = () => {
 
 .playBar .grid-content .top .highlight:hover {
   color: #1ed760;
+}
+.playBar .player .top  svg path,
+.playBar .player .top  svg rect {
+  fill: #1ed760;
+  
+}
+/* 清除旋转效果 */
+.playBar .player .top .circular{
+  animation:none;
 }
 </style>

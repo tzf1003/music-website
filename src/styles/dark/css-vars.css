@@ -1,14 +1,16 @@
-html{
+html {
     background-color: #000000;
 }
 
-.kuai{
+.kuai {
     background-color: #121212;
 }
+
 /* 删掉router-link */
 .router-link-active {
     text-decoration: none;
 }
-a{
+
+a {
     text-decoration: none;
 }

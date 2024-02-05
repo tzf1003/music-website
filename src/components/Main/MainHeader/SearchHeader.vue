@@ -42,6 +42,7 @@
 
 <script setup>
 import { ref } from "vue";
+const SearchInput = ref('')
 import {
     Search
 } from '@element-plus/icons-vue'
