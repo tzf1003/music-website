@@ -1,5 +1,4 @@
 <!-- 这里是底部播放条 -->
-<!-- todo : 关于操作的友好性提升。 -->
 <template>
   <div>
     <el-row class="playBar">
@@ -13,7 +12,6 @@
           <!-- 内容 -->
           <div style="
             display: flex; 
-
           ">
             <span style="padding-left: 10px; ">
               <span style="
@@ -113,10 +111,13 @@
           <el-button color="#000" circle dark>
             <i class="bi bi-speaker" style="font-size: 17px;"></i>
           </el-button>
-          <el-button color="#000" circle dark>
-            <i class="bi bi-volume-up" style="font-size: 17px;"></i>
+          <el-button color="#000" circle dark @click="toggleMute">
+            <i v-if="!isMuted && musicVolume>=50" class="bi bi-volume-up" style="font-size: 17px;"></i>
+            <i v-else-if="!isMuted && (musicVolume<50 && musicVolume>0)" class="bi bi-volume-down" style="font-size: 17px;"></i>
+            <i v-else-if="!isMuted && musicVolume==0" class="bi bi-volume-off" style="font-size: 17px;"></i>
+            <i v-else-if="isMuted" class="bi bi-volume-mute" style="font-size: 17px;"></i>
           </el-button>
-          <el-slider v-model="musicVolume" />
+          <el-slider v-model="musicVolume" @input="onVolumeInput"/>
           <!-- <el-progress :percentage="100" type="line" text-inside="" color="#fff" /> -->
           <el-button color="#000" circle dark>
             <i class="bi bi-pip" style="font-size: 17px;"></i>
@@ -128,7 +129,7 @@
 </template>
 
 <script setup>
-import { h, ref, watch } from "vue";
+import { h, ref, watch,onMounted} from "vue";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { musicQueue } from "@/tools/music"
 import { ElMessage } from 'element-plus'
@@ -138,6 +139,24 @@ const openMessage = (message) => {
 }
 
 const musicVolume = ref(70)
+const isMuted = ref(false)
+// 设置默认音量的函数
+const setDefaultVolume = () => {
+  if (audioPlayer.value) {
+    // 假设默认音量为50%（0.5）
+    audioPlayer.value.volume = musicVolume.value/100;
+  }
+};
+const toggleMute = () => {
+  if (audioPlayer.value) {
+    isMuted.value = !isMuted.value; // 切换静音状态
+    audioPlayer.value.muted = isMuted.value; // 应用到audio元素
+  }
+};
+// 当组件挂载完成时设置默认音量
+onMounted(() => {
+  setDefaultVolume();
+});
 //设置播放循环方式
 const LoopModes = {
   //无循环
@@ -228,9 +247,6 @@ const emit = defineEmits([
 
 const localProgress = ref(0);
 
-// const onProgressChange = (newValue) => {
-//   emit('progress-change', newValue);
-// };
 
 //歌曲操作
 //播放器实例
@@ -281,7 +297,6 @@ const togglePlay = () => {
     }
   }
 };
-
 const updateDuration = () => {
   duration.value = formatTime(audioPlayer.value.duration);
 };
@@ -324,7 +339,17 @@ const onProgressChange = (newValue) => {
     audioPlayer.value.currentTime = newTime;
   }
   isDragging.value = false; // 用户停止拖动，更新标志
+};
 
+const onVolumeInput = (newValue) => {
+  // 判断静音时音量是否增加，如果增加则解除静音。
+  if(newValue/100>audioPlayer.value.volume && isMuted.value == true){
+    console.log("newValue",newValue,'audioPlayer.value.volume',audioPlayer.value.volume);
+    isMuted.value=false
+    audioPlayer.value.muted = isMuted.value=false
+  }
+  //设置音量
+  audioPlayer.value.volume=newValue/100;
 };
 // 用户拖动滑块时的处理函数
 const onSliderInput = () => {
@@ -375,7 +400,6 @@ const playNext = () => {
 
 //上一首
 const playPrev = () => {
-  console.log("索引：", musicQueue.getCurrentMusicIndex(), "总元素数：", musicQueue.getQueueLength());
   if (musicQueue.getQueueLength() <= 0) {
     // 没有音乐
     openMessage({
@@ -420,8 +444,6 @@ const startPlayMusic = () => {
   audioPlayer.value.load(); // 重新加载音频元素以应用新的源
   // 监听资源加载足够的事件，然后播放
   audioPlayer.value.onloadeddata = () => {
-
-
     audioPlayer.value.play().catch(e => console.error(e));
     musicLoading.value = false;
 
