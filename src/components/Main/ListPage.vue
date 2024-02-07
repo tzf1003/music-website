@@ -2,197 +2,73 @@
     <div class="list-page">
         <h1>队列</h1>
         <h2>当前播放</h2>
-        <div class="current-playback" tabindex="0">
-            <el-row>
-                <el-col :span="1">
-                    <div class="number">
-                        <span class="num" style="color: #1FDF64;">1</span>
-                        <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
-                    </div>
-                </el-col>
-                <el-col :span="11">
-                    <div class="image">
-                        <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
-                    </div>
-                    <div class="name">
-                        <div class="song" style="color: #1FDF64;">
-                            <a>句号</a>
+        <div v-for="(music, index) in displayqueue" :key="music">
+            <div :class="{ 'current-playback': index == 0, 'wait-playback': index > 0 }" tabindex="0">
+                <el-row>
+                    <el-col :span="1">
+                        <div class="number">
+                            <span class="num">{{ index + 1 }}</span>
+                            <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
                         </div>
-                        <div class="singer">
-                            <span>邓紫棋</span>
+                    </el-col>
+                    <el-col :span="11">
+                        <div class="image">
+                            <img :src="music.image">
                         </div>
-                    </div>
-
-                </el-col>
-                <el-col :span="7">
-                    <div class="info">
-                        <a>摩天动物园</a>
-                    </div>
-                </el-col>
-                <el-col :span="5">
-                    <div class="like">
-                        <el-button color="#282828" circle dark >
-                            <!-- <i class="bi bi-heart" style="margin-top: 2px;"></i> -->
-                            <i class="bi bi-heart-fill" style="margin-top: 2px; color: #1FDF64;"></i>
-                        </el-button>
-                    </div>
-                    <div class="time">
-                        <span>3:55</span>
-                    </div>
-                    <div class="other">
-                        <el-button color="#282828" circle dark>
-                            <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
-                            <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
-                        </el-button>
-                    </div>
-                </el-col>
-            </el-row>
+                        <div class="name">
+                            <div class="song">
+                                <a>{{ music.title }}</a>
+                            </div>
+                            <div class="singer">
+                                <span>{{ music.artist }}</span>
+                            </div>
+                        </div>
+                    </el-col>
+                    <el-col :span="7">
+                        <div class="info">
+                            <a>{{ music.album }}</a>
+                        </div>
+                    </el-col>
+                    <el-col :span="5">
+                        <div class="like">
+                            <el-button color="#282828" circle dark>
+                                <i v-if="music.islike" class="bi bi-heart-fill"
+                                    style="margin-top: 2px; color: #1FDF64;"></i>
+                                <i v-else class="bi bi-heart" style="margin-top: 2px;"></i>
+                            </el-button>
+                        </div>
+                        <div class="time">
+                            <span>{{ music.duration }}</span>
+                        </div>
+                        <div class="other">
+                            <el-button color="#282828" circle dark>
+                                <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
+                                <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
+                            </el-button>
+                        </div>
+                    </el-col>
+                </el-row>
+            </div>
+            <h2 v-if="index == 0" style="margin-top: 32px;">下一首</h2>
         </div>
-        <h2 style="margin-top: 32px;">下一首</h2>
 
-        <div class="wait-playback" tabindex="0">
-            <el-row>
-                <el-col :span="1">
-                    <div class="number">
-                        <span class="num">1</span>
-                        <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
-                    </div>
-                </el-col>
-                <el-col :span="11">
-                    <div class="image">
-                        <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
-                    </div>
-                    <div class="name">
-                        <div class="song">
-                            <a>句号</a>
-                        </div>
-                        <div class="singer">
-                            <span>邓紫棋</span>
-                        </div>
-                    </div>
-
-                </el-col>
-                <el-col :span="7">
-                    <div class="info">
-                        <a>摩天动物园</a>
-                    </div>
-                </el-col>
-                <el-col :span="5">
-                    <div class="like">
-                        <el-button color="#282828" circle dark>
-                            <i class="bi bi-heart" style="margin-top: 2px;"></i>
-                            <!-- <i class="bi bi-heart-fill" style="margin-top: 2px;"></i> -->
-                        </el-button>
-                    </div>
-                    <div class="time">
-                        <span>3:55</span>
-                    </div>
-                    <div class="other">
-                        <el-button color="#282828" circle dark>
-                            <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
-                            <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
-                        </el-button>
-                    </div>
-                </el-col>
-            </el-row>
-        </div>
-        <div class="wait-playback" tabindex="0">
-            <el-row>
-                <el-col :span="1">
-                    <div class="number">
-                        <span class="num">1</span>
-                        <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
-                    </div>
-                </el-col>
-                <el-col :span="11">
-                    <div class="image">
-                        <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
-                    </div>
-                    <div class="name">
-                        <div class="song">
-                            <a>句号</a>
-                        </div>
-                        <div class="singer">
-                            <span>邓紫棋</span>
-                        </div>
-                    </div>
-
-                </el-col>
-                <el-col :span="7">
-                    <div class="info">
-                        <a>摩天动物园</a>
-                    </div>
-                </el-col>
-                <el-col :span="5">
-                    <div class="like">
-                        <el-button color="#282828" circle dark>
-                            <i class="bi bi-heart" style="margin-top: 2px;"></i>
-                            <!-- <i class="bi bi-heart-fill" style="margin-top: 2px;"></i> -->
-                        </el-button>
-                    </div>
-                    <div class="time">
-                        <span>3:55</span>
-                    </div>
-                    <div class="other">
-                        <el-button color="#282828" circle dark>
-                            <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
-                            <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
-                        </el-button>
-                    </div>
-                </el-col>
-            </el-row>
-        </div>
-        <div class="wait-playback" tabindex="0">
-            <el-row>
-                <el-col :span="1">
-                    <div class="number">
-                        <span class="num">1</span>
-                        <i class="bi bi-play-fill play" style="margin-left: 2px;margin-top: 2px;"></i>
-                    </div>
-                </el-col>
-                <el-col :span="11">
-                    <div class="image">
-                        <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
-                    </div>
-                    <div class="name">
-                        <div class="song">
-                            <a>句号</a>
-                        </div>
-                        <div class="singer">
-                            <span>邓紫棋</span>
-                        </div>
-                    </div>
-
-                </el-col>
-                <el-col :span="7">
-                    <div class="info">
-                        <a>摩天动物园</a>
-                    </div>
-                </el-col>
-                <el-col :span="5">
-                    <div class="like">
-                        <el-button color="#282828" circle dark>
-                            <i class="bi bi-heart" style="margin-top: 2px;"></i>
-                            <!-- <i class="bi bi-heart-fill" style="margin-top: 2px;"></i> -->
-                        </el-button>
-                    </div>
-                    <div class="time">
-                        <span>3:55</span>
-                    </div>
-                    <div class="other">
-                        <el-button color="#282828" circle dark>
-                            <i class="bi bi-three-dots" style="margin-top: 2px;"></i>
-                            <!-- <i class="bi bi-play-fill" style="margin-left: 2px;margin-top: 2px;"></i> -->
-                        </el-button>
-                    </div>
-                </el-col>
-            </el-row>
-        </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref,computed } from "vue";
+import { musicQueue } from "@/tools/music"
+// 获取当前播放列表
+const queue = ref(musicQueue.getCurrentQueue())
+const displayqueue =computed( ()=>{
+    //获取当前播放下标
+    const nowIndex = musicQueue.getCurrentMusicIndex();
+     // 筛选出 index 大于 nowIndex 的音乐信息
+    const filteredQueue = queue.value.filter((_, index) => index >= nowIndex)
+    console.log("filteredQueue",filteredQueue);
+    console.log("nowIndex",nowIndex);
+    return filteredQueue
+})
 </script>
 
 <style  lang="less">
@@ -212,6 +88,27 @@ import { ref } from "vue";
         font-size: 16px;
         margin-bottom: 8px;
         color: #b3b3b3;
+    }
+
+    .current-playback {
+        .el-row {
+            .el-col {
+                .number {
+                    color: #1FDF64 !important;
+                    .num{
+                        color: #1FDF64 !important;
+                    }
+                }
+            }
+
+            .name {
+                .song {
+                    color: #1FDF64 !important;
+                }
+
+            }
+        }
+
     }
 
     .current-playback,
@@ -271,10 +168,16 @@ import { ref } from "vue";
                     font-size: 16px;
 
                     .song {
+                        overflow: hidden; /* 超出部分隐藏 */
+                        white-space: nowrap; /* 不换行，保持内容在一行内 */
+                        text-overflow: ellipsis; /* 超出部分显示省略号 */
                         color: #a7a7a7;
                     }
 
                     .singer {
+                        overflow: hidden; /* 超出部分隐藏 */
+                        white-space: nowrap; /* 不换行，保持内容在一行内 */
+                        text-overflow: ellipsis; /* 超出部分显示省略号 */
                         color: #a7a7a7;
                     }
 
@@ -332,9 +235,13 @@ import { ref } from "vue";
         }
 
     }
-    .current-playback:focus,.current-playback:hover,
-    .wait-playback:focus,.wait-playback:hover {
+
+    .current-playback:focus,
+    .current-playback:hover,
+    .wait-playback:focus,
+    .wait-playback:hover {
         background-color: #2A2A2A;
+
         .el-row {
             .el-col {
                 .number {
