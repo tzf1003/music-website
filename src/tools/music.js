@@ -137,11 +137,6 @@ export const musicQueue = {
 
   // 直接播放指定索引的歌曲
   playMusicAtIndex(index) {
-    if (this.isRandomMode) {
-      // 随机模式下，可能需要特别处理，因为索引可能对应于随机队列
-      console.error('随机模式下不支持按索引播放');
-      return;
-    }
     const queue = this.getQueue();
     if (index >= 0 && index < queue.length) {
       this.setCurrentMusicIndex(index); // 更新当前播放歌曲的索引

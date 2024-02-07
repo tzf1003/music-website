@@ -119,8 +119,8 @@ watch(() => currentLine.value, () => {
   
 <style scoped>
 .lyrics-container {
-  padding-top: 25%;
-  padding-bottom: 25%;
+  padding-top: 40%;
+  padding-bottom: 50%;
   background-color: #51833D;
   display: flex;
   flex-direction: column;
