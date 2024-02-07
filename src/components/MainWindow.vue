@@ -6,42 +6,21 @@
         <router-view v-slot="{ Component }" name="header">
           <component :is="Component" :scroll-amplitude="scrollAmplitude" />
         </router-view>
-
-
       </el-header>
+
       <el-main style="color: aliceblue;font-size: 20px;">
         <router-view v-slot="{ Component }">
-          <component :is="Component" :lyrics="lyrics" :currentTime="currentTime" @scroll-to="handleScrollTo" />
+          <component :is="Component" :lyrics="lyrics" :music="music" :queueChange="queue" :currentTime="currentTime" @scroll-to="handleScrollTo" />
         </router-view>
-        <!-- <HomePage/> -->
-        <!-- <SearchPage/> -->
-        <!-- <ListPage/> -->
-        <!-- <ArtistPage /> -->
-        <!-- <LyricsPage :currentTime="currentTime" :lyrics="lyrics" @scroll-to="handleScrollTo" /> -->
-        <!-- <SongInfoPage /> -->
-        <!-- <SystemInfoVue/> -->
-        <!-- <UserRegist/> -->
       </el-main>
     </el-container>
   </el-scrollbar>
 </template>
 
 <script  setup>
-import { ref,toRefs, nextTick, onMounted,watchEffect } from "vue";
+import { ref,toRefs, nextTick, onMounted,watch } from "vue";
 import { useRouter,useRoute } from 'vue-router';
-// import router from '@/router/Index'
-import HomePage from "./Main/HomePage.vue";
-import SearchPage from "./Main/SearchPage.vue"
-import HomeHeader from "./Main/MainHeader/HomeHeader.vue"
-import SearchHeader from "./Main/MainHeader/SearchHeader.vue"
-import ListPage from "./Main/ListPage.vue";
-import SongSheetHeader from "./Main/MainHeader/SongSheetHeader.vue";
-import SongSheetPage from "./Main/SongSheetPage.vue";
-import ArtistPage from "./Main/ArtistPage.vue";
-import LyricsPage from "./Main/LyricsPage.vue";
-import SongInfoPage from "./Main/SongInfoPage.vue"
-import SystemInfoVue from "./Main/SystemInfo.vue";
-import UserRegist from "./Main/UserRegist.vue";
+
 
 //滚动幅度
 const scrollAmplitude = ref(0);
@@ -51,19 +30,26 @@ const handleScroll = ({ scrollTop }) => {
 //歌词
 const props = defineProps({
   currentMusic: Object,
-  currentTime: Number
+  currentTime: Number,
+  queue:Object
 });
 // 使用 toRefs 来保持每个 prop 的响应性
-const { currentMusic, currentTime } = toRefs(props);
+const { currentMusic, currentTime,queue } = toRefs(props);
 const lyrics = ref('');
-// 监听 当前播放歌词改变
-watchEffect(() => {
-  if (currentMusic.value) {
-    lyrics.value = currentMusic.value.lyrics;
+const music = ref(null);
+
+
+// 监听 currentMusic 的变化
+watch(() => currentMusic.value, (newVal) => {
+  if (newVal) {
+    music.value = newVal;
+    lyrics.value = newVal.lyrics;
   } else {
+    music.value = null;
     lyrics.value = ''; // 如果 currentMusic 没有值，重置 lyrics
   }
-});
+}, { deep: true });
+
 
 // if(currentMusic!=null){
 //   lyrics.value = currentMusic

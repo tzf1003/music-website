@@ -35,7 +35,7 @@
               padding: 0px;
               border-radius: 10px;
             ">
-            <MainWindow :currentMusic="currentMusic" :currentTime="currentTime"/>
+            <MainWindow :currentMusic="currentMusic" :queue="queue" :currentTime="currentTime"/>
           </el-main>
         </el-container>
       </el-container>
@@ -48,7 +48,7 @@
               border-radius: 10px;
               min-width:859px
             ">
-            <BottonBar @music-change="updateCurrentMusic" @progress-change="updateCurrentTime"/>
+            <BottonBar @queue-change="updateQueue" @music-change="updateCurrentMusic" @progress-change="updateCurrentTime"/>
       </el-footer>
     </el-container>
 
@@ -68,6 +68,7 @@ import {musicQueue} from "@/tools/music"
 //处理歌曲时间
 const currentTime = ref(0);
 const currentMusic = ref(null);
+const queue= ref(null);
 
 const updateCurrentTime = (newProgress) => {
   currentTime.value = newProgress;
@@ -83,6 +84,12 @@ const  updateCurrentMusic = () => {
   currentMusic.value = musicQueue.getCurrentMusic()
   console.log(currentMusic.value);
 }
+//当前列表发生改变，需要更新最新的queue。
+const  updateQueue = (newVal) => {
+  queue.value = newVal
+  console.log("queue.value",newVal);
+}
+
 // 写入测试数据
 const musicPlaylist = [
     {

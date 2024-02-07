@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-import { ref,computed } from "vue";
+import { ref,computed,watch } from "vue";
 import { musicQueue } from "@/tools/music"
 // 获取当前播放列表
 const queue = ref(musicQueue.getCurrentQueue())
@@ -69,6 +69,20 @@ const displayqueue =computed( ()=>{
     console.log("nowIndex",nowIndex);
     return filteredQueue
 })
+
+const props = defineProps({
+  music: Object,
+  queueChange:Object
+});
+
+watch(() => props.queueChange, (newVal) => {
+    queue.value =  musicQueue.getCurrentQueue();
+});
+
+watch(() => props.music, () => {
+    queue.value = musicQueue.getCurrentQueue()
+});
+
 </script>
 
 <style  lang="less">

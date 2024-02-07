@@ -37,17 +37,17 @@
       </el-col>
       <!-- 中间播放器 -->
       <el-col :span="10">
-        <div class="grid-content player">
+        <div class="grid-content player loading-svg" 
+          v-loading="musicLoading"
+          :element-loading-svg="loadingSvg"
+          element-loading-svg-view-box="-10, -10, 50, 50"
+          style="width: 100%"
+        >
           <!-- 播放器 -->
           <audio ref="audioPlayer" :src="currentMusic ? currentMusic.url : null" @loadedmetadata="updateDuration"
             @timeupdate="updateCurrentTime" @play="onPlay" @pause="onPause" @ended="handleEnded"></audio>
           <!-- 播放条上层=按钮 -->
-          <div class="top loading-svg" 
-          v-loading="musicLoading" 
-          :element-loading-svg="loadingSvg"
-          element-loading-svg-view-box="-10, -10, 50, 50"
-          style="width: 100%"
-          >
+          <div class="top">
             <el-button :class="{ highlight: (isRandomPlay) }" @click="randomPlay" color="#000" circle dark>
               <i class="bi bi-shuffle" style="font-size: 17px;"></i>
             </el-button>
@@ -197,7 +197,7 @@ const randomPlay = () => {
       type: 'success',
     })
   }
-  console.log(musicQueue.getCurrentQueue());
+  emit('queue-change',musicQueue.getCurrentQueue() );
 }
 //点击切换播放
 const switchLoopMode = () => {
@@ -242,7 +242,8 @@ const switchLoopMode = () => {
 
 const emit = defineEmits([
   'progress-change',
-  'music-change'
+  'music-change',
+  'queue-change'
 ]);
 
 const localProgress = ref(0);
@@ -632,13 +633,13 @@ const loadingSvg=`
 .playBar .grid-content .top .highlight:hover {
   color: #1ed760;
 }
-.playBar .player .top  svg path,
-.playBar .player .top  svg rect {
+.playBar .player svg path,
+.playBar .player svg rect {
   fill: #1ed760;
   
 }
 /* 清除旋转效果 */
-.playBar .player .top .circular{
+.playBar .player .circular{
   animation:none;
 }
 </style>
