@@ -14,3 +14,12 @@ html {
 a {
     text-decoration: none;
 }
+.el-message{
+    background-color: #000000;
+    border: 1px solid #4b4b4b;
+    
+}
+.el-message p span{
+    color: #dfdfdf;
+}
+

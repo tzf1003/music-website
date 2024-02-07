@@ -176,9 +176,9 @@ const randomPlay = () => {
     isRandomPlay.value = true
     musicQueue.setRandomMode(true)
     const message = h('p', null, [
-      h('sapn', null, '已'),
-      h('sapn', { style: 'color: #98FB98' }, '开启'),
-      h('sapn', null, '随机播放模式')
+      h('span', null, '已'),
+      h('span', { style: 'color: #98FB98' }, '开启'),
+      h('span', null, '随机播放模式')
     ])
     openMessage({
       message: message,
@@ -188,9 +188,9 @@ const randomPlay = () => {
     isRandomPlay.value = false
     musicQueue.setRandomMode(false)
     const message = h('p', null, [
-      h('sapn', null, '已'),
-      h('sapn', { style: 'color: #FFC0CB' }, '关闭'),
-      h('sapn', null, '随机播放模式')
+      h('span', null, '已'),
+      h('span', { style: 'color: #FFC0CB' }, '关闭'),
+      h('span', null, '随机播放模式')
     ])
     openMessage({
       message: message,
@@ -209,9 +209,9 @@ const switchLoopMode = () => {
   //message提示
   if (playLoopMode.value == LoopModes.NO_LOOP) {
     const message = h('p', null, [
-      h('sapn', null, '已'),
-      h('sapn', { style: 'color: #FFC0CB' }, '关闭'),
-      h('sapn', null, '循环模式')
+      h('span', null, '已'),
+      h('span', { style: 'color: #FFC0CB' }, '关闭'),
+      h('span', null, '循环模式')
     ])
     openMessage({
       message: message,
@@ -219,9 +219,9 @@ const switchLoopMode = () => {
     })
   } else if (playLoopMode.value == LoopModes.LIST_LOOP) {
     const message = h('p', null, [
-      h('sapn', null, '已'),
-      h('sapn', { style: 'color: #98FB98' }, '开启列表循环'),
-      h('sapn', null, '模式')
+      h('span', null, '已'),
+      h('span', { style: 'color: #98FB98' }, '开启列表循环'),
+      h('span', null, '模式')
     ])
     openMessage({
       message: message,
@@ -229,9 +229,9 @@ const switchLoopMode = () => {
     })
   } else if (playLoopMode.value == LoopModes.SINGLE_LOOP) {
     const message = h('p', null, [
-      h('sapn', null, '已'),
-      h('sapn', { style: 'color: #98FB98' }, '开启单曲循环'),
-      h('sapn', null, '模式')
+      h('span', null, '已'),
+      h('span', { style: 'color: #98FB98' }, '开启单曲循环'),
+      h('span', null, '模式')
     ])
     openMessage({
       message: message,
