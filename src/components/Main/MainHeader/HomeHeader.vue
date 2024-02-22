@@ -28,16 +28,32 @@
             ">安装应用</el-button>
             </div>
             <!-- 通知 -->
-            <div class="button notice">
-                <el-button size="default" color="#121212" circle dark style="margin-left: 20px;">
-                    <i class="bi bi-bell"></i>
-                    <!-- <i class="bi bi-bell-fill"></i> -->
-                </el-button>
-            </div>
+            <router-link to="/info">
+                <div class="button notice">
+                    <el-button size="default" color="#121212" circle dark style="margin-left: 20px;">
+                        <i class="bi bi-bell"></i>
+                        <!-- <i class="bi bi-bell-fill"></i> -->
+                    </el-button>
+                </div>
+            </router-link>
+
             <div class="button user">
-                <el-button size="default" color="#121212" circle dark style="margin-left: 20px;">
-                    <i class="bi bi-person"></i>
-                </el-button>
+                <el-dropdown trigger="click">
+                    <el-button size="default" color="#121212" circle dark style="margin-left: 20px;">
+                        <i class="bi bi-person"></i>
+                    </el-button>
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <router-link to="/login">
+                                <el-dropdown-item :icon="CirclePlusFilled">登录</el-dropdown-item>
+                            </router-link>
+
+                            <router-link to="/register">
+                                <el-dropdown-item :icon="Plus">注册</el-dropdown-item>
+                            </router-link>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
             </div>
         </div>
     </div>
@@ -53,7 +69,7 @@ import { ref } from "vue";
     background-image: radial-gradient(transparent 1px, #121212 1px);
     background-size: 1px 1px;
     backdrop-filter: saturate(50%) blur(3px);
-    
+
     display: flex;
     width: 100%;
 }
@@ -72,5 +88,9 @@ import { ref } from "vue";
     display: flex;
     justify-content: flex-end;
     align-items: center;
+}
+
+.home-header .explore-user .user {
+    margin-right: 20px;
 }
 </style>

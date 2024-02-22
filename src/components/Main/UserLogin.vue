@@ -2,28 +2,22 @@
   <el-container class="login-container">
     <el-main class="login-form-container">
       <div class="login-logo">WUDI Music</div>
-      <div class="login-title">注册即可免费收听音乐</div>
+      <div class="login-title">欢迎登录，免费收听音乐</div>
       <el-form @submit.prevent="submitForm">
         <el-form-item>
-          <el-input type="account" v-model="account" placeholder="账号" required></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-input type="username" v-model="username" placeholder="昵称" required></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-input type="email" v-model="email" placeholder="电子邮件地址" required></el-input>
+          <el-input type="email" v-model="email" placeholder="用户名/电子邮件地址" required></el-input>
         </el-form-item>
         <el-form-item>
           <el-input type="password" v-model="password" placeholder="密码" required></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" long native-type="submit">注册</el-button>
+          <el-button type="primary" long native-type="submit">登录</el-button>
         </el-form-item>
       </el-form>
       <div class="login-footer">
-        已经有帐号？
-        <router-link to="/login">
-          <a>立即登录！</a>
+        没有帐号？
+        <router-link to="/register">
+          <a>立即注册！</a>
         </router-link>
       </div>
     </el-main>
@@ -32,8 +26,6 @@
   
 <script setup>
 import { ref } from 'vue';
-const username = ref('');
-const account = ref('');
 const email = ref('');
 const password = ref('');
 
