@@ -11,6 +11,11 @@
           <el-input type="password" v-model="password" placeholder="密码" required></el-input>
         </el-form-item>
         <el-form-item>
+          <el-input style="width: 75%;" type="text" v-model="captcha" placeholder="验证码" required></el-input>
+          <img :src="captchaImage" alt="验证码" @click="refreshCaptcha" style="cursor: pointer;width: 25%;">
+        </el-form-item>
+        
+        <el-form-item>
           <el-button type="primary" long native-type="submit">登录</el-button>
         </el-form-item>
       </el-form>
@@ -26,9 +31,30 @@
   
 <script setup>
 import { ref } from 'vue';
+import apiService from '@/tools/apiService'; // 确保路径正确
 const email = ref('');
 const password = ref('');
-
+const captcha=ref('');
+const captchaImage = ref('');
+const userKey = ref('');
+// 定义一个方法来获取验证码
+const getCaptcha = async () => {
+  try {
+    const result = await apiService.getCaptcha(); // 调用apiService中的getCaptcha方法
+    captchaImage.value = result.captcherImg; // 设置验证码图片
+    userKey.value = result.userKey; // 保存用户密钥，可能在后续验证时需要
+    console.log("userKey.value"+userKey.value)
+    console.log("captchaImage.value"+captchaImage.value)
+  } catch (error) {
+    console.error(error);
+  }
+};
+// 定义一个方法来刷新验证码
+const refreshCaptcha = () => {
+  getCaptcha(); // 重新获取验证码
+};
+// 组件挂载时获取验证码
+getCaptcha();
 const submitForm = () => {
   console.log('Form submitted with email:', email.value);
 }

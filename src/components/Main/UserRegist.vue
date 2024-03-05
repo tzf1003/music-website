@@ -5,19 +5,18 @@
       <div class="login-title">注册即可免费收听音乐</div>
       <el-form @submit.prevent="submitForm">
         <el-form-item>
-          <el-input type="account" v-model="account" placeholder="账号" required></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-input type="username" v-model="username" placeholder="昵称" required></el-input>
+          <el-input type="username" v-model="username" placeholder="账号" required></el-input>
+          <p v-if="usernameIsBeanregistered" style="color: red;">该账号已经被注册！</p>
         </el-form-item>
         <el-form-item>
           <el-input type="email" v-model="email" placeholder="电子邮件地址" required></el-input>
+          <p v-if="emailIsBeanregistered" style="color: red;">该邮箱已经被注册！</p>
         </el-form-item>
         <el-form-item>
           <el-input type="password" v-model="password" placeholder="密码" required></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" long native-type="submit">注册</el-button>
+          <el-button :disabled="usernameIsBeanregistered ||  usernameIsBeanregistered" type="primary" long native-type="submit" @click="register">注册</el-button>
         </el-form-item>
       </el-form>
       <div class="login-footer">
@@ -31,15 +30,50 @@
 </template>
   
 <script setup>
-import { ref } from 'vue';
+import { ref,watch  } from 'vue';
+import apiService from '@/tools/apiService'; // 确保路径正确
 const username = ref('');
-const account = ref('');
 const email = ref('');
 const password = ref('');
-
+const emailIsBeanregistered = ref(false)
+const usernameIsBeanregistered= ref(false)
+const register =()=>{
+  apiService.registerAccount(username.value,email.value,password.value)
+}
 const submitForm = () => {
   console.log('Form submitted with email:', email.value);
 }
+
+watch(email, (newValue, oldValue) => {
+
+  if (newValue !== oldValue && newValue) {
+    // 当email变化且不为空时，调用isRegisterByEmail方法
+    apiService.isRegisterByEmail(newValue).then((result) => {
+      console.log(result);
+      emailIsBeanregistered.value=result;
+      if (result) {
+        
+      }
+
+    }).catch(error => {
+      
+    });
+  }
+});
+
+watch(username, (newValue, oldValue) => {
+  console.log(username);
+if (newValue !== oldValue && newValue) {
+  // 当email变化且不为空时，调用isRegisterByEmail方法
+  apiService.isRegisterByUsername(newValue).then((result) => {
+    console.log(result);
+    usernameIsBeanregistered.value=result;
+
+  }).catch(error => {
+    
+  });
+}
+});
 </script>
   
 <style>
