@@ -1,10 +1,11 @@
 <!-- 滚动条 -->
+
 <template>
     <div class="title title-likes">
         <!-- <span>根据你的喜好推荐</span> -->
         <span>专辑目录</span>
         <el-button @click="toggleShowAll" text><span style="font-size: 14px; font-weight: bold;">{{ showAllName
-        }}</span></el-button>
+                }}</span></el-button>
     </div>
     <div class="content likes">
         <div class="likes-container" ref="likesContainer" :class="{ 'expanded': showAll }">
@@ -78,103 +79,97 @@
     </div>
 </template>
 
-<script>
-import { ref } from "vue";
-export default {
-    data() {
-        return {
-            // 将 showAll 放入函数中，以确保每个组件实例都有独立的状态
-            showAll: false,
-            showAllName: "显示全部",
-            startX: 0,
-            scrollLeft: 0,
-            isDragging: false,
-        };
-    },
-    mounted() {
-        const likesContainer = this.$refs.likesContainer;
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 
-        // 之前的鼠标滚轮和触摸事件监听
-        likesContainer.addEventListener('wheel', this.handleWheel, { passive: false });
-        likesContainer.addEventListener('touchstart', this.handleTouchStart, { passive: true });
-        likesContainer.addEventListener('touchmove', this.handleTouchMove, { passive: false });
+// Props的定义
+const props = defineProps({
+  items: {
+    type: Array,
+    required: true,
+  },
+});
 
-        // 新增的鼠标拖动事件监听
-        likesContainer.addEventListener('mousedown', this.handleMouseDown);
-        window.addEventListener('mouseup', this.handleMouseUp);
-        window.addEventListener('mousemove', this.handleMouseMove);
-    },
-    beforeUnmount() {
-        const likesContainer = this.$refs.likesContainer;
-        if (likesContainer) {
-            likesContainer.removeEventListener('wheel', this.handleWheel);
-            likesContainer.removeEventListener('touchstart', this.handleTouchStart);
-            likesContainer.removeEventListener('touchmove', this.handleTouchMove);
+// 定义响应式状态
+const showAll = ref(false);
+const showAllName = ref("显示全部");
+const startX = ref(0);
+const scrollLeft = ref(0);
+const isDragging = ref(false);
+const likesContainer = ref(null); // 使用ref来引用DOM元素
 
-            likesContainer.removeEventListener('mousedown', this.handleMouseDown);
-            window.removeEventListener('mouseup', this.handleMouseUp);
-            window.removeEventListener('mousemove', this.handleMouseMove);
-        }
-    },
-    methods: {
-        handleWheel(e) {
-            // 只有在非“显示全部”模式下，才改变滚动行为
-            if (!this.showAll) {
-                e.preventDefault();
-                const scrollAmount = e.deltaY;
-                const currentScrollPosition = this.$refs.likesContainer.scrollLeft;
-                this.$refs.likesContainer.scrollTo({
-                    left: currentScrollPosition + scrollAmount,
-                    behavior: 'smooth'
-                });
-            }
-        },
-        handleTouchStart(e) {
-            this.startX = e.touches[0].pageX - this.$refs.likesContainer.offsetLeft;
-            this.scrollLeft = this.$refs.likesContainer.scrollLeft;
-        },
-        handleTouchMove(e) {
-            e.preventDefault();
-            const x = e.touches[0].pageX - this.$refs.likesContainer.offsetLeft;
-            const walk = (x - this.startX) * 2; // 滚动速度因子
-            this.$refs.likesContainer.scrollLeft = this.scrollLeft - walk;
-        },
-        handleMouseDown(e) {
-            e.preventDefault(); // 防止默认事件，如文本选择或图片拖动
-            this.isDragging = true;
-            this.startX = e.pageX - this.$refs.likesContainer.offsetLeft;
-            this.scrollLeft = this.$refs.likesContainer.scrollLeft;
-        },
-        handleMouseUp() {
-            this.isDragging = false;
-        },
-        handleMouseMove(e) {
-            if (!this.isDragging) return;
-            e.preventDefault();
-            const x = e.pageX - this.$refs.likesContainer.offsetLeft;
-            const walk = (x - this.startX); // 拖动距离
-            this.$refs.likesContainer.scrollLeft = this.scrollLeft - walk;
-        },
-        toggleShowAll() {
-            console.log(this.showAll);
-            if (this.showAll) {
-                this.showAll = false
-                this.showAllName = "显示全部"
-            } else {
-                this.showAll = true
-                this.showAllName = "折叠起来"
-            }
-
-
-            // 如果需要，当切换到“显示全部”模式时，可以重置滚动位置
-            // if (this.showAll) {
-            //     this.$refs.likesContainer.scrollLeft = 0;
-            // }
-        },
-    },
-
+// 定义方法
+const handleWheel = (e) => {
+  if (!showAll.value) {
+    e.preventDefault();
+    const scrollAmount = e.deltaY;
+    const currentScrollPosition = likesContainer.value.scrollLeft;
+    likesContainer.value.scrollTo({
+      left: currentScrollPosition + scrollAmount,
+      behavior: 'smooth'
+    });
+  }
 };
+
+const handleTouchStart = (e) => {
+  startX.value = e.touches[0].pageX - likesContainer.value.offsetLeft;
+  scrollLeft.value = likesContainer.value.scrollLeft;
+};
+
+const handleTouchMove = (e) => {
+  e.preventDefault();
+  const x = e.touches[0].pageX - likesContainer.value.offsetLeft;
+  const walk = (x - startX.value) * 2; // 滚动速度因子
+  likesContainer.value.scrollLeft = scrollLeft.value - walk;
+};
+
+const handleMouseDown = (e) => {
+  e.preventDefault();
+  isDragging.value = true;
+  startX.value = e.pageX - likesContainer.value.offsetLeft;
+  scrollLeft.value = likesContainer.value.scrollLeft;
+};
+
+const handleMouseUp = () => {
+  isDragging.value = false;
+};
+
+const handleMouseMove = (e) => {
+  if (!isDragging.value) return;
+  e.preventDefault();
+  const x = e.pageX - likesContainer.value.offsetLeft;
+  const walk = (x - startX.value); // 拖动距离
+  likesContainer.value.scrollLeft = scrollLeft.value - walk;
+};
+
+const toggleShowAll = () => {
+  showAll.value = !showAll.value;
+  showAllName.value = showAll.value ? "折叠起来" : "显示全部";
+};
+
+// 生命周期钩子
+onMounted(() => {
+  // 直接操作likesContainer.value进行事件监听
+  likesContainer.value.addEventListener('wheel', handleWheel, { passive: false });
+  likesContainer.value.addEventListener('touchstart', handleTouchStart, { passive: true });
+  likesContainer.value.addEventListener('touchmove', handleTouchMove, { passive: false });
+  likesContainer.value.addEventListener('mousedown', handleMouseDown);
+  window.addEventListener('mouseup', handleMouseUp);
+  window.addEventListener('mousemove', handleMouseMove);
+});
+
+onBeforeUnmount(() => {
+  if (likesContainer.value) {
+    likesContainer.value.removeEventListener('wheel', handleWheel);
+    likesContainer.value.removeEventListener('touchstart', handleTouchStart);
+    likesContainer.value.removeEventListener('touchmove', handleTouchMove);
+    likesContainer.value.removeEventListener('mousedown', handleMouseDown);
+    window.removeEventListener('mouseup', handleMouseUp);
+    window.removeEventListener('mousemove', handleMouseMove);
+  }
+});
 </script>
+
 
 <style lang="less">
 .title-likes {
@@ -184,8 +179,9 @@ export default {
 
     display: block;
     width: 95%;
+
     span {
-        
+
         font-size: 25px;
         font-weight: bold;
     }

@@ -48,10 +48,10 @@ async function handleResponse(response) {
     return data.result; // 返回请求的结果部分
   } else if (response.status === 401) {
     handle401Error(); // 特别处理401错误
-    return Promise.reject(new Error('未登录或登录已过期'));
+    // return Promise.reject(new Error('未登录或登录已过期'));
   } else {
     showMessage(data.message || '请求失败'); // 显示错误信息
-    return Promise.reject(new Error(data.message || '请求失败'));
+    // return Promise.reject(new Error(data.message || '请求失败'));
   }
 }
 
@@ -88,7 +88,7 @@ export default {
 
   // 登录方法，成功后保存token
   async login(username, password, userKey, code) {
-    const url = `${API_BASE_URL}user/login`; // 登录API的路径
+    const url = `${API_BASE_URL}login`; // 登录API的路径
     const config = {
       method: 'POST',
       headers: {
@@ -101,12 +101,22 @@ export default {
       showLoader();
       const response = await fetch(url, config);
       const data = await handleResponse(response); // 使用handleResponse处理响应
-      if (data.token) {
-        saveToken(data.token); // 如果响应中包含token，则保存它
-        return data;
-      } else {
-        throw new Error('Token is missing from the response');
+      if (response.ok) {
+        var authorization = response.headers.get('authorization'); // 修改这里
+        console.log(response.headers);
+        if (authorization) {
+          saveToken(authorization); // 如果响应中包含token，则保存它
+          // 如果HTTP状态码为200，显示来自后台的消息，并跳转到主页
+          Message.success(response.message || '登录成功!'); // 显示成功消息
+          setTimeout(() => {
+            window.location.href = '/'; // 跳转到主页
+          }, 1500); // 延迟1.5秒后跳转，给用户时间看消息
+          return data;
+        } else {
+          // throw new Error('Token is missing from the response');
+        }
       }
+
     } catch (error) {
       showMessage(error.message);
       throw error;
@@ -139,7 +149,7 @@ export default {
     }
   },
   // 注册账号函数
-  async registerAccount(username,email, password ) {
+  async registerAccount(username, email, password) {
     const url = `${API_BASE_URL}user/register`; // 假定注册API的路径为 '/register'
     const config = {
       method: 'POST',
@@ -175,18 +185,18 @@ export default {
     const url = new URL(`${API_BASE_URL}user/isRegisterByEmail`);
     // 添加查询参数
     url.searchParams.append('email', email);
-  
+
     const config = {
       method: 'GET',
       headers: new Headers({
         'Accept': 'application/json' // 指定期望的响应格式为JSON
       })
     };
-  
+
     try {
       const response = await fetch(url, config);
       const result = await response.json(); // 解析响应体为JSON
-  
+
       if (response.ok) {
         return result.result
       } else {
@@ -202,18 +212,18 @@ export default {
     const url = new URL(`${API_BASE_URL}user/isRegisterByUsername`);
     // 添加查询参数
     url.searchParams.append('username', username);
-  
+
     const config = {
       method: 'GET',
       headers: new Headers({
         'Accept': 'application/json' // 指定期望的响应格式为JSON
       })
     };
-  
+
     try {
       const response = await fetch(url, config);
       const result = await response.json(); // 解析响应体为JSON
-  
+
       if (response.ok) {
         return result.result
       } else {
@@ -225,5 +235,5 @@ export default {
       Message.error(error.message || '查询过程中发生错误');
     }
   }
-  
+
 }

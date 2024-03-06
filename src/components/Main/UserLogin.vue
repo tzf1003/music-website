@@ -5,7 +5,7 @@
       <div class="login-title">欢迎登录，免费收听音乐</div>
       <el-form @submit.prevent="submitForm">
         <el-form-item>
-          <el-input type="email" v-model="email" placeholder="用户名/电子邮件地址" required></el-input>
+          <el-input type="username" v-model="username" placeholder="用户名" required></el-input>
         </el-form-item>
         <el-form-item>
           <el-input type="password" v-model="password" placeholder="密码" required></el-input>
@@ -16,7 +16,7 @@
         </el-form-item>
         
         <el-form-item>
-          <el-button type="primary" long native-type="submit">登录</el-button>
+          <el-button @click="doLogin" type="primary" long native-type="submit">登录</el-button>
         </el-form-item>
       </el-form>
       <div class="login-footer">
@@ -32,11 +32,17 @@
 <script setup>
 import { ref } from 'vue';
 import apiService from '@/tools/apiService'; // 确保路径正确
-const email = ref('');
+const username = ref('');
 const password = ref('');
 const captcha=ref('');
 const captchaImage = ref('');
 const userKey = ref('');
+
+//登录操作
+const doLogin= ()=>{
+  apiService.login(username.value, password.value, userKey.value, captcha.value)
+}
+
 // 定义一个方法来获取验证码
 const getCaptcha = async () => {
   try {
@@ -55,8 +61,9 @@ const refreshCaptcha = () => {
 };
 // 组件挂载时获取验证码
 getCaptcha();
+
 const submitForm = () => {
-  console.log('Form submitted with email:', email.value);
+  console.log('Form submitted with username:', username.value);
 }
 </script>
   
