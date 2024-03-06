@@ -16,7 +16,7 @@
           <el-input type="password" v-model="password" placeholder="密码" required></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button :disabled="usernameIsBeanregistered ||  usernameIsBeanregistered" type="primary" long native-type="submit" @click="register">注册</el-button>
+          <el-button :disabled="usernameIsBeanregistered ||  emailIsBeanregistered || username=='' ||email=='' ||password==''" type="primary" long native-type="submit" @click="register">注册</el-button>
         </el-form-item>
       </el-form>
       <div class="login-footer">
@@ -49,14 +49,8 @@ watch(email, (newValue, oldValue) => {
   if (newValue !== oldValue && newValue) {
     // 当email变化且不为空时，调用isRegisterByEmail方法
     apiService.isRegisterByEmail(newValue).then((result) => {
-      console.log(result);
       emailIsBeanregistered.value=result;
-      if (result) {
-        
-      }
 
-    }).catch(error => {
-      
     });
   }
 });
@@ -69,8 +63,6 @@ if (newValue !== oldValue && newValue) {
     console.log(result);
     usernameIsBeanregistered.value=result;
 
-  }).catch(error => {
-    
   });
 }
 });

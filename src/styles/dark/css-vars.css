@@ -8,9 +8,17 @@ html {
 
 /* 删掉router-link */
 .router-link-active {
-    text-decoration: none;
+    text-decoration: none; 
 }
-
+.router-link:link {
+	color:aliceblue;
+}
+.router-link:visited {
+	color:aliceblue;
+}
+.router-link:hover {
+	color:aliceblue;
+}
 a {
     text-decoration: none;
 }

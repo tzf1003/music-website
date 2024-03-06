@@ -16,7 +16,7 @@
         </el-form-item>
         
         <el-form-item>
-          <el-button @click="doLogin" type="primary" long native-type="submit">登录</el-button>
+          <el-button :disabled="username=='' || password=='' || captcha==''" @click="doLogin" type="primary" long native-type="submit">登录</el-button>
         </el-form-item>
       </el-form>
       <div class="login-footer">
