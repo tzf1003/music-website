@@ -12,7 +12,7 @@ export default [
     }
   },
   {
-    path: '/artist/:id',
+    path: '/singer/:id',
     name: 'Artist',
     components: {
       default: ArtistPage,

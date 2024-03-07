@@ -130,7 +130,7 @@
       </el-col>
     </router-link>
     <!-- 库2 -->
-    <router-link class="router-link" to="/artist/123">
+    <router-link class="router-link" to="/singer/123">
       <el-col :span="24">
         <div class="grid-content">
           <el-button text color="#232323" style="
