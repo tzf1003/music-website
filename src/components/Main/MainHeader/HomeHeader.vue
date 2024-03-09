@@ -39,17 +39,28 @@
 
             <div class="button user">
                 <el-dropdown trigger="click">
-                    <el-button size="default" color="#121212" circle dark style="margin-left: 20px;">
+                    <!-- <el-button v-if="!isLogin" size="default" color="#121212" circle dark style="margin-left: 20px;">
                         <i class="bi bi-person"></i>
-                    </el-button>
+                    </el-button> -->
+                    <el-avatar v-if="!isLogin" :icon="UserFilled" />
+                    <el-avatar v-if="isLogin" :src="avatar" style="margin-left: 20px;">{{username}}</el-avatar>
                     <template #dropdown>
-                        <el-dropdown-menu>
+                        <el-dropdown-menu v-if="!isLogin">
                             <router-link to="/login">
                                 <el-dropdown-item :icon="CirclePlusFilled">登录</el-dropdown-item>
                             </router-link>
 
                             <router-link to="/register">
                                 <el-dropdown-item :icon="Plus">注册</el-dropdown-item>
+                            </router-link>
+                        </el-dropdown-menu>
+                        <el-dropdown-menu v-if="isLogin">
+                            <router-link to="/user/home">
+                                <el-dropdown-item :icon="CirclePlusFilled">个人中心</el-dropdown-item>
+                            </router-link>
+
+                            <router-link to="/logout">
+                                <el-dropdown-item :icon="Plus">退出</el-dropdown-item>
                             </router-link>
                         </el-dropdown-menu>
                     </template>
@@ -61,6 +72,25 @@
 
 <script setup>
 import { ref } from "vue";
+import apiService from '@/tools/apiService';
+const isLogin=ref(false);
+const username=ref('');
+const avatar = ref('')
+
+// 获取用户信息
+//如果存在token，则访问
+var token=localStorage.getItem('authToken');
+if(token!=null && token!='' && token!=undefined){
+    isLogin.value=true;
+    const userData = apiService.fetchWithAuth("user/info", "GET", null).then((result) => {
+        console.log(result);
+        username.value=result.username;
+        avatar.value = result.avatar
+    });
+}else{
+    isLogin.value=false;
+}
+
 </script>
 
 <style  lang="less">

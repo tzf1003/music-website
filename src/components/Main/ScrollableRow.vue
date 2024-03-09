@@ -8,15 +8,17 @@
                 }}</span></el-button>
     </div>
     <div class="content likes">
-        <div class="likes-container" ref="likesContainer" :class="{ 'expanded': showAll }">
-            <router-link class="router-link" v-for="(item, key) in items" :key="key"
-                :to="'/' + item.type + '/' + item.id">
+        <div  class="likes-container" ref="likesContainer" :class="{ 'expanded': showAll }">
+            <div @click="handleClick(item, $event)" v-for="(item, key) in items" :key="key"  class="router-link">
+                <!-- <router-link class="router-link"> -->
                 <div class="like">
                     <el-avatar loading="lazy" class="like-img" shape="square" :src="item.imgUrl" />
                     <div class="like-title"><span>{{ item.name }}</span></div>
                     <div class="like-info"><span>{{ item.description }}</span></div>
                 </div>
-            </router-link>
+            <!-- </router-link> -->
+            </div>
+
 
         </div>
     </div>
@@ -24,6 +26,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { useRouter } from 'vue-router'
 
 // Props的定义
 const props = defineProps({
@@ -45,6 +48,7 @@ const startX = ref(0);
 const scrollLeft = ref(0);
 const isDragging = ref(false);
 const likesContainer = ref(null); // 使用ref来引用DOM元素
+const wasDragging = ref(false); // 正在拖拽
 
 // 定义方法
 const handleWheel = (e) => {
@@ -73,9 +77,15 @@ const handleTouchMove = (e) => {
 
 const handleMouseDown = (e) => {
     e.preventDefault();
+    e.stopPropagation(); // 阻止事件冒泡
     isDragging.value = true;
+    wasDragging.value = false; // 鼠标按下时，重置拖动状态
     startX.value = e.pageX - likesContainer.value.offsetLeft;
     scrollLeft.value = likesContainer.value.scrollLeft;
+    // 直接取消元素的焦点
+    if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+    }
 };
 
 const handleMouseUp = () => {
@@ -85,6 +95,7 @@ const handleMouseUp = () => {
 const handleMouseMove = (e) => {
     if (!isDragging.value) return;
     e.preventDefault();
+    wasDragging.value = true; // 发生了拖动
     const x = e.pageX - likesContainer.value.offsetLeft;
     const walk = (x - startX.value); // 拖动距离
     likesContainer.value.scrollLeft = scrollLeft.value - walk;
@@ -116,6 +127,17 @@ onBeforeUnmount(() => {
         window.removeEventListener('mousemove', handleMouseMove);
     }
 });
+const router = useRouter(); // 使用 useRouter 钩子获取路由实例
+const handleClick = (item, event) => {
+  if (wasDragging.value) {
+    event.preventDefault(); // 阻止默认事件，包括导航
+    wasDragging.value = false; // 重置拖动状态
+  } else {
+    // 手动执行导航
+    router.push(`/${item.type}/${item.id}`);
+  }
+};
+
 </script>
 
 
