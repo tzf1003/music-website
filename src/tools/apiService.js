@@ -106,6 +106,10 @@ export default {
         console.log(response.headers);
         if (authorization) {
           saveToken(authorization); // 如果响应中包含token，则保存它
+          //在这里读取用户信息保存到缓存localStorage
+          this.fetchWithAuth("user/info", "GET", null).then((result) => {
+            localStorage.setItem('userInfo', JSON.stringify(result));
+          });
           // 如果HTTP状态码为200，显示来自后台的消息，并跳转到主页
           Message.success(response.message || '登录成功!'); // 显示成功消息
           setTimeout(() => {

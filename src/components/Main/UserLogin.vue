@@ -41,6 +41,7 @@ const userKey = ref('');
 //登录操作
 const doLogin= ()=>{
   apiService.login(username.value, password.value, userKey.value, captcha.value)
+  
 }
 
 // 定义一个方法来获取验证码

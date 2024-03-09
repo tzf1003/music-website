@@ -43,7 +43,7 @@
                         <i class="bi bi-person"></i>
                     </el-button> -->
                     <el-avatar v-if="!isLogin" :icon="UserFilled" />
-                    <el-avatar v-if="isLogin" :src="avatar" style="margin-left: 20px;">{{username}}</el-avatar>
+                    <el-avatar v-if="isLogin" :src="avatar" style="margin-left: 20px;">{{ username }}</el-avatar>
                     <template #dropdown>
                         <el-dropdown-menu v-if="!isLogin">
                             <router-link to="/login">
@@ -73,27 +73,25 @@
 <script setup>
 import { ref } from "vue";
 import apiService from '@/tools/apiService';
-const isLogin=ref(false);
-const username=ref('');
+const isLogin = ref(false);
+const username = ref('');
 const avatar = ref('')
 
 // 获取用户信息
 //如果存在token，则访问
-var token=localStorage.getItem('authToken');
-if(token!=null && token!='' && token!=undefined){
-    isLogin.value=true;
-    const userData = apiService.fetchWithAuth("user/info", "GET", null).then((result) => {
-        console.log(result);
-        username.value=result.username;
-        avatar.value = result.avatar
-    });
-}else{
-    isLogin.value=false;
+var token = localStorage.getItem('authToken');
+if (token != null && token != '' && token != undefined) {
+    isLogin.value = true;
+    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    username.value = userInfo.username;
+    avatar.value = userInfo.avatar
+} else {
+    isLogin.value = false;
 }
 
 </script>
 
-<style  lang="less">
+<style lang="less">
 .home-header {
     border-bottom: 1px solid var(#121212);
     background-image: radial-gradient(transparent 1px, #121212 1px);

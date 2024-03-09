@@ -257,11 +257,7 @@ const handleClick = (item, event) => {
 
             }
         }
-
-
-
     }
-
     .router-link:hover {
         background-color: hsla(0, 0%, 100%, 0.2);
     }
