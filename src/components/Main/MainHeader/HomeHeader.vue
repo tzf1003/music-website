@@ -39,10 +39,10 @@
 
             <div class="button user">
                 <el-dropdown trigger="click">
-                    <!-- <el-button v-if="!isLogin" size="default" color="#121212" circle dark style="margin-left: 20px;">
+                    <el-button v-if="!isLogin" size="default" color="#121212" circle dark style="margin-left: 20px;">
                         <i class="bi bi-person"></i>
-                    </el-button> -->
-                    <el-avatar v-if="!isLogin" :icon="UserFilled" />
+                    </el-button>
+                    <!-- <el-avatar v-if="!isLogin" style="margin-left: 20px;" :icon="UserFilled" /> -->
                     <el-avatar v-if="isLogin" :src="avatar" style="margin-left: 20px;">{{ username }}</el-avatar>
                     <template #dropdown>
                         <el-dropdown-menu v-if="!isLogin">
@@ -73,6 +73,7 @@
 <script setup>
 import { ref } from "vue";
 import apiService from '@/tools/apiService';
+import { UserFilled } from '@element-plus/icons-vue'
 const isLogin = ref(false);
 const username = ref('');
 const avatar = ref('')
@@ -82,6 +83,10 @@ const avatar = ref('')
 var token = localStorage.getItem('authToken');
 if (token != null && token != '' && token != undefined) {
     isLogin.value = true;
+    //在这里读取用户信息保存到缓存localStorage
+    apiService.fetchWithAuth("user/info", "GET", null).then((result) => {
+        localStorage.setItem('userInfo', JSON.stringify(result));
+    });
     var userInfo = JSON.parse(localStorage.getItem('userInfo'));
     username.value = userInfo.username;
     avatar.value = userInfo.avatar

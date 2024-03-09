@@ -3,7 +3,7 @@
     <div class="content top-historys">
 
       <div class="title history" style="font-size: 32px;">
-        <span>{{greeting}}</span>
+        <span>{{greeting}} {{ username }}</span>
       </div>
       <div class="historys">
         <el-row :gutter="10">
@@ -73,12 +73,13 @@ const hotsItems = ref([]);
 const likeItems = ref([]);
 const singersItems = ref([]);
 const historyItems= ref([]);
+const username=ref('')
 // 创建一个响应式数据来存储当前的时间
 const currentTime = ref(new Date());
 // 计算属性，根据当前时间返回不同的问候语
 const greeting = computed(() => {
   const hours = currentTime.value.getHours();
-  if (hours < 12) {
+  if (hours >= 5 && hours < 12) {
     return '早上好';
   } else if (hours >= 12 && hours < 14) {
     return '中午好';
@@ -88,14 +89,18 @@ const greeting = computed(() => {
     return '晚上好';
   }
 });
+//获取用户名
+var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+if(userInfo!=null){
+  username.value = userInfo.username;
+}
+
 
 const homeData = apiService.fetchWithAuth("home", "GET", null).then((result) => {
-  console.log(result);
   history.value = result.historys;
   hot.value = result.hots
   like.value = result.likes;
   singer.value = result.singers;
-
 
   //设置热门推荐
   for (var hot1 of hot.value) { // 使用for...of循环遍历数组元素

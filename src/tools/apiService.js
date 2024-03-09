@@ -61,7 +61,7 @@ export default {
     const token = localStorage.getItem('authToken'); // 从localStorage获取保存的token
     const url = `${API_BASE_URL}${endpoint}`;
     const headers = new Headers({
-      'Authorization': `Bearer ${token}`, // 在请求头中添加token进行认证
+      'Authorization': `${token}`, // 在请求头中添加token进行认证
     });
 
     const config = {
