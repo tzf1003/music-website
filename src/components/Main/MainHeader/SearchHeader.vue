@@ -8,8 +8,8 @@
                 </el-button>
             </div>
         </div>
-        <div class="search-input">
-            <el-input v-model="SearchInput" size="large" placeholder="想听什么？" :prefix-icon="Search" style="
+        <div class="search-input" @keyup.enter="submit">
+            <el-input v-model="searchInput" size="large" placeholder="想听什么？" :prefix-icon="Search" style="
                     height:48px;
                     --el-input-border-radius:500px;
                     --el-input-focus-border-color:#fff;
@@ -41,14 +41,26 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-const SearchInput = ref('')
-import {
-    Search
-} from '@element-plus/icons-vue'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router'; // 引入useRouter
+import { Search } from '@element-plus/icons-vue';
+
+const searchInput = ref('');
+const router = useRouter(); // 使用useRouter获取路由实例
+
+
+function submit() {
+    router.push({ // 使用router实例进行路由跳转
+        path: '/search',
+        query: {
+            s: searchInput.value,
+        },
+    });
+}
 </script>
 
-<style  lang="less">
+
+<style lang="less">
 .search-header {
     border-bottom: 1px solid var(#121212);
     background-image: radial-gradient(transparent 1px, #121212 1px);

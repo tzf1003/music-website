@@ -9,7 +9,8 @@ const routes = [
     ...NavbarTopRouter,
     ...MusicKuRouter,
     ...BottonBarRouter,
-    ...MainHeaderRouter
+    ...MainHeaderRouter,
+    
 ];
 
 const router = createRouter({

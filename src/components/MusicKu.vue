@@ -92,9 +92,7 @@
   </el-row>
   <!-- 具体的库信息 -->
   <el-row class="library">
-
-
-    <router-link class="router-link" to="/sheet/123">
+    <router-link v-if="(token != null && token != '' && token != undefined ) && getFavoriteMusics"  class="router-link" :to="'/sheet/'+getFavoriteMusics.id">
       <el-col :span="24">
         <div class="grid-content">
           <el-button text color="#232323" style="
@@ -109,7 +107,7 @@
         ">
             <!-- 图片 -->
             <el-avatar style="width: 48px; height: 48px;" shape="square" :size="48"
-              :src="require('@/assets/love-songs.jpg')" />
+              :src="getFavoriteMusics.imgUrl" />
             <!-- 内容 -->
             <span style="padding-left: 10px;">
               <span style="
@@ -117,20 +115,20 @@
               margin-bottom: 8px;
               color: #fff;
               font-size: 18px;
-            ">已点赞歌曲</span>
+            ">{{getFavoriteMusics.name}}</span>
               <span style="
               display: block;
               color: #a7a7a7;
               font-size: 14px;
               
-            ">歌单 • 8首歌曲</span>
+            ">{{getFavoriteMusics.description}}</span>
             </span>
           </el-button>
         </div>
       </el-col>
     </router-link>
     <!-- 库2 -->
-    <router-link class="router-link" to="/singer/123">
+    <router-link class="router-link" :to="'/'+library.favType+'/'+library.favId" v-for="(library, key) in librarys" :key="key">
       <el-col :span="24">
         <div class="grid-content">
           <el-button text color="#232323" style="
@@ -144,21 +142,30 @@
           --el-button-active-bg-color: #232323;
         ">
             <!-- 图片 -->
-            <el-avatar style="width: 48px; height: 48px;" shape="square" :size="48" :src="libraryUrl[1]" />
+            <el-avatar v-if="library.favType=='album'" style="width: 48px; height: 48px;" shape="square" :size="48" :src="library.favObj.imgUrl" />
+            <el-avatar v-else-if="library.favType=='sheet'" style="width: 48px; height: 48px;" shape="square" :size="48" :src="library.favObj.imgUrl" />
+            <el-avatar v-else-if="library.favType=='singer'" style="
+              width: 48px; 
+              height: 48px;
+              border-radius: 50%;
+            " shape="square" :size="48" :src="library.favObj.imgUrl" />
             <!-- 内容 -->
             <span style="padding-left: 10px;">
               <span style="
+              width: 290px;
               display: block;
               margin-bottom: 8px;
               color: #fff;
               font-size: 18px;
-            ">邓紫棋</span>
+              overflow: hidden;
+              text-overflow: ellipsis;
+            ">{{library.favObj.name}}</span>
               <span style="
               display: block;
               color: #a7a7a7;
               font-size: 14px;
               
-            ">艺人</span>
+            ">{{library.favType=="album" ? "专辑":library.favType=="sheet"? "歌单":library.favType=="singer"? "艺人":"其他"}}</span>
             </span>
           </el-button>
         </div>
@@ -170,6 +177,8 @@
 <script setup>
 import { ref } from "vue";
 import { reactive, toRefs } from 'vue'
+import apiService from '@/tools/apiService';
+
 import {
   Plus,
   Refresh,
@@ -180,10 +189,23 @@ const librarySearch = ref('')
 
 const demonstrations = reactive(ref('0'))
 
-const libraryUrl = ref([
-  'https://p2.music.126.net/UDpjFEHmXInxGd_xMAI12w==/109951162811986419.jpg?param=140y140',
-  'https://p1.music.126.net/oJorrgJ3IotZUAbZkBMuFw==/109951167771736533.jpg?param=130y130'
-])
+const librarys = ref([]);
+const getFavoriteMusics = ref([]);
+// 获取用户信息
+//如果存在token，则访问
+var token = localStorage.getItem('authToken');
+if (token != null && token != '' && token != undefined) {
+    //在这里读取已点赞歌曲
+    apiService.fetchWithAuth("favorites/getFavoriteMusics", "GET", null).then((result) => {
+      getFavoriteMusics.value=result;
+      console.log(getFavoriteMusics.value);
+    });
+    //在这里读取音乐库
+    apiService.fetchWithAuth("favorites/get?page=1", "GET", null).then((result) => {
+      librarys.value=result.records;
+      console.log(librarys.value);
+    });
+}
 </script>
 
 <style>

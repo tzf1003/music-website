@@ -33,7 +33,8 @@
                 <div class="popular-content">
                     <!-- 图片 -->
                     <div class="popular-img">
-                        <img :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
+                        <img
+                            :src="'http://p2.music.126.net/KTo5oSxH3CPA5PBTeFKDyA==/109951164581432409.jpg?param=130y130'">
                     </div>
                     <!-- name -->
                     <div class="popular-name">
@@ -306,18 +307,42 @@
                 </div>
             </div>
         </div>
-        <ScrollableRow/>
-        <ScrollableRow/>
-        <ScrollableRow/>
+        <ScrollableRow />
+        <ScrollableRow />
+        <ScrollableRow />
     </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { watch,ref } from "vue";
 import ScrollableRow from "./ScrollableRow.vue";
+import apiService from '@/tools/apiService';
+import { useRoute } from 'vue-router'; // 引入useRouter
+const route = useRoute();
+const sValue = route.query?.s || route.params?.s; // 安全访问s，并提供默认处理
+
+watch(() => route.query.s, (newValue, oldValue) => {
+  if (newValue !== oldValue) {
+    fetchData(newValue);
+  }
+}, { immediate: true });
+
+fetchData(sValue)
+
+function fetchData(sValue) {
+    if(sValue) {
+    const searchData = apiService.fetchWithAuth("search/all?str="+sValue, "GET", { s: sValue })
+        .then((result) => {
+            console.log(result);
+        });
+} else {
+    // 处理sValue未定义的情况
+    console.error('参数 s 未定义或未传递正确。');
+}
+}
 </script>
 
-<style  lang="less">
+<style lang="less">
 .search-page {
     margin-top: 64px;
     padding-left: 3%;
@@ -574,4 +599,5 @@ import ScrollableRow from "./ScrollableRow.vue";
             }
         }
     }
-}</style>
+}
+</style>
