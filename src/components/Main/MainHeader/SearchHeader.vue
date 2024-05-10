@@ -31,11 +31,7 @@
                     <!-- <i class="bi bi-bell-fill"></i> -->
                 </el-button>
             </div>
-            <div class="button user">
-                <el-button size="default" color="#121212" circle dark style="margin-left: 20px;">
-                    <i class="bi bi-person"></i>
-                </el-button>
-            </div>
+            <HeaderUser/>
         </div>
     </div>
 </template>
@@ -44,6 +40,8 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'; // 引入useRouter
 import { Search } from '@element-plus/icons-vue';
+import HeaderUser from './HeaderUser';
+
 
 const searchInput = ref('');
 const router = useRouter(); // 使用useRouter获取路由实例

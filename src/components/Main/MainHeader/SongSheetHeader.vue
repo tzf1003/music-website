@@ -39,17 +39,14 @@
                     <!-- <i class="bi bi-bell-fill"></i> -->
                 </el-button>
             </div>
-            <div class="button user">
-                <el-button size="default" color="#121212" circle dark style="margin-left: 20px;">
-                    <i class="bi bi-person"></i>
-                </el-button>
-            </div>
+            <HeaderUser/>
         </div>
     </div>
 </template>
 
 <script setup>
 import { watch, toRefs ,ref,computed } from "vue";
+import HeaderUser from './HeaderUser';
 
 const isVisible = ref(false)
 const headerTransparent = ref("backdrop-filter: none;");
