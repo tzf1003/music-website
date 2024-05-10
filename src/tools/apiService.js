@@ -32,7 +32,7 @@ function showMessage(message, type = 'error') {
 function handle401Error() {
   showMessage('未登录或登录已过期，请重新登录。', 'warning');
   setTimeout(() => {
-    window.location.href = '/login'; // 替换为你的登录页面URL
+    window.location.href = '/logout'; // 替换为你的登录页面URL
   }, 3000);
 }
 
