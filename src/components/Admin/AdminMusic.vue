@@ -4,7 +4,7 @@
     <el-button @click="fetchSongs">搜索</el-button>
     <el-button @click="showAddSongModal = true">添加歌曲</el-button>
 
-    <el-table :data="songs" style="width: 100%">
+    <el-table :data="songs">
       <el-table-column prop="id" label="ID"></el-table-column>
       <el-table-column prop="name" label="歌曲名"></el-table-column>
       <el-table-column prop="source" label="来源"></el-table-column>
@@ -12,7 +12,7 @@
       <el-table-column prop="create_time" label="创建时间"></el-table-column>
       <el-table-column label="操作">
         <template #default="{ row }">
-          <el-button @click="showEditSongModal(row)">编辑</el-button>
+          <el-button @click="openEditSongModal(row)">编辑</el-button>
           <el-button @click="deleteSong(row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -69,6 +69,7 @@
 <script setup>
 import { ref } from 'vue';
 import apiService from '@/tools/apiService';
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 const songs = ref([]);
 const searchKey = ref('');
@@ -97,14 +98,14 @@ function fetchSongs() {
     limit: pageSize.value,
     page: currentPage.value
   };
-  apiService.fetchWithAuth("songs/search", "GET", params).then(result => {
-    songs.value = result.data;
+  apiService.fetchWithAuth("/admin/music/search?str="+params.search+"&page="+params.page+"&size="+params.limit, "GET", params).then(result => {
+    songs.value = result.records
     total.value = result.total;
   });
 }
 
 function addSong() {
-  apiService.fetchWithAuth("songs/add", "POST", addForm.value).then(() => {
+  apiService.fetchWithAuth("/admin/music/", "POST", addForm.value).then(() => {
     fetchSongs();
     showAddSongModal.value = false;
   });
@@ -116,15 +117,31 @@ function openEditSongModal(row) {
 }
 
 function updateSong() {
-  apiService.fetchWithAuth(`songs/update/${editForm.value.id}`, "PUT", editForm.value).then(() => {
+  apiService.fetchWithAuth(`/admin/music/${editForm.value.id}`, "PUT", editForm.value).then(() => {
     fetchSongs();
     showEditSongModal.value = false;
   });
 }
 
 function deleteSong(id) {
-  apiService.fetchWithAuth(`songs/delete/${id}`, "DELETE").then(() => {
-    fetchSongs();
+  ElMessageBox.confirm(
+    '您确定要删除这首歌吗?', 
+    '警告', 
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }
+  ).then(() => {
+    apiService.fetchWithAuth(`/admin/music/${id}`, "DELETE")
+      .then(() => {
+        fetchSongs(); // 刷新歌曲列表
+      })
+      .catch(err => {
+        console.error("删除失败:", err); // 处理错误
+      });
+  }).catch(() => {
+    console.log('删除操作已取消');
   });
 }
 

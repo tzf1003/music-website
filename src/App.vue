@@ -55,7 +55,7 @@
       </el-footer>
     </el-container>
     <!-- 后台管理弹窗 -->
-    <el-dialog style="height:80%;min-height: 700px; " v-model="adminDialog" title="后台管理" width="80%" align-center>
+    <el-dialog style="height:80%;height: 750px; " v-model="adminDialog" title="后台管理" width="80%" align-center>
       <AdminMain />
     </el-dialog>
   </div>
