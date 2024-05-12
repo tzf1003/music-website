@@ -30,7 +30,8 @@
         <div class="sheet-button-left">
           <!-- 播放按钮 -->
 
-          <el-button @click="playSheet(sheetId)" class="sheet-play-button" size="large" color="#1FDF64" circle dark style="margin-left: 20px;">
+          <el-button @click="playSheet(sheetId)" class="sheet-play-button" size="large" color="#1FDF64" circle dark
+            style="margin-left: 20px;">
             <i class="bi bi-play-fill" style="margin-left: 3px;"></i>
           </el-button>
 
@@ -128,7 +129,7 @@
                 </div>
                 <!-- info -->
                 <div class="song-introduce">
-                  <span >
+                  <span>
                     歌曲 •
                     <span v-for="(singer, key) in music.singerObject" :key="key">
                       {{ singer.name }}<span v-if="key < music.singerObject.length - 1">, </span>
@@ -194,10 +195,11 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, inject } from 'vue';
 import ColorThief from 'colorthief';
 import { useRoute } from 'vue-router';
 import apiService from '@/tools/apiService';
+import { musicQueue } from "@/tools/music"
 
 const container = ref(null);
 const textSpan = ref(null);
@@ -282,7 +284,7 @@ const songDescription = ref('');
 const songUsername = ref('');
 const songCount = ref('');
 const musicList = ref('');
-const sheetId=ref(0)
+const sheetId = ref(0)
 // 通过id读取歌曲信息
 apiService.fetchWithAuth("sheet/get?id=" + songSheetId, "GET", null).then((result) => {
   song.value = result;
@@ -309,12 +311,19 @@ function formatTime(ms) {
   const seconds = Math.floor((ms % 60000) / 1000); // 计算剩余的秒数
   return `${minutes}:${seconds.toString().padStart(2, '0')}`; // 格式化输出，确保秒数为两位数字
 }
-function playSheet(sheetId){
-  console.log(sheetId)
+//播放
+const playBegin = inject('play-begin')
+function playSheet(sheetId) {
   //通过sheetid获取播放列表
+  apiService.fetchWithAuth("sheet/play?id=" + sheetId, "GET", null).then((result) => {
+    //写入缓存
+    localStorage.setItem('musicPlaylist', JSON.stringify(result));
+    localStorage.setItem('currentMusicIndex', 0);
+    console.log(playBegin);
+    playBegin();
+    
+  });
 
-  //写入
-  //播放
 }
 </script>
 

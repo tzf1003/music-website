@@ -26,7 +26,7 @@
                     </el-col>
                     <el-col :span="7">
                         <div class="info">
-                            <a>{{ music.album }}</a>
+                            <a>{{ music.album.name }}</a>
                         </div>
                     </el-col>
                     <el-col :span="5">
@@ -38,7 +38,7 @@
                             </el-button>
                         </div>
                         <div class="time">
-                            <span>{{ music.duration }}</span>
+                            <span>{{ formatDuration(music.duration) }}</span>
                         </div>
                         <div class="other">
                             <el-button color="#282828" circle dark>
@@ -82,6 +82,18 @@ watch(() => props.queueChange, (newVal) => {
 watch(() => props.music, () => {
     queue.value = musicQueue.getCurrentQueue()
 });
+
+function formatDuration(durationInMilliseconds) {
+    // 计算分钟和秒数
+    var minutes = Math.floor(durationInMilliseconds / 60000);
+    var seconds = ((durationInMilliseconds % 60000) / 1000).toFixed(0);
+
+    // 如果秒数小于10，则在前面添加一个0
+    seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+    // 返回分钟:秒形式
+    return minutes + ":" + seconds;
+}
 
 </script>
 

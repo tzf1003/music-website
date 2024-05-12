@@ -6,9 +6,11 @@
       <el-col :span="7">
         <div v-if="currentMusic" class="grid-content song-info">
           <!-- 图片 -->
-          <div class="image" style="display: flex;float: left;">
-            <el-avatar shape="square" :size="56" :src="currentMusic.image" />
-          </div>
+          <router-link class="router-link" to="/lyrics">
+            <div class="image" style="display: flex;float: left;">
+              <el-avatar shape="square" :size="56" :src="currentMusic.image" />
+            </div>
+          </router-link>
           <!-- 内容 -->
           <div style="
             display: flex; 
@@ -37,12 +39,8 @@
       </el-col>
       <!-- 中间播放器 -->
       <el-col :span="10">
-        <div class="grid-content player loading-svg" 
-          v-loading="musicLoading"
-          :element-loading-svg="loadingSvg"
-          element-loading-svg-view-box="-10, -10, 50, 50"
-          style="width: 100%"
-        >
+        <div class="grid-content player loading-svg" v-loading="musicLoading" :element-loading-svg="loadingSvg"
+          element-loading-svg-view-box="-10, -10, 50, 50" style="width: 100%">
           <!-- 播放器 -->
           <audio ref="audioPlayer" :src="currentMusic ? currentMusic.url : null" @loadedmetadata="updateDuration"
             @timeupdate="updateCurrentTime" @play="onPlay" @pause="onPause" @ended="handleEnded"></audio>
@@ -67,8 +65,8 @@
 
             <!-- 单曲循环按钮 -->
             <el-button :class="{
-              highlight: (playLoopMode != LoopModes.NO_LOOP)
-            }" @click="switchLoopMode" color="#000" circle dark>
+        highlight: (playLoopMode != LoopModes.NO_LOOP)
+      }" @click="switchLoopMode" color="#000" circle dark>
 
               <i v-if="(playLoopMode != LoopModes.SINGLE_LOOP)" class="bi bi-repeat" style="font-size: 17px;"></i>
 
@@ -80,7 +78,8 @@
             <div class="time progress">
               <p>{{ currentTime == 0 ? '0:00' : currentTime }}</p>
             </div>
-            <el-slider v-model="localProgress" @change="onProgressChange" @input="onSliderInput" :show-tooltip="false" />
+            <el-slider v-model="localProgress" @change="onProgressChange" @input="onSliderInput"
+              :show-tooltip="false" />
             <!-- <el-progress :percentage="10" type="line" text-inside="" color="#fff" /> -->
             <div class="time final">
               <p>{{ duration == 0 ? '0:00' : duration }}</p>
@@ -112,12 +111,13 @@
             <i class="bi bi-speaker" style="font-size: 17px;"></i>
           </el-button>
           <el-button color="#000" circle dark @click="toggleMute">
-            <i v-if="!isMuted && musicVolume>=50" class="bi bi-volume-up" style="font-size: 17px;"></i>
-            <i v-else-if="!isMuted && (musicVolume<50 && musicVolume>0)" class="bi bi-volume-down" style="font-size: 17px;"></i>
-            <i v-else-if="!isMuted && musicVolume==0" class="bi bi-volume-off" style="font-size: 17px;"></i>
+            <i v-if="!isMuted && musicVolume >= 50" class="bi bi-volume-up" style="font-size: 17px;"></i>
+            <i v-else-if="!isMuted && (musicVolume < 50 && musicVolume > 0)" class="bi bi-volume-down"
+              style="font-size: 17px;"></i>
+            <i v-else-if="!isMuted && musicVolume == 0" class="bi bi-volume-off" style="font-size: 17px;"></i>
             <i v-else-if="isMuted" class="bi bi-volume-mute" style="font-size: 17px;"></i>
           </el-button>
-          <el-slider v-model="musicVolume" @input="onVolumeInput"/>
+          <el-slider v-model="musicVolume" @input="onVolumeInput" />
           <!-- <el-progress :percentage="100" type="line" text-inside="" color="#fff" /> -->
           <el-button color="#000" circle dark>
             <i class="bi bi-pip" style="font-size: 17px;"></i>
@@ -129,7 +129,7 @@
 </template>
 
 <script setup>
-import { h, ref, watch,onMounted} from "vue";
+import { h, ref, watch, onMounted } from "vue";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { musicQueue } from "@/tools/music"
 import { ElMessage } from 'element-plus'
@@ -144,7 +144,7 @@ const isMuted = ref(false)
 const setDefaultVolume = () => {
   if (audioPlayer.value) {
     // 假设默认音量为50%（0.5）
-    audioPlayer.value.volume = musicVolume.value/100;
+    audioPlayer.value.volume = musicVolume.value / 100;
   }
 };
 const toggleMute = () => {
@@ -197,7 +197,7 @@ const randomPlay = () => {
       type: 'success',
     })
   }
-  emit('queue-change',musicQueue.getCurrentQueue() );
+  emit('queue-change', musicQueue.getCurrentQueue());
 }
 //点击切换播放
 const switchLoopMode = () => {
@@ -273,6 +273,7 @@ const onPause = () => {
   isPlaying.value = false;
 };
 const togglePlay = () => {
+  console.log(audioPlayer.value.src);
   if (audioPlayer.value) {
     // 检查是否设置了音频源
     if (audioPlayer.value.src && audioPlayer.value.src.trim() !== "") {
@@ -301,6 +302,7 @@ const togglePlay = () => {
 const updateDuration = () => {
   duration.value = formatTime(audioPlayer.value.duration);
 };
+
 
 const updateCurrentTime = () => {
   currentTime.value = formatTime(audioPlayer.value.currentTime);
@@ -344,13 +346,13 @@ const onProgressChange = (newValue) => {
 
 const onVolumeInput = (newValue) => {
   // 判断静音时音量是否增加，如果增加则解除静音。
-  if(newValue/100>audioPlayer.value.volume && isMuted.value == true){
-    console.log("newValue",newValue,'audioPlayer.value.volume',audioPlayer.value.volume);
-    isMuted.value=false
-    audioPlayer.value.muted = isMuted.value=false
+  if (newValue / 100 > audioPlayer.value.volume && isMuted.value == true) {
+    console.log("newValue", newValue, 'audioPlayer.value.volume', audioPlayer.value.volume);
+    isMuted.value = false
+    audioPlayer.value.muted = isMuted.value = false
   }
   //设置音量
-  audioPlayer.value.volume=newValue/100;
+  audioPlayer.value.volume = newValue / 100;
 };
 // 用户拖动滑块时的处理函数
 const onSliderInput = () => {
@@ -438,6 +440,16 @@ const playPrev = () => {
       emit('music-change', true);
     }
 };
+// 重头播放
+const playBegin = () => {
+  musicQueue.playMusicAtIndex(0)
+  startPlayMusic();
+  emit('music-change', true);
+}
+defineExpose({
+  playBegin
+})
+
 const startPlayMusic = () => {
   //增加一个加载特效。资源加载完毕后再可点击。
   musicLoading.value = true;
@@ -447,11 +459,18 @@ const startPlayMusic = () => {
   audioPlayer.value.onloadeddata = () => {
     audioPlayer.value.play().catch(e => console.error(e));
     musicLoading.value = false;
-
   };
-
+  // 处理音频加载失败
+  audioPlayer.value.onerror = (e) => {
+    openMessage({
+      message: '加载音频失败', e,
+      type: 'error',
+    })
+    musicLoading.value = false; // 关闭加载特效
+    // 可以在这里添加其他的错误处理逻辑，比如显示错误消息给用户
+  };
 }
-const loadingSvg=`
+const loadingSvg = `
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
      width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
     <rect x="0" y="10" width="4" height="10" fill="#333" opacity="0.2">
@@ -633,13 +652,15 @@ const loadingSvg=`
 .playBar .grid-content .top .highlight:hover {
   color: #1ed760;
 }
+
 .playBar .player svg path,
 .playBar .player svg rect {
   fill: #1ed760;
-  
+
 }
+
 /* 清除旋转效果 */
-.playBar .player .circular{
-  animation:none;
+.playBar .player .circular {
+  animation: none;
 }
 </style>

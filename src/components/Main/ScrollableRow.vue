@@ -27,6 +27,8 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router'
+const startY = ref(0);
+
 
 // Props的定义
 const props = defineProps({
@@ -65,15 +67,23 @@ const handleWheel = (e) => {
 
 const handleTouchStart = (e) => {
     startX.value = e.touches[0].pageX - likesContainer.value.offsetLeft;
+    startY.value = e.touches[0].pageY - likesContainer.value.offsetTop;
     scrollLeft.value = likesContainer.value.scrollLeft;
 };
 
 const handleTouchMove = (e) => {
-    e.preventDefault();
     const x = e.touches[0].pageX - likesContainer.value.offsetLeft;
-    const walk = (x - startX.value) * 2; // 滚动速度因子
-    likesContainer.value.scrollLeft = scrollLeft.value - walk;
+    const y = e.touches[0].pageY - likesContainer.value.offsetTop;
+    const walkX = (x - startX.value) * 2; // 水平滚动速度因子
+    const walkY = y - startY.value;
+
+    // 判断滚动方向，只在明确是水平滚动时阻止默认事件
+    if (Math.abs(walkX) > Math.abs(walkY)) {
+        e.preventDefault();
+        likesContainer.value.scrollLeft = scrollLeft.value - walkX;
+    }
 };
+
 
 const handleMouseDown = (e) => {
     e.preventDefault();
@@ -91,14 +101,16 @@ const handleMouseDown = (e) => {
 const handleMouseUp = () => {
     isDragging.value = false;
 };
-
+const dragThreshold = 10; // 可以根据需要调整这个值
 const handleMouseMove = (e) => {
     if (!isDragging.value) return;
-    e.preventDefault();
-    wasDragging.value = true; // 发生了拖动
     const x = e.pageX - likesContainer.value.offsetLeft;
     const walk = (x - startX.value); // 拖动距离
-    likesContainer.value.scrollLeft = scrollLeft.value - walk;
+    if (Math.abs(walk) > dragThreshold) {
+        e.preventDefault();
+        wasDragging.value = true; // 只有移动超过阈值时才更新为拖动状态
+        likesContainer.value.scrollLeft = scrollLeft.value - walk;
+    }
 };
 
 const toggleShowAll = () => {

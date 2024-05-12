@@ -30,8 +30,8 @@ export default [
       // 例如清除本地存储、清除状态等
       localStorage.removeItem('userInfo');
       localStorage.removeItem('authToken');
-      // 重定向到登录页面
-      next('/');
+      // 直接硬跳转到登录页面
+      window.location.href = '/';
     }
   },
 
