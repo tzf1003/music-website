@@ -45,6 +45,9 @@ function toUrlEncoded(obj) {
 async function handleResponse(response) {
   const data = await response.json(); // 假设服务器总是返回JSON格式的响应
   if (response.ok && data.code === "200") {
+    if(data.message!=''){
+      showMessage(data.message,'success'); // 显示信息
+    }
     return data.result; // 返回请求的结果部分
   } else if (response.status === 401) {
     handle401Error(); // 特别处理401错误
@@ -85,7 +88,35 @@ export default {
       hideLoader(); // 请求完成后隐藏加载动画
     }
   },
+  // 使用fetchJsonWithAuth方法发送需要认证的请求
+  async fetchJsonWithAuth(endpoint, method = 'GET', data = null) {
+    const token = localStorage.getItem('authToken'); // 从localStorage获取保存的token
+    const url = `${API_BASE_URL}${endpoint}`;
+    const headers = new Headers({
+      'Authorization': `Bearer ${token}`, // 在请求头中添加token进行认证
+      'Content-Type': 'application/json'  // 指定发送数据为JSON格式
+    });
 
+    const config = {
+      method: method,
+      headers: headers,
+    };
+
+    if (data && method !== 'GET') {
+      config.body = JSON.stringify(data); // 将数据转换为JSON字符串
+    }
+
+    try {
+      showLoader(); // 在发送请求前显示加载动画
+      const response = await fetch(url, config);
+      return await handleResponse(response); // 处理响应
+    } catch (error) {
+      showMessage(error.message); // 显示错误信息
+      throw error;
+    } finally {
+      hideLoader(); // 请求完成后隐藏加载动画
+    }
+  },
   // 登录方法，成功后保存token
   async login(username, password, userKey, code) {
     const url = `${API_BASE_URL}login`; // 登录API的路径
