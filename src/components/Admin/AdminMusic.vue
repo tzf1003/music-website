@@ -4,7 +4,7 @@
     <el-button @click="fetchSongs">搜索</el-button>
     <el-button @click="showAddSongModal = true">添加歌曲</el-button>
 
-    <el-table :data="songs">
+    <el-table :data="songs" show-overflow-tooltip >
       <el-table-column prop="id" label="ID"></el-table-column>
       <el-table-column prop="name" label="歌曲名"></el-table-column>
       <el-table-column prop="source" label="来源"></el-table-column>
@@ -12,10 +12,10 @@
       <el-table-column prop="duration" label="时长"></el-table-column>
       <!-- <el-table-column prop="imgUrl" label="图片链接"></el-table-column> -->
       <el-table-column prop="createTime" label="创建时间"></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="180" >
         <template #default="{ row }">
-          <el-button @click="openEditSongModal(row)">编辑</el-button>
-          <el-button @click="deleteSong(row.id)">删除</el-button>
+          <el-button @click="openEditSongModal(row)" type="primary">编辑</el-button>
+          <el-button @click="deleteSong(row.id)" type="danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -48,7 +48,7 @@
       </el-form>
       <template v-slot:footer>
         <div class="dialog-footer">
-          <el-button @click="showEditSongModal = false">取消</el-button>
+          <el-button @click="showAddSongModal = false">取消</el-button>
           <el-button type="primary" @click="addSong">确认</el-button>
         </div>
       </template>
