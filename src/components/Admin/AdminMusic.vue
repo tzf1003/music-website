@@ -9,7 +9,7 @@
       <el-table-column prop="name" label="歌曲名"></el-table-column>
       <el-table-column prop="source" label="来源"></el-table-column>
       <el-table-column prop="sourceData" label="来源数据"></el-table-column>
-      <el-table-column prop="duration" label="时长"></el-table-column>
+      <el-table-column prop="duration" label="时长" :formatter="formatDuration"></el-table-column>
       <!-- <el-table-column prop="imgUrl" label="图片链接"></el-table-column> -->
       <el-table-column prop="createTime" label="创建时间"></el-table-column>
       <el-table-column label="操作" width="180" >
@@ -181,6 +181,12 @@ function handleCurrentChange(newPage) {
   currentPage.value = newPage;
   fetchSongs();
 }
+function formatDuration(row, column, cellValue) {
+  const totalSeconds = Math.floor(cellValue / 1000);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
 </script>
 
 

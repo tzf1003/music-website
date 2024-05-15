@@ -33,21 +33,16 @@ export const musicQueue = {
     const currentQueue = this.getQueue();
     const currentMusicIndex = this.getCurrentMusicIndex();
     let randomQueue = [];
-
     if (currentMusicIndex !== null && currentQueue.length > 0) {
       // 将当前播放的歌曲设置为随机列表的第一个
       randomQueue.push(currentQueue[currentMusicIndex]);
-
       // 获取除当前播放歌曲外的其他歌曲
       let otherSongs = [...currentQueue.slice(0, currentMusicIndex), ...currentQueue.slice(currentMusicIndex + 1)];
-
       // 随机排序剩余歌曲
       otherSongs = otherSongs.sort(() => Math.random() - 0.5);
-
       // 合并当前播放的歌曲和随机排序的其他歌曲
       randomQueue = randomQueue.concat(otherSongs);
     }
-
     // 将随机列表保存到LocalStorage
     localStorage.setItem('randomMusicPlaylist', JSON.stringify(randomQueue));
   },

@@ -19,7 +19,7 @@
             <el-tab-pane label="👤 用户管理" name="user">
                 <AdminUser />
             </el-tab-pane>
-            <el-tab-pane label="⚙️ 系统设置" name="config">系统设置</el-tab-pane>
+            <!-- <el-tab-pane label="⚙️ 系统设置" name="config">系统设置</el-tab-pane> -->
 
         </el-tabs>
     </div>

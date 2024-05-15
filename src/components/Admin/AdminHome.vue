@@ -6,7 +6,7 @@
                 <el-card style="background:linear-gradient(135deg,#57ca85,#184e68)" class="card">
                     <p class="card-title">总播放量：</p>
                     <br />
-                    <p class="card-num">10000次</p>
+                    <p class="card-num">{{data.musicCount}}</p>
                 </el-card>
             </el-col>
             <el-col :span="1"></el-col>
@@ -14,7 +14,7 @@
                 <el-card style="background:linear-gradient(135deg,#c53364,#622774)" class="card">
                     <p class="card-title">歌曲数量：</p>
                     <br />
-                    <p class="card-num">10000首</p>
+                    <p class="card-num">{{data.musicCount}}首</p>
                 </el-card>
             </el-col>
             <el-col :span="1"></el-col>
@@ -22,7 +22,7 @@
                 <el-card style="background:linear-gradient(135deg,#65799b,#5e2563)" class="card">
                     <p class="card-title">歌单数量：</p>
                     <br />
-                    <p class="card-num">100个</p>
+                    <p class="card-num">{{data.sheetCount}}个</p>
                 </el-card>
             </el-col>
             <el-col :span="1"></el-col>
@@ -30,16 +30,16 @@
                 <el-card style="background:linear-gradient(135deg,#72c6ef,#004e8f)" class="card">
                     <p class="card-title">用户数量：</p>
                     <br />
-                    <p class="card-num">10个</p>
+                    <p class="card-num">{{data.userCount}}个</p>
                 </el-card>
             </el-col>
         </el-row>
 
         <!-- 系统信息 -->
         <el-descriptions title="系统信息" style="margin-top: 10px">
-            <el-descriptions-item label="系统版本">v0.1</el-descriptions-item>
-            <el-descriptions-item label="服务器信息">Ubuntu22.04</el-descriptions-item>
-            <el-descriptions-item label="数据库信息">Mysql</el-descriptions-item>
+            <el-descriptions-item label="系统版本">{{ data.systemVersion }}</el-descriptions-item>
+            <el-descriptions-item label="服务器信息">{{data.serverInfo}}.04</el-descriptions-item>
+            <el-descriptions-item label="数据库信息">{{data.databaseInfo}}</el-descriptions-item>
             <el-descriptions-item label="服务器总览">
                 <el-tag size="success">优秀</el-tag>
             </el-descriptions-item>
@@ -60,8 +60,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import * as echarts from 'echarts';
+import apiService from '@/tools/apiService';
 
 const echartsBoxRef = ref(null);
+const data = ref({});
 let myChart = null;
 
 onMounted(() => {
@@ -84,6 +86,16 @@ onMounted(() => {
         });
     }
 });
+
+fetchData()
+
+function fetchData() {
+
+    const searchData = apiService.fetchWithAuth("admin/home/all", "GET", null).then((result) => {
+        data.value = result;
+    });
+
+}
 </script>
 
 <style lang="less">

@@ -10,6 +10,9 @@ import './assets/font/font.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // 路由
 import routers from '@/router/Index'
+// store
+import store from './store';
+
 
 
 const app = createApp(App)
@@ -18,5 +21,6 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 app.use(ElementPlus)
 app.use(routers)
+app.use(store);
 app.mount('#app')
 
